@@ -1,0 +1,251 @@
+:root {
+  color-scheme: dark;
+  --bg: #0a0d0c;
+  --panel: #151817;
+  --panel-soft: #1e2421;
+  --ink: #f4ead9;
+  --muted: #b7aa97;
+  --gold: #c8a85d;
+  --red: #8d2028;
+  --green: #284a3b;
+  --blue: #385a73;
+  --line: rgba(244, 234, 217, 0.16);
+  --shadow: rgba(0, 0, 0, 0.42);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(141, 32, 40, 0.28), transparent 28rem),
+    linear-gradient(135deg, rgba(40, 74, 59, 0.35), transparent 42%),
+    var(--bg);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  gap: 1rem;
+  width: min(1180px, calc(100% - 2rem));
+  min-height: calc(100vh - 2rem);
+  margin: 1rem auto;
+}
+
+.story-panel,
+.status-panel {
+  border: 1px solid var(--line);
+  background: rgba(21, 24, 23, 0.92);
+  box-shadow: 0 1.4rem 4rem var(--shadow);
+}
+
+.story-panel {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.status-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.1rem;
+}
+
+.title-block {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--gold);
+  font-family: system-ui, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: clamp(2.35rem, 7vw, 5rem);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 1rem;
+  color: #fff8e9;
+  font-size: clamp(1.5rem, 4vw, 2.45rem);
+  font-weight: 500;
+}
+
+h3 {
+  margin-bottom: 0.65rem;
+  color: var(--gold);
+  font-family: system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter-strip {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 0;
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+.scene-card {
+  flex: 1;
+  min-height: 22rem;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(rgba(20, 24, 22, 0.88), rgba(20, 24, 22, 0.96)),
+    repeating-linear-gradient(90deg, rgba(141, 32, 40, 0.18) 0 1rem, transparent 1rem 2rem);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.scene-text {
+  color: #eadfce;
+  font-size: clamp(1.05rem, 2vw, 1.22rem);
+  line-height: 1.75;
+}
+
+.scene-text p {
+  margin-bottom: 1rem;
+}
+
+.choices {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.choice-button,
+.restart-button {
+  min-height: 3.1rem;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.choice-button {
+  padding: 0.85rem 1rem;
+}
+
+.choice-button:hover,
+.choice-button:focus-visible,
+.restart-button:hover,
+.restart-button:focus-visible {
+  border-color: var(--gold);
+  background: #27312d;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.choice-button:disabled {
+  color: #756d61;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.restart-button {
+  margin-top: auto;
+  padding: 0.75rem 1rem;
+  background: #35191d;
+  text-align: center;
+}
+
+.meter-group {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.3rem 0.7rem;
+  align-items: center;
+  font-family: system-ui, sans-serif;
+}
+
+.meter-group label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+meter {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 0.65rem;
+}
+
+meter::-webkit-meter-bar {
+  border: 1px solid var(--line);
+  background: #0f1211;
+}
+
+meter::-webkit-meter-optimum-value {
+  background: var(--green);
+}
+
+#darknessMeter::-webkit-meter-optimum-value {
+  background: var(--red);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  min-height: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-list li {
+  border: 1px solid var(--line);
+  background: #111514;
+  padding: 0.35rem 0.5rem;
+  color: #dfd2bf;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+}
+
+.sidebar-copy {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+  .game-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .status-panel {
+    order: -1;
+  }
+
+  .scene-card {
+    min-height: 18rem;
+  }
+}

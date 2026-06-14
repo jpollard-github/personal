@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Between Two Lodges</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <section class="story-panel" aria-live="polite">
+      <div class="title-block">
+        <p class="eyebrow">A non-commercial fan homage</p>
+        <h1>Between Two Lodges</h1>
+      </div>
+
+      <div class="chapter-strip">
+        <span id="chapterName">Arrival</span>
+        <span id="sceneCounter">Scene 1</span>
+      </div>
+
+      <article class="scene-card">
+        <h2 id="sceneTitle"></h2>
+        <div id="sceneText" class="scene-text"></div>
+      </article>
+
+      <div id="choices" class="choices"></div>
+    </section>
+
+    <aside class="status-panel" aria-label="Investigation status">
+      <div class="meter-group">
+        <label for="intuitionMeter">Intuition</label>
+        <meter id="intuitionMeter" min="0" max="10" value="0"></meter>
+        <span id="intuitionValue">0</span>
+      </div>
+
+      <div class="meter-group">
+        <label for="darknessMeter">Darkness</label>
+        <meter id="darknessMeter" min="0" max="10" value="0"></meter>
+        <span id="darknessValue">0</span>
+      </div>
+
+      <section>
+        <h3>Inventory</h3>
+        <ul id="inventoryList" class="tag-list"></ul>
+      </section>
+
+      <section>
+        <h3>Clues</h3>
+        <ul id="clueList" class="tag-list"></ul>
+      </section>
+
+      <section>
+        <h3>Current Chapter</h3>
+        <p id="chapterSummary" class="sidebar-copy"></p>
+      </section>
+
+      <button id="restartButton" class="restart-button" type="button">Restart</button>
+    </aside>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
