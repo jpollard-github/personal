@@ -1,18 +1,28 @@
 import Image from "next/image";
+import { Guestbook } from "./Guestbook";
+import { SectionHeading } from "./SectionHeading";
 import { SignalBooth } from "./SignalBooth";
+import {
+  arcadeGames,
+  beverlyAndLucindaPhotos,
+  thomasJonesMissyCassPhotos,
+  visualMedia,
+} from "./site-data";
 import { writings } from "./writings";
 
 const navItems = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Signal Booth", href: "#signal-booth" },
-  { label: "Arcade", href: "#arcade" },
-  { label: "Movies & TV Shows", href: "#movies-tv" },
+  { label: "Arcade", href: "/arcade" },
+  { label: "Movies & TV Shows", href: "/movies-tv" },
   { label: "Writing", href: "#writing" },
   { label: "Music", href: "#music" },
   { label: "Cats", href: "#cats" },
-  { label: "Contact", href: "#contact" },
+  { label: "Guestbook", href: "#guestbook" },
 ];
+
+const githubRepoUrl = "https://github.com/jpollard-github/personal";
 
 const projects = [
   {
@@ -22,176 +32,6 @@ const projects = [
       "A moody, original text adventure about coffee, woods, clues, dreams, and the kind of hallway that knows your name.",
     href: "/games/between-two-lodges/index.html",
     cta: "Play",
-  },
-];
-
-const arcadeGames = [
-  {
-    title: "Galaga",
-    image: "/images/arcade/galaga.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Galaga",
-  },
-  {
-    title: "Ms. Pac-Man",
-    image: "/images/arcade/ms-pac-man.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Ms._Pac-Man",
-  },
-  {
-    title: "Mr. Do's Castle",
-    image: "/images/arcade/mr-dos-castle.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Mr._Do%27s_Castle",
-  },
-  {
-    title: "Track and Field",
-    image: "/images/arcade/track-and-field.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Track_%26_Field_(video_game)",
-  },
-  {
-    title: "Hyper Sports",
-    image: "/images/arcade/hyper-sports.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Hyper_Sports",
-  },
-  {
-    title: "Donkey Kong",
-    image: "/images/arcade/donkey-kong.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Donkey_Kong_(arcade_game)",
-  },
-  {
-    title: "Donkey Kong 3",
-    image: "/images/arcade/donkey-kong-3.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Donkey_Kong_3",
-  },
-  {
-    title: "Robotron: 2084",
-    image: "/images/arcade/robotron-2084.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Robotron:_2084",
-  },
-  {
-    title: "Tron",
-    image: "/images/arcade/tron.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Tron_(video_game)",
-  },
-  {
-    title: "Major Havoc",
-    image: "/images/arcade/major-havoc.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Major_Havoc",
-  },
-  {
-    title: "Dragon's Lair",
-    image: "/images/arcade/dragons-lair.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Dragon%27s_Lair_(1983_video_game)",
-  },
-  {
-    title: "Karate Champ",
-    image: "/images/arcade/karate-champ.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Karate_Champ",
-  },
-  {
-    title: "Vs. Excitebike",
-    image: "/images/arcade/vs-excitebike.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Vs._Excitebike",
-  },
-];
-
-const visualMedia = [
-  {
-    title: "Twin Peaks Season 1",
-    image: "/images/movies-tv/twin-peaks-season-1.jpg",
-    sourceUrl: "https://watch.plex.tv/en-GB/show/twin-peaks/season/1",
-  },
-  {
-    title: "Twin Peaks Season 2",
-    image: "/images/movies-tv/twin-peaks-season-2.jpg",
-    sourceUrl: "https://watch.plex.tv/show/twin-peaks/season/2",
-  },
-  {
-    title: "Twin Peaks Season 3",
-    image: "/images/movies-tv/twin-peaks-season-3.jpg",
-    sourceUrl: "https://en.wikipedia.org/wiki/Twin_Peaks:_The_Return",
-  },
-  {
-    title: "Severance",
-    image: "/images/movies-tv/severance.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Severance_(TV_series)",
-    fit: "contain",
-  },
-  {
-    title: "Widow's Bay",
-    image: "/images/movies-tv/widows-bay.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Widow%27s_Bay",
-    fit: "contain",
-  },
-  {
-    title: "A Nightmare on Elm Street",
-    image: "/images/movies-tv/nightmare-on-elm-street.jpg",
-    itemUrl: "https://letterboxd.com/film/a-nightmare-on-elm-street/",
-    sourceUrl: "https://en.wikipedia.org/wiki/A_Nightmare_on_Elm_Street",
-  },
-  {
-    title: "Total Recall (1990)",
-    image: "/images/movies-tv/total-recall-1990.jpg",
-    itemUrl: "https://letterboxd.com/film/total-recall-1990/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Total_Recall_(1990_film)",
-  },
-  {
-    title: "Pump Up the Volume",
-    image: "/images/movies-tv/pump-up-the-volume.jpg",
-    itemUrl: "https://letterboxd.com/film/pump-up-the-volume/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Pump_Up_the_Volume_(film)",
-  },
-  {
-    title: "Deuce Bigalow",
-    image: "/images/movies-tv/deuce-bigalow.jpg",
-    itemUrl: "https://letterboxd.com/film/deuce-bigalow-male-gigolo/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Deuce_Bigalow:_Male_Gigolo",
-  },
-  {
-    title: "Eternal Sunshine of the Spotless Mind",
-    image: "/images/movies-tv/eternal-sunshine.png",
-    itemUrl: "https://letterboxd.com/film/eternal-sunshine-of-the-spotless-mind/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Eternal_Sunshine_of_the_Spotless_Mind",
-  },
-  {
-    title: "Donnie Darko",
-    image: "/images/movies-tv/donnie-darko.jpg",
-    itemUrl: "https://letterboxd.com/film/donnie-darko/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Donnie_Darko",
-  },
-  {
-    title: "Groundhog Day",
-    image: "/images/movies-tv/groundhog-day.jpg",
-    itemUrl: "https://letterboxd.com/film/groundhog-day/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Groundhog_Day_(film)",
-  },
-  {
-    title: "The Game",
-    image: "/images/movies-tv/the-game.jpg",
-    itemUrl: "https://letterboxd.com/film/the-game/",
-    sourceUrl: "https://en.wikipedia.org/wiki/The_Game_(1997_film)",
-  },
-  {
-    title: "MXC: Most Extreme Elimination Challenge",
-    image: "/images/movies-tv/mxc.png",
-    sourceUrl: "https://en.wikipedia.org/wiki/Most_Extreme_Elimination_Challenge",
-    fit: "contain",
-  },
-  {
-    title: "Just Like Heaven",
-    image: "/images/movies-tv/just-like-heaven.jpg",
-    itemUrl: "https://letterboxd.com/film/just-like-heaven-2005/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Just_like_Heaven_(2005_film)",
-  },
-  {
-    title: "Return to Me",
-    image: "/images/movies-tv/return-to-me.jpg",
-    itemUrl: "https://letterboxd.com/film/return-to-me/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Return_to_Me",
-  },
-  {
-    title: "Limitless",
-    image: "/images/movies-tv/limitless.jpg",
-    itemUrl: "https://letterboxd.com/film/limitless/",
-    sourceUrl: "https://en.wikipedia.org/wiki/Limitless_(film)",
   },
 ];
 
@@ -218,56 +58,6 @@ const music = [
   },
 ];
 
-const catPhotos = Array.from({ length: 23 }, (_, index) => {
-  const photoNumber = index + 1;
-
-  return {
-    src: `/images/beverly-and-lucinda/BeverlyAndLucinda%20-%20${photoNumber}.jpeg`,
-    alt: `Beverly and Lucinda photo ${photoNumber}`,
-  };
-});
-
-const thomasPhotos = Array.from({ length: 269 }, (_, index) => {
-  const photoNumber = index + 1;
-
-  return {
-    src: `/images/thomas/ThomasJonesMissyCass%20-%20${photoNumber}.jpeg`,
-    alt: `Thomas, Jones, Missy, and Cass photo ${photoNumber}`,
-  };
-});
-
-const contactLinks = [
-  { label: "Email", href: "mailto:jason@arcadeghosts.org" },
-  {
-    label: "GitHub",
-    href: "https://github.com/jpollard-github/personal",
-    target: "_blank",
-  },
-  {
-    label: "Newsletter",
-    href: "https://www.reddit.com/r/twinpeaks/",
-    target: "_blank",
-  },
-];
-
-function SectionHeading({
-  eyebrow,
-  title,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="section-heading">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      <p>{children}</p>
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <main>
@@ -285,10 +75,6 @@ export default function Home() {
         />
         <div className="hero-scrim" />
         <nav className="nav" aria-label="Main navigation">
-          <a className="brand" href="#top" aria-label="Home">
-            <span className="brand-mark" />
-            <span>Night Kitchen</span>
-          </a>
           <div className="nav-links">
             {navItems.map((item) => (
               <a key={item.href} href={item.href}>
@@ -296,6 +82,21 @@ export default function Home() {
               </a>
             ))}
           </div>
+          <a
+            className="github-nav-link"
+            href={githubRepoUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open GitHub repository"
+            title="GitHub repository"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.87c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+              />
+            </svg>
+          </a>
         </nav>
 
         <div className="hero-content">
@@ -309,7 +110,7 @@ export default function Home() {
             <a className="button primary" href="#projects">
               See Projects
             </a>
-            <a className="button secondary" href="#contact">
+            <a className="button secondary" href="#guestbook">
               Send a Signal
             </a>
           </div>
@@ -452,32 +253,16 @@ export default function Home() {
           real curriculum was vector beams, joysticks, and the sound of another
           coin dropping.
         </SectionHeading>
-        <div className="arcade-grid">
-          {arcadeGames.map((game) => (
-            <article className="arcade-card" key={game.title}>
-              <a
-                className="arcade-image-link"
-                href={game.sourceUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${game.title} image source`}
-              >
-                <Image
-                  src={game.image}
-                  alt={`${game.title} arcade artwork`}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 20vw"
-                  className="arcade-image"
-                />
-              </a>
-              <div className="arcade-card-copy">
-                <h3>{game.title}</h3>
-                <a href={game.sourceUrl} target="_blank" rel="noreferrer">
-                  Source
-                </a>
-              </div>
-            </article>
-          ))}
+        <div className="section-link-grid">
+          <a className="section-link-card feature-card" href="/arcade">
+            <span className="card-eyebrow">{arcadeGames.length} cabinets</span>
+            <h3>Open the arcade room</h3>
+            <p>
+              Galaga, Robotron, Tron, Ms. Pac-Man, Dragon&apos;s Lair, and the
+              rest of the cabinet glow now live on their own page.
+            </p>
+            <span>Enter</span>
+          </a>
         </div>
       </section>
 
@@ -485,40 +270,16 @@ export default function Home() {
         <SectionHeading eyebrow="Movies & TV" title="Movies & TV Shows.">
           Visual media that resonated.
         </SectionHeading>
-        <div className="media-grid">
-          {visualMedia.map((item) => (
-            <article className="media-card" key={item.title}>
-              <a
-                className="media-image-link"
-                href={item.sourceUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${item.title} image source`}
-              >
-                <Image
-                  src={item.image}
-                  alt={`${item.title} poster or key art`}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 20vw"
-                  className={`media-image${item.fit === "contain" ? " contain" : ""}`}
-                />
-              </a>
-              <div className="media-card-copy">
-                <h3>
-                  {item.itemUrl ? (
-                    <a href={item.itemUrl} target="_blank" rel="noreferrer">
-                      {item.title}
-                    </a>
-                  ) : (
-                    item.title
-                  )}
-                </h3>
-                <a href={item.sourceUrl} target="_blank" rel="noreferrer">
-                  Source
-                </a>
-              </div>
-            </article>
-          ))}
+        <div className="section-link-grid">
+          <a className="section-link-card feature-card" href="/movies-tv">
+            <span className="card-eyebrow">{visualMedia.length} signals</span>
+            <h3>Open the screening room</h3>
+            <p>
+              Twin Peaks, Severance, horror, strange comedies, memory-loop
+              movies, and other shows and films that stuck around.
+            </p>
+            <span>Watchlist</span>
+          </a>
         </div>
       </section>
 
@@ -598,72 +359,43 @@ export default function Home() {
       </section>
 
       <section className="content-section cats-section" id="cats">
-        <SectionHeading eyebrow="Cats" title="Beverly and Lucinda from 2025 to current">
-          Beverly and Lucinda are beloved tiny chaos professionals who chase
-          ping pong balls, get in the bed with me, eat lots of Churu, and
-          practice suspiciously meaningful eye contact.
+        <SectionHeading eyebrow="Cats" title="Cat rooms, no endless hallway.">
+          The cat galleries have moved into their own rooms so the homepage can
+          breathe again.
         </SectionHeading>
-        <div className="cat-gallery" aria-label="Photos of Beverly and Lucinda">
-          {catPhotos.map((photo) => (
-            <figure className="cat-photo" key={photo.src}>
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw"
-                className="cat-photo-image"
-              />
-            </figure>
-          ))}
-        </div>
-        <div className="cat-subsection">
-          <h3>Thomas, Jones, Missy, and Cass from 2016 to 2025</h3>
-          <p>
-            Thomas was my buddy was 17 years and passed in 2025. Missy looks
-            like Thomas and both Missy and Jones were rehomed in 2024. Jones
-            died unexpectly shortly therafter. Cass belonged to my ex but got
-            along with Thomas.
-          </p>
-          <div
-            className="cat-gallery"
-            aria-label="Photos of Thomas, Jones, Missy, and Cass"
-          >
-            {thomasPhotos.map((photo) => (
-              <figure className="cat-photo" key={photo.src}>
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw"
-                  className="cat-photo-image"
-                />
-              </figure>
-            ))}
-          </div>
+        <div className="section-link-grid">
+          <a className="section-link-card" href="/cats/beverly-and-lucinda">
+            <span className="card-eyebrow">
+              {beverlyAndLucindaPhotos.length} photos
+            </span>
+            <h3>Beverly and Lucinda</h3>
+            <p>
+              Tiny chaos professionals from 2025 to current: ping pong balls,
+              Churu, bed visits, and meaningful eye contact.
+            </p>
+            <span>Visit</span>
+          </a>
+          <a className="section-link-card" href="/cats/thomas-jones-missy-cass">
+            <span className="card-eyebrow">
+              {thomasJonesMissyCassPhotos.length} photos
+            </span>
+            <h3>Thomas, Jones, Missy, and Cass</h3>
+            <p>
+              A larger memory room from 2016 to 2025, with Thomas and the
+              little orbit of cats around him.
+            </p>
+            <span>Visit</span>
+          </a>
         </div>
       </section>
 
-      <section className="contact-section" id="contact">
-        <div>
-          <p className="eyebrow">Contact</p>
-          <h2>Leave a message at the counter.</h2>
-          <p>
-            For collaborations, kind notes, strange ideas, playlists, and
-            carefully scoped existential questions.
-          </p>
-        </div>
-        <div className="contact-links">
-          {contactLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target={link.target}
-              rel={link.target === "_blank" ? "noreferrer" : undefined}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
+      <section className="content-section guestbook-section" id="guestbook">
+        <SectionHeading eyebrow="Guestbook" title="Leave a signal for the wall.">
+          Music recommendations, arcade memories, cat stories, Twin Peaks notes,
+          site thoughts, and any other small transmission that feels like it
+          belongs in the neon forest.
+        </SectionHeading>
+        <Guestbook />
       </section>
     </main>
   );

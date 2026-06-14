@@ -1,0 +1,173 @@
+import { Resend } from "resend";
+import { isAdminAuthenticated } from "../../../lib/admin-auth";
+import {
+  ensureGuestbookTable,
+  getGuestbookSql,
+  toAdminGuestbookEntry,
+  type GuestbookCategory,
+  type GuestbookRow,
+} from "../../../lib/guestbook";
+
+export const runtime = "nodejs";
+
+async function requireAdmin() {
+  if (!(await isAdminAuthenticated())) {
+    return Response.json({ error: "Admin login required." }, { status: 401 });
+  }
+
+  return null;
+}
+
+async function sendGuestbookEmail({
+  name,
+  email,
+  category,
+  message,
+}: {
+  name: string;
+  email: string;
+  category: GuestbookCategory;
+  message: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.GUESTBOOK_EMAIL_FROM;
+  const to = process.env.GUESTBOOK_EMAIL_TO ?? "jason@arcadeghosts.org";
+
+  if (!apiKey || !from) {
+    return false;
+  }
+
+  const resend = new Resend(apiKey);
+  const sender = name || "Mystery visitor";
+  const { error } = await resend.emails.send({
+    from,
+    to,
+    replyTo: email || undefined,
+    subject: `New ArcadeGhosts guestbook note: ${category}`,
+    text: [
+      `From: ${sender}`,
+      email ? `Email: ${email}` : "Email: not provided",
+      `Category: ${category}`,
+      "",
+      message,
+    ].join("\n"),
+  });
+
+  if (error) {
+    console.error("Guestbook email failed", error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function GET() {
+  const unauthorized = await requireAdmin();
+
+  if (unauthorized) {
+    return unauthorized;
+  }
+
+  try {
+    await ensureGuestbookTable();
+    const sql = getGuestbookSql();
+    const rows = await sql`
+      SELECT id, name, email, category, message, notify_owner, email_sent, status, created_at
+      FROM guestbook_entries
+      WHERE status = 'pending'
+      ORDER BY created_at ASC
+      LIMIT 50
+    `;
+
+    return Response.json({
+      entries: (rows as GuestbookRow[]).map(toAdminGuestbookEntry),
+    });
+  } catch (error) {
+    console.error("Admin guestbook GET failed", error);
+    return Response.json(
+      { error: "Pending guestbook entries are unavailable." },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(request: Request) {
+  const unauthorized = await requireAdmin();
+
+  if (unauthorized) {
+    return unauthorized;
+  }
+
+  try {
+    const body = await request.json();
+    const id = typeof body.id === "string" ? body.id : "";
+    const action = body.action === "reject" ? "reject" : "approve";
+
+    if (!id) {
+      return Response.json({ error: "Missing entry id." }, { status: 400 });
+    }
+
+    await ensureGuestbookTable();
+    const sql = getGuestbookSql();
+
+    if (action === "reject") {
+      const rows = await sql`
+        UPDATE guestbook_entries
+        SET status = 'rejected', rejected_at = now()
+        WHERE id = ${id} AND status = 'pending'
+        RETURNING id, name, email, category, message, notify_owner, email_sent, status, created_at
+      `;
+
+      if (!rows.length) {
+        return Response.json({ error: "Entry was not pending." }, { status: 404 });
+      }
+
+      return Response.json({
+        ok: true,
+        entry: toAdminGuestbookEntry((rows as GuestbookRow[])[0]),
+        emailSent: false,
+      });
+    }
+
+    const pendingRows = await sql`
+      SELECT id, name, email, category, message, notify_owner, email_sent, status, created_at
+      FROM guestbook_entries
+      WHERE id = ${id} AND status = 'pending'
+      LIMIT 1
+    `;
+
+    if (!pendingRows.length) {
+      return Response.json({ error: "Entry was not pending." }, { status: 404 });
+    }
+
+    const pendingEntry = toAdminGuestbookEntry((pendingRows as GuestbookRow[])[0]);
+    const emailSent = pendingEntry.notifyOwner
+      ? await sendGuestbookEmail({
+          name: pendingEntry.name,
+          email: pendingEntry.email,
+          category: pendingEntry.category,
+          message: pendingEntry.message,
+        })
+      : false;
+
+    const rows = await sql`
+      UPDATE guestbook_entries
+      SET status = 'approved', approved_at = now(), email_sent = ${emailSent}
+      WHERE id = ${id} AND status = 'pending'
+      RETURNING id, name, email, category, message, notify_owner, email_sent, status, created_at
+    `;
+
+    return Response.json({
+      ok: true,
+      entry: toAdminGuestbookEntry((rows as GuestbookRow[])[0]),
+      emailSent,
+      emailConfigured: Boolean(process.env.RESEND_API_KEY && process.env.GUESTBOOK_EMAIL_FROM),
+    });
+  } catch (error) {
+    console.error("Admin guestbook POST failed", error);
+    return Response.json(
+      { error: "Guestbook entry could not be moderated." },
+      { status: 500 },
+    );
+  }
+}
