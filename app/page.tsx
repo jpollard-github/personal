@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Guestbook } from "./Guestbook";
 import { SectionHeading } from "./SectionHeading";
 import { SignalBooth } from "./SignalBooth";
+import { TinyThoughts } from "./TinyThoughts";
 import {
   arcadeGames,
   beverlyAndLucindaPhotos,
@@ -14,6 +15,7 @@ const navItems = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Signal Booth", href: "#signal-booth" },
+  { label: "Tiny Thoughts", href: "#tiny-thoughts" },
   { label: "Arcade", href: "/arcade" },
   { label: "Movies & TV Shows", href: "/movies-tv" },
   { label: "Writing", href: "#writing" },
@@ -243,6 +245,14 @@ export default function Home() {
           late-night notes that might know where they belong.
         </SectionHeading>
         <SignalBooth />
+      </section>
+
+      <section className="content-section tiny-thought-section" id="tiny-thoughts">
+        <SectionHeading eyebrow="Tiny Thoughts" title="Short signals from the counter.">
+          Quick observations, lessons learned, funny experiences, opinions, and
+          small notes that do not need to become full essays.
+        </SectionHeading>
+        <TinyThoughts />
       </section>
 
       <section className="content-section arcade-section" id="arcade">

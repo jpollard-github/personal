@@ -15,7 +15,7 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 
 ## Main Features
 
-- Homepage with hero, about, projects, Signal Booth, section doorway cards, music, guestbook, and a GitHub repo link
+- Homepage with hero, about, projects, Signal Booth, Tiny Thoughts, section doorway cards, music, guestbook, and a GitHub repo link
 - Signal Booth with 200 randomized prompts and generated image assets
 - Standalone collection pages:
   - `/arcade`
@@ -33,6 +33,14 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
   - password-protected admin review at `/admin/guestbook`
   - optional email notification on approval
   - database-backed rate limiting of 5 submissions per hour per IP hash
+- Tiny Thoughts with:
+  - short 50-200 word posts
+  - categories such as lesson, observation, funny, opinion, arcade, music, cat, Twin Peaks, and other
+  - automatic link rendering for `http` and `https` URLs
+  - structured attachments for Vercel Blob image uploads and external links with optional titles
+  - optional inspired-by category and inspired-by note
+  - emoji-friendly text input
+  - password-protected admin create/edit/view/delete at `/admin/tiny-thoughts`
 - Fixed site logo from `public/images/logo.png`
 - Favicon generated at `app/favicon.ico`
 
@@ -43,10 +51,15 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 - `app/signal-booth-data.ts` - Signal Booth prompt/image data
 - `app/SignalBooth.tsx` - interactive random signal component
 - `app/Guestbook.tsx` - public guestbook form and approved entries
+- `app/TinyThoughts.tsx` - public Tiny Thoughts display
 - `app/AdminGuestbook.tsx` - admin approval interface
+- `app/AdminTinyThoughts.tsx` - admin Tiny Thoughts editor
 - `app/api/guestbook/route.ts` - public guestbook API
 - `app/api/admin/guestbook/route.ts` - admin moderation API
 - `app/api/admin/session/route.ts` - admin login/session API
+- `app/api/tiny-thoughts/route.ts` - public Tiny Thoughts API
+- `app/api/admin/tiny-thoughts/route.ts` - admin Tiny Thoughts CRUD API
+- `app/api/admin/tiny-thoughts/upload/route.ts` - admin Vercel Blob image upload API
 - `app/lib/guestbook.ts` - Neon connection, schema bootstrap, guestbook serializers
 - `app/lib/admin-auth.ts` - simple username/password admin session helper
 - `db/guestbook.sql` - reference SQL for guestbook tables
@@ -87,6 +100,12 @@ GUESTBOOK_EMAIL_FROM=
 GUESTBOOK_EMAIL_TO=
 ```
 
+Tiny Thoughts image uploads:
+
+```bash
+BLOB_READ_WRITE_TOKEN=
+```
+
 Optional rate-limit salt:
 
 ```bash
@@ -102,6 +121,26 @@ Public visitors can submit a name, optional email, category, note, and optional 
 The public guestbook API only returns approved entries and excludes email addresses. Admin-only routes can see submitted emails for moderation and optional Resend reply-to behavior.
 
 The guestbook database schema is bootstrapped automatically by `ensureGuestbookTable()` when the guestbook APIs run. The reference SQL lives in `db/guestbook.sql`.
+
+## Tiny Thoughts
+
+Tiny Thoughts are short posts intended for quick observations, lessons learned, funny experiences, and opinions. The public site displays them newest first.
+
+Admin URL:
+
+```text
+http://localhost:3000/admin/tiny-thoughts
+```
+
+Links can be embedded by typing full `http` or `https` URLs in the thought body. The admin form also supports structured attachments:
+
+```ts
+type Attachment =
+  | { type: "image"; url: string }
+  | { type: "link"; url: string; title?: string };
+```
+
+Image attachments are uploaded through the password-protected admin UI and stored in Vercel Blob. Link attachments remain external URLs with optional display titles. Tiny Thoughts can also include an inspired-by category such as article link, song, video, conversation, or other, plus a short inspired-by value. Emojis are stored as normal text.
 
 ## Run Locally
 
