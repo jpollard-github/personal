@@ -4,7 +4,7 @@ import { SectionHeading } from "../../SectionHeading";
 import { thomasJonesMissyCassPhotos } from "../../site-data";
 
 export const metadata: Metadata = {
-  title: "Thomas, Jones, Missy, and Cass | Jason's person site",
+  title: "Thomas, Jones, Missy, and Cass | Jason's Awesome 80s Site",
   description: "A photo room for Thomas, Jones, Missy, and Cass from 2016 to 2025.",
 };
 

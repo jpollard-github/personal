@@ -4,7 +4,7 @@ import { SectionHeading } from "../SectionHeading";
 import { arcadeGames } from "../site-data";
 
 export const metadata: Metadata = {
-  title: "Arcade | Jason's person site",
+  title: "Arcade | Jason's Awesome 80s Site",
   description: "Jason's favorite arcade cabinet glow, collected on its own page.",
 };
 

@@ -1,4 +1,4 @@
-# Jason's person site
+# Jason's Awesome 80s Site
 
 A warm, weird, slightly spooky personal website built with Next.js App Router and deployed on Vercel.
 

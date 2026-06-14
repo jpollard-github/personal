@@ -4,7 +4,7 @@ import { SectionHeading } from "../SectionHeading";
 import { visualMedia } from "../site-data";
 
 export const metadata: Metadata = {
-  title: "Movies & TV | Jason's person site",
+  title: "Movies & TV | Jason's Awesome 80s Site",
   description: "Movies and TV shows that resonated, collected on their own page.",
 };
 

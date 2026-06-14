@@ -3,7 +3,7 @@ import { SiteLogo } from "./SiteLogo";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Jason's person site",
+  title: "Jason's Awesome 80s Site",
   description:
     "A warm, weird, funny, slightly spooky personal website about projects, writing, music, cats, and guestbook signals.",
 };
