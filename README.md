@@ -10,12 +10,13 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 - React 19
 - TypeScript
 - Neon Postgres through `@neondatabase/serverless`
-- Resend for optional guestbook email notifications
+- Resend for guestbook approval notifications
 - Vercel for hosting and environment management
 
 ## Main Features
 
-- Homepage with hero, about, projects, Signal Booth, Tiny Thoughts, section doorway cards, music, guestbook, and a GitHub repo link
+- Homepage with hero, about, projects, Signal Booth, Tiny Thoughts, section doorway cards, music, guestbook, a GitHub repo link, and a hidden coffee-cup admin link
+- Projects section with Between Two Lodges and the Codex Prompt Pack for VS Code repo
 - Signal Booth with 200 randomized prompts and generated image assets
 - Standalone collection pages:
   - `/arcade`
@@ -30,8 +31,10 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
   - escaped public display fields
   - public responses that do not expose submitted email addresses
   - pending approval workflow
+  - shared password-protected admin dashboard at `/admin`
   - password-protected admin review at `/admin/guestbook`
-  - optional email notification on approval
+  - automatic Resend notification when a note is submitted for approval
+  - optional clickable admin-dashboard link in notification emails via `ADMIN_LINK`
   - database-backed rate limiting of 5 submissions per hour per IP hash
 - Tiny Thoughts with:
   - short 50-200 word posts
@@ -51,9 +54,11 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 - `app/signal-booth-data.ts` - Signal Booth prompt/image data
 - `app/SignalBooth.tsx` - interactive random signal component
 - `app/Guestbook.tsx` - public guestbook form and approved entries
+- `app/AdminDashboard.tsx` - shared admin login/dashboard linking to admin tools
 - `app/TinyThoughts.tsx` - public Tiny Thoughts display
 - `app/AdminGuestbook.tsx` - admin approval interface
 - `app/AdminTinyThoughts.tsx` - admin Tiny Thoughts editor
+- `app/admin/page.tsx` - admin dashboard route
 - `app/api/guestbook/route.ts` - public guestbook API
 - `app/api/admin/guestbook/route.ts` - admin moderation API
 - `app/api/admin/session/route.ts` - admin login/session API
@@ -61,6 +66,7 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 - `app/api/admin/tiny-thoughts/route.ts` - admin Tiny Thoughts CRUD API
 - `app/api/admin/tiny-thoughts/upload/route.ts` - admin Vercel Blob image upload API
 - `app/lib/guestbook.ts` - Neon connection, schema bootstrap, guestbook serializers
+- `app/lib/guestbook-email.ts` - shared Resend guestbook notification helper
 - `app/lib/admin-auth.ts` - simple username/password admin session helper
 - `db/guestbook.sql` - reference SQL for guestbook tables
 - `app/globals.css` - visual system and responsive layout
@@ -98,7 +104,10 @@ Guestbook email notifications:
 RESEND_API_KEY=
 GUESTBOOK_EMAIL_FROM=
 GUESTBOOK_EMAIL_TO=
+ADMIN_LINK=
 ```
+
+`ADMIN_LINK` is used inside guestbook notification emails as the clickable admin-dashboard URL. For local development it can point to `http://localhost:3000/admin`; in production it should point to the deployed `/admin` URL.
 
 Tiny Thoughts image uploads:
 
@@ -116,9 +125,11 @@ If `GUESTBOOK_RATE_LIMIT_SECRET` is not set, the app falls back to other server-
 
 ## Guestbook Behavior
 
-Public visitors can submit a name, optional email, category, note, and optional request to email Jason. Submissions are saved as `pending` and do not appear publicly until approved.
+Public visitors can submit a name, optional email, category, and note. Submissions are saved as `pending` and do not appear publicly until approved.
 
-The public guestbook API only returns approved entries and excludes email addresses. Admin-only routes can see submitted emails for moderation and optional Resend reply-to behavior.
+When a note is submitted for approval, the public API saves it first, then attempts to send a Resend notification so Jason knows there is something to review. Notification emails include submitted details and, when `ADMIN_LINK` is set, a clickable link to the admin dashboard. If the notification fails, the saved pending entry remains available for review; approval can retry an unsent notification.
+
+The public guestbook API only returns approved entries and excludes email addresses. Admin-only routes can see submitted emails for moderation and Resend reply-to behavior.
 
 The guestbook database schema is bootstrapped automatically by `ensureGuestbookTable()` when the guestbook APIs run. The reference SQL lives in `db/guestbook.sql`.
 
@@ -126,10 +137,10 @@ The guestbook database schema is bootstrapped automatically by `ensureGuestbookT
 
 Tiny Thoughts are short posts intended for quick observations, lessons learned, funny experiences, and opinions. The public site displays them newest first.
 
-Admin URL:
+Admin starts at:
 
 ```text
-http://localhost:3000/admin/tiny-thoughts
+http://localhost:3000/admin
 ```
 
 Links can be embedded by typing full `http` or `https` URLs in the thought body. The admin form also supports structured attachments:
@@ -176,15 +187,17 @@ npm run lint
 
 ## Admin
 
-The guestbook admin page is intentionally not linked from the public homepage.
+The admin dashboard lives at `/admin` and links to both Guestbook Review and Tiny Thoughts. It uses the shared `arcadeghosts_admin` session cookie set by `/api/admin/session`, and the individual admin pages still require a successful session before loading protected data.
 
 Local URL:
 
 ```text
-http://localhost:3000/admin/guestbook
+http://localhost:3000/admin
 ```
 
 Use `ADMIN_USERNAME` and `ADMIN_PASSWORD` to sign in.
+
+The public homepage includes a small coffee-cup link to `/admin` at the end of the intro band line.
 
 ## Deployment
 
@@ -196,6 +209,7 @@ Before deploying, make sure the Vercel project has:
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
 - Resend variables if guestbook email notifications should work
+- `ADMIN_LINK` for the review link inside guestbook emails
 - Optional `GUESTBOOK_RATE_LIMIT_SECRET`
 
 ## Notes
