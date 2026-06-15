@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { AdminGuestbookEntry } from "./lib/guestbook";
 
@@ -16,8 +17,6 @@ export function AdminGuestbook() {
   const [authenticated, setAuthenticated] = useState(false);
   const [configured, setConfigured] = useState(true);
   const [entries, setEntries] = useState<AdminGuestbookEntry[]>([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [status, setStatus] = useState("Checking admin session...");
   const [busyId, setBusyId] = useState<string | null>(null);
 
@@ -52,34 +51,12 @@ export function AdminGuestbook() {
       if (data.authenticated) {
         await loadPendingEntries();
       } else {
-        setStatus("Enter the admin username and password to review pending signals.");
+        setStatus("Sign in from the admin dashboard to review pending signals.");
       }
     }
 
     loadSession().catch(() => setStatus("Admin guestbook is temporarily unavailable."));
   }, []);
-
-  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setStatus("Checking password...");
-
-    const response = await fetch("/api/admin/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = (await response.json()) as { error?: string };
-
-    if (!response.ok) {
-      setStatus(data.error ?? "Unable to sign in.");
-      return;
-    }
-
-    setUsername("");
-    setPassword("");
-    setAuthenticated(true);
-    await loadPendingEntries();
-  }
 
   async function handleLogout() {
     await fetch("/api/admin/session", { method: "DELETE" });
@@ -153,31 +130,12 @@ export function AdminGuestbook() {
         </div>
 
         {!authenticated ? (
-          <form className="admin-login" onSubmit={handleLogin}>
-            <label>
-              <span>Username</span>
-              <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                disabled={!configured}
-                autoComplete="username"
-              />
-            </label>
-            <label>
-              <span>Password</span>
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                disabled={!configured}
-                autoComplete="current-password"
-              />
-            </label>
-            <button type="submit" disabled={!configured}>
-              Log In
-            </button>
-          </form>
+          <div className="admin-login">
+            <p>This page requires an active admin session.</p>
+            <Link className="admin-action-link" href="/admin" aria-disabled={!configured}>
+              Open Admin Dashboard
+            </Link>
+          </div>
         ) : (
           <div className="admin-toolbar">
             <button type="button" onClick={loadPendingEntries}>
@@ -219,8 +177,8 @@ export function AdminGuestbook() {
                     <dd>{entry.email || "Not provided"}</dd>
                   </div>
                   <div>
-                    <dt>Email Copy</dt>
-                    <dd>{entry.notifyOwner ? "Requested" : "Not requested"}</dd>
+                    <dt>Email Notice</dt>
+                    <dd>{entry.emailSent ? "Sent" : "Not sent"}</dd>
                   </div>
                 </dl>
                 <div className="admin-entry-actions">

@@ -1,12 +1,11 @@
-import { Resend } from "resend";
 import { isAdminAuthenticated } from "../../../lib/admin-auth";
 import {
   ensureGuestbookTable,
   getGuestbookSql,
   toAdminGuestbookEntry,
-  type GuestbookCategory,
   type GuestbookRow,
 } from "../../../lib/guestbook";
+import { sendGuestbookEmail } from "../../../lib/guestbook-email";
 
 export const runtime = "nodejs";
 
@@ -16,49 +15,6 @@ async function requireAdmin() {
   }
 
   return null;
-}
-
-async function sendGuestbookEmail({
-  name,
-  email,
-  category,
-  message,
-}: {
-  name: string;
-  email: string;
-  category: GuestbookCategory;
-  message: string;
-}) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.GUESTBOOK_EMAIL_FROM;
-  const to = process.env.GUESTBOOK_EMAIL_TO ?? "jason@arcadeghosts.org";
-
-  if (!apiKey || !from) {
-    return false;
-  }
-
-  const resend = new Resend(apiKey);
-  const sender = name || "Mystery visitor";
-  const { error } = await resend.emails.send({
-    from,
-    to,
-    replyTo: email || undefined,
-    subject: `New ArcadeGhosts guestbook note: ${category}`,
-    text: [
-      `From: ${sender}`,
-      email ? `Email: ${email}` : "Email: not provided",
-      `Category: ${category}`,
-      "",
-      message,
-    ].join("\n"),
-  });
-
-  if (error) {
-    console.error("Guestbook email failed", error);
-    return false;
-  }
-
-  return true;
 }
 
 export async function GET() {
@@ -163,7 +119,7 @@ export async function POST(request: Request) {
     }
 
     const pendingEntry = toAdminGuestbookEntry((pendingRows as GuestbookRow[])[0]);
-    const emailSent = pendingEntry.notifyOwner
+    const emailSent = pendingEntry.notifyOwner && !pendingEntry.emailSent
       ? await sendGuestbookEmail({
           name: pendingEntry.name,
           email: pendingEntry.email,
@@ -171,10 +127,11 @@ export async function POST(request: Request) {
           message: pendingEntry.message,
         })
       : false;
+    const finalEmailSent = pendingEntry.emailSent || emailSent;
 
     const rows = await sql`
       UPDATE guestbook_entries
-      SET status = 'approved', approved_at = now(), email_sent = ${emailSent}
+      SET status = 'approved', approved_at = now(), email_sent = ${finalEmailSent}
       WHERE id = ${id} AND status = 'pending'
       RETURNING id, name, email, category, message, notify_owner, email_sent, status, created_at
     `;
@@ -182,7 +139,7 @@ export async function POST(request: Request) {
     return Response.json({
       ok: true,
       entry: toAdminGuestbookEntry((rows as GuestbookRow[])[0]),
-      emailSent,
+      emailSent: finalEmailSent,
       emailConfigured: Boolean(process.env.RESEND_API_KEY && process.env.GUESTBOOK_EMAIL_FROM),
     });
   } catch (error) {

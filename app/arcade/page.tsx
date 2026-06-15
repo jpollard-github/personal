@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "../SectionHeading";
 import { arcadeGames } from "../site-data";
 
@@ -14,9 +15,9 @@ export default function ArcadePage() {
       <a className="back-up-top" href="#top">
         Back Up Top
       </a>
-      <a className="back-link" href="/">
+      <Link className="back-link" href="/">
         Back Home
-      </a>
+      </Link>
       <section className="content-section arcade-section collection-section">
         <SectionHeading eyebrow="Arcade" title="Quarter-light favorites.">
           I would spend hours in arcades, following cabinet glow from one

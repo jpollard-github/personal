@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "../../SectionHeading";
 import { thomasJonesMissyCassPhotos } from "../../site-data";
 
@@ -14,9 +15,9 @@ export default function ThomasJonesMissyCassPage() {
       <a className="back-up-top" href="#top">
         Back Up Top
       </a>
-      <a className="back-link" href="/#cats">
+      <Link className="back-link" href="/#cats">
         Back To Cats
-      </a>
+      </Link>
       <section className="content-section cats-section collection-section">
         <SectionHeading eyebrow="Cats" title="Thomas, Jones, Missy, and Cass.">
           Thomas was my buddy for 17 years and passed in 2025. Missy looks like

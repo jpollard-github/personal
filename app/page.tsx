@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Guestbook } from "./Guestbook";
 import { SectionHeading } from "./SectionHeading";
 import { SignalBooth } from "./SignalBooth";
@@ -34,6 +35,14 @@ const projects = [
       "A moody, original text adventure about coffee, woods, clues, dreams, and the kind of hallway that knows your name.",
     href: "/games/between-two-lodges/index.html",
     cta: "Play",
+  },
+  {
+    title: "Codex Prompt Pack for VS Code",
+    eyebrow: "VS Code extension",
+    description:
+      "Command palette helpers that turn selections, changed files, diffs, PRs, and repo metadata into compact Codex-ready prompts.",
+    href: "https://github.com/jpollard-github/codex-vs-code-extension",
+    cta: "View Repo",
   },
 ];
 
@@ -122,7 +131,15 @@ export default function Home() {
       <section className="intro-band" aria-label="Site mood">
         <p>
           Equal parts diner coffee, haunted jukebox, field guide, and hopeful
-          note found in a jacket pocket.
+          note found in a jacket pocket.{" "}
+          <Link
+            className="admin-cup-link"
+            href="/admin"
+            aria-label="Open admin dashboard"
+            title="Admin dashboard"
+          >
+            ☕
+          </Link>
         </p>
       </section>
 

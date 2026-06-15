@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "../SectionHeading";
 import { visualMedia } from "../site-data";
 
@@ -14,9 +15,9 @@ export default function MoviesTvPage() {
       <a className="back-up-top" href="#top">
         Back Up Top
       </a>
-      <a className="back-link" href="/">
+      <Link className="back-link" href="/">
         Back Home
-      </a>
+      </Link>
       <section className="content-section media-section collection-section">
         <SectionHeading eyebrow="Movies & TV" title="Movies & TV Shows.">
           Twin Peaks, Severance, horror, strange comedies, memory-loop movies,

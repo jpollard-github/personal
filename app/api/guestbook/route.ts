@@ -7,6 +7,7 @@ import {
   type GuestbookCategory,
   type GuestbookRow,
 } from "../../lib/guestbook";
+import { sendGuestbookEmail } from "../../lib/guestbook-email";
 
 export const runtime = "nodejs";
 
@@ -122,7 +123,7 @@ export async function POST(request: Request) {
     const category = isGuestbookCategory(categoryValue) ? categoryValue : "other";
     const rawMessage = normalizeText(body.message);
     const message = rawMessage.slice(0, maxMessageLength);
-    const notifyOwner = Boolean(body.notifyOwner);
+    const notifyOwner = true;
 
     if (!name) {
       return Response.json(
@@ -164,6 +165,8 @@ export async function POST(request: Request) {
       );
     }
 
+    const id = randomUUID();
+
     const rows = await sql`
       INSERT INTO guestbook_entries (
         id,
@@ -176,7 +179,7 @@ export async function POST(request: Request) {
         status
       )
       VALUES (
-        ${randomUUID()},
+        ${id},
         ${name},
         ${email || null},
         ${category},
@@ -187,11 +190,27 @@ export async function POST(request: Request) {
       )
       RETURNING id, name, category, message, created_at
     `;
+    const emailSent = await sendGuestbookEmail({
+      name,
+      email,
+      category,
+      message,
+    });
+
+    if (emailSent) {
+      await sql`
+        UPDATE guestbook_entries
+        SET email_sent = true
+        WHERE id = ${id}
+      `;
+    }
 
     return Response.json({
       ok: true,
       entry: toGuestbookEntry((rows as GuestbookRow[])[0]),
       status: "pending",
+      emailSent,
+      emailConfigured: Boolean(process.env.RESEND_API_KEY && process.env.GUESTBOOK_EMAIL_FROM),
     });
   } catch (error) {
     console.error("Guestbook POST failed", error);

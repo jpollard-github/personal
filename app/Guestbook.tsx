@@ -20,7 +20,6 @@ type PendingGuestbookSubmission = {
   email: string;
   category: string;
   message: string;
-  notifyOwner: boolean;
   website: string;
 };
 
@@ -68,7 +67,6 @@ export function Guestbook() {
       email: String(formData.get("email") ?? "").trim(),
       category: String(formData.get("category") ?? "other"),
       message: String(formData.get("message") ?? "").trim(),
-      notifyOwner: formData.get("notifyOwner") === "on",
       website: String(formData.get("website") ?? "").trim(),
     };
   }
@@ -186,15 +184,6 @@ export function Guestbook() {
           <small className="guestbook-help">{maxMessageLength} characters max</small>
         </label>
 
-        <label className="guestbook-checkbox">
-          <input
-            name="notifyOwner"
-            type="checkbox"
-            disabled={Boolean(pendingSubmission) || isSubmitting}
-          />
-          <span>Send Jason an email copy too</span>
-        </label>
-
         <label className="guestbook-honey">
           <span>Website</span>
           <input name="website" type="text" tabIndex={-1} autoComplete="off" />
@@ -205,8 +194,7 @@ export function Guestbook() {
             <span>Ready to submit?</span>
             <p>{pendingSubmission.message}</p>
             <small>
-              {(categoryLabels.get(pendingSubmission.category) ?? "Signal") +
-                (pendingSubmission.notifyOwner ? " / email copy requested" : "")}
+              {categoryLabels.get(pendingSubmission.category) ?? "Signal"}
             </small>
             <div className="guestbook-review-actions">
               <button

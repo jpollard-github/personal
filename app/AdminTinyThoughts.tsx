@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type {
   TinyThought,
@@ -98,8 +99,6 @@ export function AdminTinyThoughts() {
   const [thoughts, setThoughts] = useState<TinyThought[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [attachmentDraft, setAttachmentDraft] = useState(emptyAttachmentDraft);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [status, setStatus] = useState("Checking admin session...");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [uploadingAttachment, setUploadingAttachment] = useState(false);
@@ -147,34 +146,12 @@ export function AdminTinyThoughts() {
       if (data.authenticated) {
         await loadThoughts();
       } else {
-        setStatus("Enter the admin username and password to manage tiny thoughts.");
+        setStatus("Sign in from the admin dashboard to manage tiny thoughts.");
       }
     }
 
     loadSession().catch(() => setStatus("Tiny Thoughts admin is temporarily unavailable."));
   }, []);
-
-  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setStatus("Checking password...");
-
-    const response = await fetch("/api/admin/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = (await response.json()) as { error?: string };
-
-    if (!response.ok) {
-      setStatus(data.error ?? "Unable to sign in.");
-      return;
-    }
-
-    setUsername("");
-    setPassword("");
-    setAuthenticated(true);
-    await loadThoughts();
-  }
 
   async function handleLogout() {
     await fetch("/api/admin/session", { method: "DELETE" });
@@ -354,31 +331,12 @@ export function AdminTinyThoughts() {
         </div>
 
         {!authenticated ? (
-          <form className="admin-login" onSubmit={handleLogin}>
-            <label>
-              <span>Username</span>
-              <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                disabled={!configured}
-                autoComplete="username"
-              />
-            </label>
-            <label>
-              <span>Password</span>
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                disabled={!configured}
-                autoComplete="current-password"
-              />
-            </label>
-            <button type="submit" disabled={!configured}>
-              Log In
-            </button>
-          </form>
+          <div className="admin-login">
+            <p>This page requires an active admin session.</p>
+            <Link className="admin-action-link" href="/admin" aria-disabled={!configured}>
+              Open Admin Dashboard
+            </Link>
+          </div>
         ) : (
           <>
             <div className="admin-toolbar">
