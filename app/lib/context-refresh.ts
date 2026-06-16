@@ -98,7 +98,7 @@ const currentPriorities = [
 ];
 
 const currentChallenges = [
-  "Tendency to start interesting projects faster than finishing them",
+  "Loneliness and desire for deeper connection",
   "Wants meaningful social connection rather than high-volume socializing",
   "Balancing exploration with focus",
   "Avoiding overengineering when building products",
@@ -161,7 +161,10 @@ export function normalizeContextRefreshContent(value: unknown) {
 }
 
 export function contextRefreshFilename(date = new Date()) {
-  const stamp = date.toISOString().replace(/\.\d{3}Z$/, "Z").replace(/[:]/g, "-");
+  const stamp = date
+    .toISOString()
+    .replace(/\.\d{3}Z$/, "Z")
+    .replace(/[:]/g, "-");
 
   return `${stamp}_ChatGPTContextRefresh.md`;
 }
@@ -214,11 +217,7 @@ async function readWritingExcerpt(slug: string) {
       "utf8",
     );
 
-    return file
-      .replace(/\*\*/g, "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 620);
+    return file.replace(/\*\*/g, "").replace(/\s+/g, " ").trim().slice(0, 620);
   } catch {
     return "";
   }
@@ -295,8 +294,8 @@ function projectBlockerLines(value: string) {
 
 function projectPriorityLabel(value: number) {
   return (
-    projectPriorityOptions.find((priority) => priority.value === value)?.label ??
-    `Priority ${value}`
+    projectPriorityOptions.find((priority) => priority.value === value)
+      ?.label ?? `Priority ${value}`
   );
 }
 
@@ -365,11 +364,17 @@ function includeForVariant(
   }
 
   if (variant === "project") {
-    return section === "projects" || section === "technical" || section === "creative";
+    return (
+      section === "projects" ||
+      section === "technical" ||
+      section === "creative"
+    );
   }
 
   if (variant === "dating-social") {
-    return section === "dating" || section === "creative" || section === "favorites";
+    return (
+      section === "dating" || section === "creative" || section === "favorites"
+    );
   }
 
   return section === "technical" || section === "projects";
@@ -455,18 +460,20 @@ export async function buildContextRefreshContent({
     lines.push(
       "## Ongoing projects",
       "",
-      ...projects.flatMap((project) => [
-        `### ${project.title}`,
-        `- Type: ${project.type}`,
-        `- Description: ${project.description}`,
-        `- Project Status: ${project.status}`,
-        `- Project Priority: ${projectPriorityLabel(project.priority)}`,
-        `- Current Phase: ${project.phase || "Not specified"}`,
-        `- Next Action: ${project.nextAction || "Not specified"}`,
-        ...projectBlockerLines(project.blockers),
-        project.href ? `- Link: ${project.href}` : "",
-        "",
-      ].filter((line): line is string => Boolean(line))),
+      ...projects.flatMap((project) =>
+        [
+          `### ${project.title}`,
+          `- Type: ${project.type}`,
+          `- Description: ${project.description}`,
+          `- Project Status: ${project.status}`,
+          `- Project Priority: ${projectPriorityLabel(project.priority)}`,
+          `- Current Phase: ${project.phase || "Not specified"}`,
+          `- Next Action: ${project.nextAction || "Not specified"}`,
+          ...projectBlockerLines(project.blockers),
+          project.href ? `- Link: ${project.href}` : "",
+          "",
+        ].filter((line): line is string => Boolean(line)),
+      ),
     );
   }
 
@@ -489,7 +496,9 @@ export async function buildContextRefreshContent({
         `### ${writing.title}`,
         `- Description: ${writing.description}`,
         `- Link: ${writing.link}`,
-        writing.excerpt ? `- Excerpt: ${writing.excerpt}${writing.excerpt.length >= 620 ? "..." : ""}` : "",
+        writing.excerpt
+          ? `- Excerpt: ${writing.excerpt}${writing.excerpt.length >= 620 ? "..." : ""}`
+          : "",
         "",
       ]),
     );
@@ -499,12 +508,14 @@ export async function buildContextRefreshContent({
     lines.push(
       "## Recent Tiny Thoughts",
       "",
-      ...tinyThoughts.flatMap((thought) => [
-        `- ${thought.content}`,
-        thought.inspiredBy
-          ? `  Inspired by ${thought.inspiredByCategory}: ${thought.inspiredBy}`
-          : "",
-      ].filter(Boolean)),
+      ...tinyThoughts.flatMap((thought) =>
+        [
+          `- ${thought.content}`,
+          thought.inspiredBy
+            ? `  Inspired by ${thought.inspiredByCategory}: ${thought.inspiredBy}`
+            : "",
+        ].filter(Boolean),
+      ),
       "",
     );
   }
@@ -523,9 +534,11 @@ export async function buildContextRefreshContent({
     "- Add anything important that is not represented on the public website.",
   );
 
-  return lines.filter((line, index, all) => {
-    return !(line === "" && all[index - 1] === "" && all[index - 2] === "");
-  }).join("\n");
+  return lines
+    .filter((line, index, all) => {
+      return !(line === "" && all[index - 1] === "" && all[index - 2] === "");
+    })
+    .join("\n");
 }
 
 export async function createContextRefreshExport({
