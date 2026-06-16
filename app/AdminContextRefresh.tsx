@@ -7,38 +7,6 @@ import type {
   ContextRefreshVariant,
 } from "./lib/context-refresh";
 
-const exportOptions: {
-  value: ContextRefreshVariant;
-  label: string;
-  description: string;
-}[] = [
-  {
-    value: "concise",
-    label: "Export concise context",
-    description: "Best default for most ChatGPT refreshes.",
-  },
-  {
-    value: "full",
-    label: "Export full context",
-    description: "Richer background for deep work.",
-  },
-  {
-    value: "project",
-    label: "Export project-specific context",
-    description: "Best for planning and active work.",
-  },
-  {
-    value: "dating-social",
-    label: "Export dating/social context",
-    description: "Useful for advice chats and message drafting.",
-  },
-  {
-    value: "dev-technical",
-    label: "Export dev/technical context",
-    description: "Useful for coding help and repo continuity.",
-  },
-];
-
 function countWords(value: string) {
   return value.trim().split(/\s+/).filter(Boolean).length;
 }
@@ -79,27 +47,11 @@ export function AdminContextRefresh() {
   const [variant, setVariant] = useState<ContextRefreshVariant>("concise");
   const [redacted, setRedacted] = useState(true);
   const [status, setStatus] = useState("Checking admin session...");
+  const [savedNoticeVisible, setSavedNoticeVisible] = useState(false);
   const [busy, setBusy] = useState(false);
   const wordCount = useMemo(() => countWords(content), [content]);
   const isDirty = Boolean(currentExport) && content !== savedContent;
   const overLimit = wordCount > 5000;
-
-  async function loadExport() {
-    const response = await fetch("/api/admin/context-refresh");
-
-    if (!response.ok) {
-      throw new Error("Unable to load context refresh export.");
-    }
-
-    const data = (await response.json()) as { export: ContextRefreshExport | null };
-
-    setCurrentExport(data.export);
-    setContent(data.export?.content ?? "");
-    setSavedContent(data.export?.content ?? "");
-    setVariant(data.export?.variant ?? "concise");
-    setRedacted(data.export?.redacted ?? true);
-    setStatus(data.export ? "Latest context refresh export loaded." : "Create an export to start.");
-  }
 
   useEffect(() => {
     async function loadSession() {
@@ -118,7 +70,7 @@ export function AdminContextRefresh() {
       }
 
       if (data.authenticated) {
-        await loadExport();
+        setStatus("Create a ChatGPT context refresh file to start.");
       } else {
         setStatus("Sign in from the admin dashboard to manage context exports.");
       }
@@ -157,7 +109,7 @@ export function AdminContextRefresh() {
 
       setCurrentExport(data.export);
       setContent(data.export.content);
-      setSavedContent(data.export.content);
+      setSavedContent("");
       setVariant(data.export.variant);
       setRedacted(data.export.redacted);
       setStatus("Context refresh export created. Edit the Markdown, then save when ready.");
@@ -195,7 +147,9 @@ export function AdminContextRefresh() {
       setCurrentExport(data.export);
       setContent(data.export.content);
       setSavedContent(data.export.content);
-      setStatus("Context refresh export saved.");
+      setSavedNoticeVisible(true);
+      setStatus("Saved!");
+      window.setTimeout(() => setSavedNoticeVisible(false), 2200);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Unable to save export.");
     } finally {
@@ -222,9 +176,6 @@ export function AdminContextRefresh() {
         ) : (
           <>
             <div className="admin-toolbar">
-              <button type="button" onClick={loadExport} disabled={busy}>
-                Refresh
-              </button>
               <button type="button" onClick={handleLogout} disabled={busy}>
                 Log Out
               </button>
@@ -244,21 +195,16 @@ export function AdminContextRefresh() {
                 medical details, API keys, and anything that should not be pasted into a chat.
               </p>
               <div className="context-refresh-create-grid">
-                {exportOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className={variant === option.value ? "context-refresh-selected" : ""}
-                    onClick={() => {
-                      setVariant(option.value);
-                      createExport(option.value);
-                    }}
-                    disabled={busy}
-                  >
-                    <strong>{option.label}</strong>
-                    <small>{option.description}</small>
-                  </button>
-                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setVariant("concise");
+                    createExport("concise");
+                  }}
+                  disabled={busy}
+                >
+                  <strong>Create ChatGPT Context Refresh File</strong>
+                </button>
               </div>
             </section>
 
@@ -298,7 +244,7 @@ export function AdminContextRefresh() {
                 </label>
 
                 <div className="admin-entry-actions">
-                  <button type="button" onClick={saveExport} disabled={busy || !isDirty}>
+                  <button type="button" onClick={saveExport} disabled={busy || !content}>
                     {isDirty ? "Save File" : "Saved"}
                   </button>
                   <button
@@ -313,6 +259,12 @@ export function AdminContextRefresh() {
             ) : null}
           </>
         )}
+
+        {savedNoticeVisible ? (
+          <div className="context-refresh-toast" role="status" aria-live="polite">
+            Saved!
+          </div>
+        ) : null}
 
         <p className="guestbook-status" aria-live="polite">
           {status}

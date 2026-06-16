@@ -129,6 +129,15 @@ const commonIncorrectAssumptions = [
   "Really looking to meet kindred spirits and dating partners",
 ];
 
+const datingAndSocialContext = [
+  "Jason values emotional resonance, curiosity, direct but kind communication, and conversations that skip shallow performance.",
+  "SoftSignal is an active dating-product idea centered on prompts, memory, writing, mood, and resonance before photos.",
+  "Useful advice should balance warmth, clarity, self-respect, and realistic next steps.",
+  "Avoid generic dating scripts; help preserve Jason's voice.",
+  "Jason is actively trying to meet people, dating apps don't work very well but have produced the most dates",
+  "Jason has liked the bars Empourium, Social Habit, Fair Witness. There is a girl he likes named Rebecca who sometimes shows up at Empourium.",
+];
+
 export function countContextRefreshWords(value: string) {
   return value.trim().split(/\s+/).filter(Boolean).length;
 }
@@ -421,6 +430,9 @@ export async function buildContextRefreshContent({
     "## About Jason",
     listItems(aboutSummary),
     "",
+    "## Dating and social context",
+    listItems(datingAndSocialContext),
+    "",
   ];
 
   if (includeForVariant(variant, "favorites")) {
@@ -493,17 +505,6 @@ export async function buildContextRefreshContent({
           ? `  Inspired by ${thought.inspiredByCategory}: ${thought.inspiredBy}`
           : "",
       ].filter(Boolean)),
-      "",
-    );
-  }
-
-  if (includeForVariant(variant, "dating")) {
-    lines.push(
-      "## Dating and social context",
-      "- Jason values emotional resonance, curiosity, direct but kind communication, and conversations that skip shallow performance.",
-      "- SoftSignal is an active dating-product idea centered on prompts, memory, writing, mood, and resonance before photos.",
-      "- Useful advice should balance warmth, clarity, self-respect, and realistic next steps.",
-      "- Avoid generic dating scripts; help preserve Jason's voice.",
       "",
     );
   }
