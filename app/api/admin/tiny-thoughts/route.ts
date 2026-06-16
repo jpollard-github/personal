@@ -17,7 +17,6 @@ import {
 
 export const runtime = "nodejs";
 
-const minWords = 50;
 const maxWords = 200;
 const maxInspiredByLength = 240;
 
@@ -102,8 +101,8 @@ function validateThought(content: string, wordCount: number, inspiredBy: string)
     return "Write a tiny thought before saving.";
   }
 
-  if (wordCount < minWords || wordCount > maxWords) {
-    return `Tiny Thoughts should be ${minWords}-${maxWords} words. This one is ${wordCount}.`;
+  if (wordCount > maxWords) {
+    return `Tiny Thoughts should be ${maxWords} words or fewer. This one is ${wordCount}.`;
   }
 
   if (inspiredBy.length > maxInspiredByLength) {

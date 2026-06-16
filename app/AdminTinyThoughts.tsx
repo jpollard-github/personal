@@ -380,7 +380,7 @@ export function AdminTinyThoughts() {
                   }
                 />
                 <small className="guestbook-help">
-                  {wordCount} words / 50-200 target. Emoji welcome.
+                  {wordCount} words / 200 max. Emoji welcome.
                 </small>
               </label>
               <label>

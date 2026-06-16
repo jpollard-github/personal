@@ -550,8 +550,439 @@ p {
   background: rgba(255, 198, 109, 0.18);
 }
 
+.project-updated {
+  margin-top: 1rem;
+  color: var(--dim);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .card-eyebrow {
   color: var(--amber);
+}
+
+.lodge-page {
+  background:
+    linear-gradient(180deg, rgba(9, 12, 16, 0.5), var(--bg) 38rem),
+    var(--bg);
+}
+
+.lodge-hero {
+  position: relative;
+  display: flex;
+  min-height: 78vh;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: clamp(7rem, 12vw, 10rem) 1rem clamp(3rem, 8vw, 5rem);
+}
+
+.lodge-hero-image {
+  object-fit: cover;
+}
+
+.lodge-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(7, 8, 11, 0.9), rgba(7, 8, 11, 0.3)),
+    linear-gradient(180deg, transparent 45%, rgba(7, 8, 11, 0.95));
+}
+
+.lodge-hero-copy {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  margin: 0 auto;
+}
+
+.lodge-hero-copy h1 {
+  max-width: 840px;
+  margin: 0.4rem 0 1rem;
+  font-size: clamp(4rem, 12vw, 9.5rem);
+  line-height: 0.86;
+}
+
+.lodge-hero-copy p:last-child {
+  max-width: 720px;
+  color: var(--ink);
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+}
+
+.lodge-intro {
+  padding-bottom: 2rem;
+}
+
+.lodge-intro > div {
+  width: min(920px, 100%);
+  margin: 0 auto;
+}
+
+.lodge-intro p {
+  color: var(--muted);
+}
+
+.lodge-disclaimer {
+  margin-top: 1rem;
+  border-left: 3px solid rgba(255, 198, 109, 0.7);
+  padding-left: 0.85rem;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.lodge-journey {
+  display: grid;
+  gap: 1rem;
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+
+.lodge-problem-panel,
+.lodge-case-file,
+.lodge-step-panel,
+.lodge-summary,
+.lodge-export {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(8, 9, 12, 0.78);
+  box-shadow: 0 24px 76px rgba(0, 0, 0, 0.28);
+}
+
+.lodge-problem-panel {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.lodge-problem-panel h2,
+.lodge-summary h2,
+.lodge-case-file h2,
+.lodge-step-heading h2 {
+  margin-bottom: 0.75rem;
+}
+
+.lodge-problem-panel p,
+.lodge-step-heading p,
+.lodge-case-file dd,
+.lodge-summary p {
+  color: var(--muted);
+}
+
+.lodge-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 0.75rem;
+}
+
+.lodge-problem-button,
+.lodge-choice-card {
+  border: 1px solid rgba(248, 239, 227, 0.16);
+  border-radius: 8px;
+  padding: 0.9rem;
+  color: var(--ink);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.055);
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.lodge-problem-button {
+  min-height: 9rem;
+}
+
+.lodge-problem-button strong,
+.lodge-choice-card strong,
+.lodge-choice-card span,
+.lodge-problem-button span {
+  display: block;
+}
+
+.lodge-problem-button strong,
+.lodge-choice-card strong {
+  color: var(--amber);
+  line-height: 1.25;
+}
+
+.lodge-problem-button span,
+.lodge-choice-card small {
+  margin-top: 0.45rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.lodge-choice-card span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lodge-problem-button:hover,
+.lodge-choice-card:hover,
+.lodge-problem-button.selected,
+.lodge-choice-card.selected {
+  transform: translateY(-2px);
+  border-color: rgba(41, 240, 212, 0.55);
+  background: rgba(41, 240, 212, 0.1);
+}
+
+.lodge-workspace {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.75fr) minmax(0, 1.5fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.lodge-case-file,
+.lodge-step-panel,
+.lodge-summary,
+.lodge-export {
+  padding: clamp(1rem, 3vw, 1.35rem);
+}
+
+.lodge-case-file {
+  position: sticky;
+  top: 1rem;
+}
+
+.lodge-case-file dl {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.lodge-case-file dt {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lodge-case-file dd {
+  margin: 0.25rem 0 0;
+}
+
+.lodge-note {
+  border-left: 3px solid rgba(255, 198, 109, 0.7);
+  padding-left: 0.85rem;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.lodge-progress {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.lodge-progress span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lodge-progress div {
+  height: 0.55rem;
+  overflow: hidden;
+  border: 1px solid rgba(248, 239, 227, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lodge-progress i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teal), var(--amber));
+  transition: width 180ms ease;
+}
+
+.lodge-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.lodge-choice-card {
+  min-height: 12rem;
+}
+
+.lodge-meaning-panel {
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 198, 109, 0.26);
+  border-radius: 8px;
+  padding: 1rem;
+  background: rgba(255, 198, 109, 0.08);
+}
+
+.lodge-meaning-panel h3 {
+  margin-bottom: 0.5rem;
+}
+
+.lodge-meaning-panel p {
+  color: var(--ink);
+}
+
+.lodge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.lodge-actions button {
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 198, 109, 0.44);
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  color: #120a0d;
+  font-weight: 900;
+  background: var(--amber);
+  cursor: pointer;
+  transition: transform 160ms ease, opacity 160ms ease, background 160ms ease;
+}
+
+.lodge-actions button:first-child {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lodge-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.lodge-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.lodge-summary {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.65fr) minmax(0, 1.35fr);
+  gap: 1rem;
+}
+
+.lodge-summary ol {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lodge-summary li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  border: 1px solid rgba(248, 239, 227, 0.12);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lodge-summary li > span {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 999px;
+  color: #120a0d;
+  font-weight: 900;
+  background: var(--amber);
+}
+
+.lodge-summary strong {
+  color: var(--ink);
+}
+
+.lodge-summary p {
+  margin-top: 0.2rem;
+}
+
+.lodge-export {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr);
+  gap: 1rem;
+}
+
+.lodge-export p {
+  color: var(--muted);
+}
+
+.lodge-export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.lodge-export-actions button {
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 198, 109, 0.44);
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  color: #120a0d;
+  font-weight: 900;
+  background: var(--amber);
+  cursor: pointer;
+  transition: transform 160ms ease, opacity 160ms ease, background 160ms ease;
+}
+
+.lodge-export-actions button:last-child {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lodge-export-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.lodge-export-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.lodge-export-status {
+  margin-top: 0.75rem;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.lodge-export label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.lodge-export label span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lodge-export textarea {
+  min-height: 24rem;
+  border: 1px solid rgba(248, 239, 227, 0.18);
+  border-radius: 8px;
+  padding: 0.9rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.07);
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  resize: vertical;
 }
 
 .signal-booth-section {
@@ -1599,6 +2030,182 @@ p {
   margin-bottom: 1rem;
 }
 
+.projects-admin-shell {
+  width: min(1120px, 100%);
+}
+
+.projects-admin-list {
+  margin-top: 0;
+}
+
+.projects-admin-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.projects-admin-form label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.projects-admin-form span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.projects-admin-form input,
+.projects-admin-form select,
+.projects-admin-form textarea {
+  min-height: 3rem;
+  border: 1px solid rgba(248, 239, 227, 0.18);
+  border-radius: 8px;
+  padding: 0.78rem 0.9rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.07);
+  outline: none;
+}
+
+.projects-admin-form select {
+  color-scheme: dark;
+}
+
+.projects-admin-form textarea {
+  min-height: 9rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.projects-admin-form input:focus,
+.projects-admin-form select:focus,
+.projects-admin-form textarea:focus {
+  border-color: rgba(41, 240, 212, 0.55);
+  box-shadow: 0 0 0 3px rgba(41, 240, 212, 0.1);
+}
+
+.projects-admin-wide {
+  grid-column: 1 / -1;
+}
+
+.projects-admin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.projects-admin-form .projects-admin-checkbox input {
+  width: 1.15rem;
+  min-height: 1.15rem;
+  border: 0;
+  padding: 0;
+  accent-color: var(--amber);
+  background: transparent;
+}
+
+.context-refresh-shell {
+  width: min(1120px, 100%);
+}
+
+.context-refresh-controls,
+.context-refresh-editor {
+  max-width: none;
+  margin-bottom: 1rem;
+}
+
+.context-refresh-redaction {
+  display: flex;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.context-refresh-redaction input {
+  width: 1.15rem;
+  min-height: 1.15rem;
+  accent-color: var(--amber);
+}
+
+.context-refresh-create-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+}
+
+.context-refresh-create-grid button {
+  min-height: 6.5rem;
+  border: 1px solid rgba(248, 239, 227, 0.18);
+  border-radius: 8px;
+  padding: 0.85rem;
+  color: var(--ink);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.context-refresh-create-grid button:hover:not(:disabled),
+.context-refresh-create-grid .context-refresh-selected {
+  border-color: rgba(41, 240, 212, 0.55);
+  background: rgba(41, 240, 212, 0.1);
+  transform: translateY(-2px);
+}
+
+.context-refresh-create-grid button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.context-refresh-create-grid strong,
+.context-refresh-create-grid small {
+  display: block;
+}
+
+.context-refresh-create-grid strong {
+  color: var(--amber);
+  line-height: 1.25;
+}
+
+.context-refresh-create-grid small {
+  margin-top: 0.45rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.context-refresh-filebar {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) minmax(10rem, auto) minmax(5rem, auto);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.context-refresh-filebar div {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.context-refresh-filebar strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.context-refresh-editor textarea {
+  min-height: 38rem;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 0.92rem;
+}
+
+.context-refresh-warning {
+  color: #ffbf69;
+}
+
 .tiny-thought-attachment-form {
   display: grid;
   grid-template-columns: minmax(8rem, 0.8fr) minmax(14rem, 1.4fr) minmax(12rem, 1fr);
@@ -1652,7 +2259,7 @@ p {
 }
 
 .admin-dashboard-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .admin-login button,
@@ -1809,6 +2416,20 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .lodge-workspace,
+  .lodge-summary,
+  .lodge-export {
+    grid-template-columns: 1fr;
+  }
+
+  .lodge-case-file {
+    position: static;
+  }
+
+  .lodge-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
   .cat-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1881,6 +2502,14 @@ p {
   }
 
   .admin-entry dl {
+    grid-template-columns: 1fr;
+  }
+
+  .context-refresh-filebar {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-admin-form {
     grid-template-columns: 1fr;
   }
 

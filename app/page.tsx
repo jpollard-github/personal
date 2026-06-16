@@ -4,6 +4,7 @@ import { Guestbook } from "./Guestbook";
 import { SectionHeading } from "./SectionHeading";
 import { SignalBooth } from "./SignalBooth";
 import { TinyThoughts } from "./TinyThoughts";
+import { getPublicProjects } from "./lib/projects";
 import {
   arcadeGames,
   beverlyAndLucindaPhotos,
@@ -27,32 +28,7 @@ const navItems = [
 
 const githubRepoUrl = "https://github.com/jpollard-github/personal";
 
-const projects = [
-  {
-    title: "Between Two Lodges",
-    eyebrow: "Browser game",
-    description:
-      "A moody, original text adventure about coffee, woods, clues, dreams, and the kind of hallway that knows your name.",
-    href: "/games/between-two-lodges/index.html",
-    cta: "Play",
-  },
-  {
-    title: "Codex Prompt Pack for VS Code",
-    eyebrow: "VS Code extension",
-    description:
-      "Command palette helpers that turn selections, changed files, diffs, PRs, and repo metadata into compact Codex-ready prompts.",
-    href: "https://github.com/jpollard-github/codex-vs-code-extension",
-    cta: "View Repo",
-  },
-  {
-    title: "SoftSignal",
-    eyebrow: "Dating product",
-    description:
-      "A dating product built around emotional resonance: prompts, short signals, memory, writing, mood, and resonance scoring before photos.",
-    href: "https://github.com/jpollard-github/softsignal",
-    cta: "View Repo",
-  },
-];
+export const dynamic = "force-dynamic";
 
 const music = [
   {
@@ -77,7 +53,35 @@ const music = [
   },
 ];
 
-export default function Home() {
+function projectCta(href: string) {
+  if (!href) {
+    return "";
+  }
+
+  try {
+    const url = new URL(href);
+
+    return url.hostname === "github.com" ? "View Repo" : "Visit";
+  } catch {
+    return href.startsWith("/games/") ? "Play" : "Open";
+  }
+}
+
+function formatProjectDate(value: string) {
+  if (!value) {
+    return "";
+  }
+
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(`${value}T00:00:00`));
+}
+
+export default async function Home() {
+  const projects = await getPublicProjects();
+
   return (
     <main>
       <a className="back-up-top" href="#top">
@@ -250,17 +254,22 @@ export default function Home() {
         <div className="card-grid">
           {projects.map((project) => (
             <article className="project-card" key={project.title}>
-              <p className="card-eyebrow">{project.eyebrow}</p>
+              <p className="card-eyebrow">{project.type}</p>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
-              {"href" in project ? (
+              {project.lastUpdatedAt ? (
+                <p className="project-updated">
+                  Last updated {formatProjectDate(project.lastUpdatedAt)}
+                </p>
+              ) : null}
+              {project.href ? (
                 <a
                   className="project-link"
                   href={project.href}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {project.cta}
+                  {projectCta(project.href)}
                 </a>
               ) : null}
             </article>

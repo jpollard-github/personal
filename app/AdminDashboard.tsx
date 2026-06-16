@@ -124,6 +124,26 @@ export function AdminDashboard() {
                   Open Tiny Thoughts
                 </Link>
               </article>
+              <article className="admin-entry">
+                <div className="admin-entry-meta">
+                  <span>Edit</span>
+                </div>
+                <h2>Projects</h2>
+                <p>Create, edit, delete, and save homepage project cards.</p>
+                <Link className="admin-action-link" href="/admin/projects">
+                  Open Edit Projects
+                </Link>
+              </article>
+              <article className="admin-entry">
+                <div className="admin-entry-meta">
+                  <span>Export</span>
+                </div>
+                <h2>Context Refresh Export</h2>
+                <p>Create, edit, save, and download Markdown context refresh files for ChatGPT.</p>
+                <Link className="admin-action-link" href="/admin/context-refresh">
+                  Open Context Refresh Export
+                </Link>
+              </article>
             </div>
           </>
         )}
