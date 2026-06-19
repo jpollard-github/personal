@@ -47,6 +47,7 @@ export function AdminProjects() {
   const [status, setStatus] = useState("Checking admin session...");
   const [busy, setBusy] = useState(false);
   const [uploadingProjectId, setUploadingProjectId] = useState("");
+  const uploading = Boolean(uploadingProjectId);
   const dirty = useMemo(
     () => projectFingerprint(projects) !== projectFingerprint(savedProjects),
     [projects, savedProjects],
@@ -164,6 +165,7 @@ export function AdminProjects() {
 
   async function uploadProjectImage(projectId: string, file: File | null) {
     if (!file) {
+      setStatus("Choose an image file to upload.");
       return;
     }
 
@@ -215,16 +217,16 @@ export function AdminProjects() {
         ) : (
           <>
             <div className="admin-toolbar">
-              <button type="button" onClick={loadProjects} disabled={busy}>
+              <button type="button" onClick={loadProjects} disabled={busy || uploading}>
                 Refresh
               </button>
-              <button type="button" onClick={addProject} disabled={busy}>
+              <button type="button" onClick={addProject} disabled={busy || uploading}>
                 Add Project
               </button>
-              <button type="button" onClick={saveProjects} disabled={busy || !dirty}>
+              <button type="button" onClick={saveProjects} disabled={busy || uploading || !dirty}>
                 {dirty ? "Save Changes" : "Saved"}
               </button>
-              <button type="button" onClick={handleLogout} disabled={busy}>
+              <button type="button" onClick={handleLogout} disabled={busy || uploading}>
                 Log Out
               </button>
             </div>
