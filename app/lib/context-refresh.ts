@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { readFile } from "fs/promises";
 import path from "path";
+import { musicInsights } from "../music-insights-data";
 import { arcadeGames, visualMedia } from "../site-data";
 import { writings } from "../writings";
 import { getGuestbookSql } from "./guestbook";
@@ -72,7 +73,7 @@ const staticProfile = {
 
 const music = [
   "Reflective Resilience",
-  "Arcode Ghosts After Midnight",
+  "Arcade Ghosts After Midnight",
   "Love Me Tomorrow Radio",
   "The Mountain Radio",
   "Music League profile: https://app.musicleague.com/user/8e855be976294ae0aedf7a0820572ffb/",
@@ -305,6 +306,37 @@ function projectPriorityLabel(value: number) {
   );
 }
 
+function musicSnapshotLines() {
+  return [
+    "## Music page snapshot",
+    `- Source range: ${musicInsights.sourceRange}`,
+    `- Public summary: ${musicInsights.summary.totalHours} listening hours across ${musicInsights.summary.totalStreams} plays; peak year ${musicInsights.summary.peakYear} (${musicInsights.summary.peakYearHours}h).`,
+    `- Recent window shown on the page: ${musicInsights.recentWindow.start} through ${musicInsights.recentWindow.end}.`,
+    `- Recent top artists: ${musicInsights.recentRankings.artists
+      .slice(0, 4)
+      .map((artist) => `${artist.name} (${artist.value})`)
+      .join(", ")}.`,
+    `- Genre weather highlights: ${musicInsights.genres
+      .slice(0, 5)
+      .map((genre) => `${genre.name} (${genre.hours}h)`)
+      .join(", ")}.`,
+    `- Current mood color on the page: ${musicInsights.moodReads[0].value}.`,
+    `- Whole-archive mood color on the page: ${musicInsights.moodReads[1].value}.`,
+    `- Musical DNA panels include: ${musicInsights.musicalDna
+      .map((panel) => panel.title)
+      .join(", ")}.`,
+    `- Era highlights: ${musicInsights.eras
+      .slice(0, 3)
+      .map((era) => `${era.title} (${era.period})`)
+      .join(", ")}.`,
+    `- Fixation highlights: ${musicInsights.fixations
+      .slice(0, 3)
+      .map((item) => `${item.title} (${item.value})`)
+      .join(", ")}.`,
+    "",
+  ];
+}
+
 function frontMatter({
   generatedAt,
   variant,
@@ -459,6 +491,7 @@ export async function buildContextRefreshContent({
       "### Music signals",
       listItems(music),
       "",
+      ...musicSnapshotLines(),
     );
   }
 

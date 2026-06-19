@@ -5,7 +5,7 @@ export const music = [
       "https://open.spotify.com/embed/playlist/01pnqPSqX1p0Wlr2nAvTX6?utm_source=generator&si=715ecc7f74494f58",
   },
   {
-    title: "Arcode Ghosts After Midnight",
+    title: "Arcade Ghosts After Midnight",
     embedUrl:
       "https://open.spotify.com/embed/playlist/5Ugcnm2Tsfea7Ww5gQpnu8?utm_source=generator&si=d94d276e65cb4555",
   },

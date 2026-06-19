@@ -20,6 +20,7 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 - Signal Booth with 200 randomized prompts and generated image assets
 - Standalone collection pages:
   - `/arcade`
+  - `/music`
   - `/movies-tv`
   - `/cats/beverly-and-lucinda`
   - `/cats/thomas-jones-missy-cass`
@@ -50,6 +51,9 @@ The site is a personal hub for projects, writing, music, arcade memories, movies
 ## Project Map
 
 - `app/page.tsx` - homepage layout and homepage-only content
+- `app/music/page.tsx` - music collection page with Spotify embeds and summarized listening insights
+- `app/music-data.ts` - Spotify playlist embed metadata
+- `app/music-insights-data.ts` - public, summarized Spotify listening insights generated from the local export workflow
 - `app/site-data.ts` - shared arcade, movies/TV, and cat gallery data
 - `app/signal-booth-data.ts` - Signal Booth prompt/image data
 - `app/SignalBooth.tsx` - interactive random signal component
@@ -152,6 +156,36 @@ type Attachment =
 ```
 
 Image attachments are uploaded through the password-protected admin UI and stored in Vercel Blob. Link attachments remain external URLs with optional display titles. Tiny Thoughts can also include an inspired-by category such as article link, song, video, conversation, or other, plus a short inspired-by value. Emojis are stored as normal text.
+
+## Music Insights Data
+
+The `/music` page combines hand-curated Spotify playlist embeds with summarized listening-history data from the separate local repository at:
+
+```text
+~/spotify-export
+```
+
+The website does not read raw Spotify exports at runtime and does not ship the raw stream archive. The local export workflow is:
+
+```text
+Spotify extended streaming-history JSON
+  -> ~/spotify-export/raw/
+  -> npm run spotify:analyze
+  -> npm run lastfm:enrich
+  -> npm run music:report
+  -> summarized values copied into app/music-insights-data.ts
+```
+
+The important generated files in `~/spotify-export/output/` are:
+
+- `stream-events.ndjson` - normalized event archive used locally for deeper analysis
+- `yearly-trends.json` and `monthly-trends.json` - listening totals over time
+- `top-artists.json`, `top-songs.json`, `top-albums.json`, and `top-videos.json` - all-time rankings by listening time
+- `artist-genres.lastfm.json` - Last.fm genre tags matched to artists
+- `odd-findings.json` - repeat tracks, album fixation weeks, long artist lifespans, and audio/video ratio
+- `music-report/index.html` - local static prototype used as the review surface for deciding what belongs on the website
+
+`app/music-insights-data.ts` is intentionally a small public summary, not a database import. It includes high-level totals, the recent listening window, yearly/monthly signals, genre weather, era cards, musical DNA panels, mood-color summaries, all-time leaders, and fixation oddities. If the Spotify export is refreshed, regenerate the local report in `~/spotify-export`, review `output/music-report/index.html`, then update `app/music-insights-data.ts` with only the public-facing summary values.
 
 ## Run Locally
 
