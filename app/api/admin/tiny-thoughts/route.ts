@@ -1,5 +1,10 @@
 import { randomUUID } from "crypto";
-import { isAdminAuthenticated } from "../../../lib/admin-auth";
+import {
+  jsonError,
+  parseJsonBody,
+  requireAdminJson,
+  routeFailure,
+} from "../../../lib/admin-route";
 import { deleteTinyThoughtBlobs } from "../../../lib/blob";
 import { getGuestbookSql } from "../../../lib/guestbook";
 import {
@@ -49,14 +54,6 @@ async function deleteBlobImages(urls: string[]) {
   } catch (error) {
     console.error("Tiny Thoughts Blob cleanup failed", error);
   }
-}
-
-async function requireAdmin() {
-  if (!(await isAdminAuthenticated())) {
-    return Response.json({ error: "Admin login required." }, { status: 401 });
-  }
-
-  return null;
 }
 
 function getThoughtPayload(body: Record<string, unknown>) {
@@ -113,7 +110,7 @@ function validateThought(content: string, wordCount: number, inspiredBy: string)
 }
 
 export async function GET() {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdminJson();
 
   if (unauthorized) {
     return unauthorized;
@@ -142,28 +139,24 @@ export async function GET() {
       thoughts: (rows as TinyThoughtRow[]).map(toTinyThought),
     });
   } catch (error) {
-    console.error("Admin tiny thoughts GET failed", error);
-    return Response.json(
-      { error: "Tiny thoughts are unavailable." },
-      { status: 500 },
-    );
+    return routeFailure("Admin tiny thoughts GET failed", "Tiny thoughts are unavailable.", error);
   }
 }
 
 export async function POST(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdminJson();
 
   if (unauthorized) {
     return unauthorized;
   }
 
   try {
-    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    const body = await parseJsonBody(request);
     const payload = getThoughtPayload(body);
     const error = validateThought(payload.content, payload.wordCount, payload.inspiredBy);
 
     if (error) {
-      return Response.json({ error }, { status: 400 });
+      return jsonError(error, 400);
     }
 
     await ensureTinyThoughtsTable();
@@ -204,33 +197,29 @@ export async function POST(request: Request) {
       thought: toTinyThought((rows as TinyThoughtRow[])[0]),
     });
   } catch (error) {
-    console.error("Admin tiny thoughts POST failed", error);
-    return Response.json(
-      { error: "Tiny thought could not be saved." },
-      { status: 500 },
-    );
+    return routeFailure("Admin tiny thoughts POST failed", "Tiny thought could not be saved.", error);
   }
 }
 
 export async function PUT(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdminJson();
 
   if (unauthorized) {
     return unauthorized;
   }
 
   try {
-    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    const body = await parseJsonBody(request);
     const id = typeof body.id === "string" ? body.id : "";
     const payload = getThoughtPayload(body);
     const error = validateThought(payload.content, payload.wordCount, payload.inspiredBy);
 
     if (!id) {
-      return Response.json({ error: "Missing tiny thought id." }, { status: 400 });
+      return jsonError("Missing tiny thought id.", 400);
     }
 
     if (error) {
-      return Response.json({ error }, { status: 400 });
+      return jsonError(error, 400);
     }
 
     await ensureTinyThoughtsTable();
@@ -252,7 +241,7 @@ export async function PUT(request: Request) {
     `;
 
     if (!oldRows.length) {
-      return Response.json({ error: "Tiny thought was not found." }, { status: 404 });
+      return jsonError("Tiny thought was not found.", 404);
     }
 
     const oldThought = toTinyThought((oldRows as TinyThoughtRow[])[0]);
@@ -280,7 +269,7 @@ export async function PUT(request: Request) {
     `;
 
     if (!rows.length) {
-      return Response.json({ error: "Tiny thought was not found." }, { status: 404 });
+      return jsonError("Tiny thought was not found.", 404);
     }
 
     const savedThought = toTinyThought((rows as TinyThoughtRow[])[0]);
@@ -296,27 +285,23 @@ export async function PUT(request: Request) {
       thought: savedThought,
     });
   } catch (error) {
-    console.error("Admin tiny thoughts PUT failed", error);
-    return Response.json(
-      { error: "Tiny thought could not be updated." },
-      { status: 500 },
-    );
+    return routeFailure("Admin tiny thoughts PUT failed", "Tiny thought could not be updated.", error);
   }
 }
 
 export async function DELETE(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdminJson();
 
   if (unauthorized) {
     return unauthorized;
   }
 
   try {
-    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    const body = await parseJsonBody(request);
     const id = typeof body.id === "string" ? body.id : "";
 
     if (!id) {
-      return Response.json({ error: "Missing tiny thought id." }, { status: 400 });
+      return jsonError("Missing tiny thought id.", 400);
     }
 
     await ensureTinyThoughtsTable();
@@ -337,7 +322,7 @@ export async function DELETE(request: Request) {
     `;
 
     if (!rows.length) {
-      return Response.json({ error: "Tiny thought was not found." }, { status: 404 });
+      return jsonError("Tiny thought was not found.", 404);
     }
 
     const deletedThought = toTinyThought((rows as TinyThoughtRow[])[0]);
@@ -349,10 +334,6 @@ export async function DELETE(request: Request) {
       deleted: true,
     });
   } catch (error) {
-    console.error("Admin tiny thoughts DELETE failed", error);
-    return Response.json(
-      { error: "Tiny thought could not be deleted." },
-      { status: 500 },
-    );
+    return routeFailure("Admin tiny thoughts DELETE failed", "Tiny thought could not be deleted.", error);
   }
 }

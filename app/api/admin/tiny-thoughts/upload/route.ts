@@ -1,63 +1,37 @@
-import { randomUUID } from "crypto";
-import { isAdminAuthenticated } from "../../../../lib/admin-auth";
+import { jsonError, requireAdminJson } from "../../../../lib/admin-route";
 import { hasBlobWriteAccess, putTinyThoughtBlob } from "../../../../lib/blob";
+import {
+  createImageUploadPath,
+  toUploadBuffer,
+  validateImageUpload,
+} from "../../../../lib/upload";
 
 export const runtime = "nodejs";
 
-const maxImageBytes = 5 * 1024 * 1024;
-const allowedImageTypes = new Set([
-  "image/gif",
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-]);
-
-function fileExtension(file: File) {
-  const extension = file.name.split(".").pop()?.toLowerCase();
-
-  if (extension && /^[a-z0-9]+$/.test(extension)) {
-    return extension;
-  }
-
-  return file.type.split("/")[1] || "image";
-}
-
 export async function POST(request: Request) {
-  if (!(await isAdminAuthenticated())) {
-    return Response.json({ error: "Admin login required." }, { status: 401 });
+  const unauthorized = await requireAdminJson();
+
+  if (unauthorized) {
+    return unauthorized;
   }
 
   if (!hasBlobWriteAccess()) {
-    return Response.json(
-      { error: "Blob storage is not configured for this environment." },
-      { status: 500 },
-    );
+    return jsonError("Blob storage is not configured for this environment.", 500);
   }
 
   try {
     const formData = await request.formData();
-    const file = formData.get("file");
+    const validation = validateImageUpload(formData.get("file"), {
+      label: "Tiny Thoughts images",
+    });
 
-    if (!(file instanceof File)) {
-      return Response.json({ error: "Choose an image file to upload." }, { status: 400 });
+    if (!validation.ok) {
+      return jsonError(validation.error, 400);
     }
 
-    if (!allowedImageTypes.has(file.type)) {
-      return Response.json(
-        { error: "Tiny Thoughts images must be PNG, JPG, GIF, or WebP." },
-        { status: 400 },
-      );
-    }
-
-    if (file.size > maxImageBytes) {
-      return Response.json(
-        { error: "Tiny Thoughts images must be 5 MB or smaller." },
-        { status: 400 },
-      );
-    }
-
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const pathname = `tiny-thoughts/${randomUUID()}.${fileExtension(file)}`;
+    const file = validation.file;
+    const buffer = await toUploadBuffer(file);
+    const pathname = createImageUploadPath("tiny-thoughts", file);
     const blob = await putTinyThoughtBlob(pathname, buffer, {
       access: "public",
       contentType: file.type,
@@ -79,14 +53,11 @@ export async function POST(request: Request) {
       error,
     });
 
-    return Response.json(
-      {
-        error:
-          process.env.NODE_ENV === "production"
-            ? "Image could not be uploaded."
-            : `Image could not be uploaded. ${message}`,
-      },
-      { status: 500 },
+    return jsonError(
+      process.env.NODE_ENV === "production"
+        ? "Image could not be uploaded."
+        : `Image could not be uploaded. ${message}`,
+      500,
     );
   }
 }

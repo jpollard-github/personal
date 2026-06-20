@@ -1,5 +1,10 @@
 import { randomUUID } from "crypto";
-import { isAdminAuthenticated } from "../../../lib/admin-auth";
+import {
+  jsonError,
+  parseJsonBody,
+  requireAdminJson,
+  routeFailure,
+} from "../../../lib/admin-route";
 import { getGuestbookSql } from "../../../lib/guestbook";
 import {
   ensureProjectsTable,
@@ -15,14 +20,6 @@ import {
 } from "../../../lib/projects";
 
 export const runtime = "nodejs";
-
-async function requireAdmin() {
-  if (!(await isAdminAuthenticated())) {
-    return Response.json({ error: "Admin login required." }, { status: 401 });
-  }
-
-  return null;
-}
 
 function normalizeProject(value: unknown): SiteProject | null {
   if (!value || typeof value !== "object") {
@@ -65,7 +62,7 @@ function normalizeProject(value: unknown): SiteProject | null {
 }
 
 export async function GET() {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdminJson();
 
   if (unauthorized) {
     return unauthorized;
@@ -74,44 +71,34 @@ export async function GET() {
   try {
     return Response.json({ projects: await getAdminProjects() });
   } catch (error) {
-    console.error("Admin projects GET failed", error);
-    return Response.json({ error: "Projects are unavailable." }, { status: 500 });
+    return routeFailure("Admin projects GET failed", "Projects are unavailable.", error);
   }
 }
 
 export async function PUT(request: Request) {
-  const unauthorized = await requireAdmin();
+  const unauthorized = await requireAdminJson();
 
   if (unauthorized) {
     return unauthorized;
   }
 
   try {
-    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    const body = await parseJsonBody(request);
     const rawProjects = Array.isArray(body.projects) ? body.projects : [];
     const projects = rawProjects
       .map(normalizeProject)
       .filter((project): project is SiteProject => Boolean(project));
 
     if (projects.length !== rawProjects.length) {
-      return Response.json(
-        { error: "Every project needs a type, title, and description before saving." },
-        { status: 400 },
-      );
+      return jsonError("Every project needs a type, title, and description before saving.", 400);
     }
 
     if (!projects.length) {
-      return Response.json(
-        { error: "Add at least one project before saving." },
-        { status: 400 },
-      );
+      return jsonError("Add at least one project before saving.", 400);
     }
 
     if (new Set(projects.map((project) => project.id)).size !== projects.length) {
-      return Response.json(
-        { error: "Project ids must be unique before saving." },
-        { status: 400 },
-      );
+      return jsonError("Project ids must be unique before saving.", 400);
     }
 
     await ensureProjectsTable();
@@ -213,10 +200,6 @@ export async function PUT(request: Request) {
       projects: (rows as SiteProjectRow[]).map(toSiteProject),
     });
   } catch (error) {
-    console.error("Admin projects PUT failed", error);
-    return Response.json(
-      { error: "Projects could not be saved." },
-      { status: 500 },
-    );
+    return routeFailure("Admin projects PUT failed", "Projects could not be saved.", error);
   }
 }

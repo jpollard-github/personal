@@ -1,57 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  formatTinyThoughtDate,
+  getUrlHost,
+  renderLinkedText,
+  tinyThoughtCategoryLabels,
+  tinyThoughtInspiredByLabels,
+} from "./lib/tiny-thought-display";
 import type { TinyThought } from "./lib/tiny-thoughts";
-
-const categoryLabels = new Map([
-  ["lesson", "Lesson learned"],
-  ["observation", "Observation"],
-  ["funny", "Funny experience"],
-  ["opinion", "Opinion"],
-  ["arcade", "Arcade"],
-  ["music", "Music"],
-  ["cat", "Cat"],
-  ["twin-peaks", "Twin Peaks"],
-  ["other", "Other"],
-]);
-
-const inspiredByLabels = new Map([
-  ["article-link", "Article link"],
-  ["song", "Song"],
-  ["video", "Video"],
-  ["conversation", "Conversation"],
-  ["other", "Other"],
-]);
-
-function getUrlHost(value: string) {
-  try {
-    return new URL(value).hostname.replace(/^www\./, "");
-  } catch {
-    return value;
-  }
-}
-
-function renderLinkedText(text: string) {
-  const parts = text.split(/(https?:\/\/[^\s<>"']+)/g);
-
-  return parts.map((part, index) => {
-    if (!/^https?:\/\//.test(part)) {
-      return part;
-    }
-
-    try {
-      const url = new URL(part);
-
-      return (
-        <a key={`${part}-${index}`} href={url.toString()} target="_blank" rel="noreferrer">
-          {url.hostname.replace(/^www\./, "")}
-        </a>
-      );
-    } catch {
-      return part;
-    }
-  });
-}
 
 export function TinyThoughts() {
   const [thoughts, setThoughts] = useState<TinyThought[]>([]);
@@ -98,6 +55,7 @@ export function TinyThoughts() {
             .filter((attachment) => attachment.type === "image")
             .slice(0, 1)
             .map((attachment) => (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={attachment.url}
                 src={attachment.url}
@@ -107,14 +65,8 @@ export function TinyThoughts() {
               />
             ))}
           <div className="tiny-thought-meta">
-            <span>{categoryLabels.get(thought.category) ?? "Other"}</span>
-            <time dateTime={thought.createdAt}>
-              {new Intl.DateTimeFormat("en", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }).format(new Date(thought.createdAt))}
-            </time>
+            <span>{tinyThoughtCategoryLabels.get(thought.category) ?? "Other"}</span>
+            <time dateTime={thought.createdAt}>{formatTinyThoughtDate(thought.createdAt)}</time>
           </div>
           <p>{renderLinkedText(thought.content)}</p>
           {thought.attachments.filter((attachment) => attachment.type === "image").length > 1 ? (
@@ -123,13 +75,14 @@ export function TinyThoughts() {
                 .filter((attachment) => attachment.type === "image")
                 .slice(1)
                 .map((attachment) => (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img key={attachment.url} src={attachment.url} alt="" loading="lazy" />
                 ))}
             </div>
           ) : null}
           {thought.inspiredBy ? (
             <p className="tiny-thought-inspired">
-              Inspired by {inspiredByLabels.get(thought.inspiredByCategory) ?? "Other"}:{" "}
+              Inspired by {tinyThoughtInspiredByLabels.get(thought.inspiredByCategory) ?? "Other"}:{" "}
               {renderLinkedText(thought.inspiredBy)}
             </p>
           ) : null}

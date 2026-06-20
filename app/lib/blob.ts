@@ -31,12 +31,24 @@ export function hasBlobWriteAccess() {
   return isVercelRuntime() || Boolean(readWriteToken());
 }
 
-export function putTinyThoughtBlob(
+function putBlob(
   pathname: string,
   body: Parameters<typeof put>[1],
   options: PutBlobOptions,
 ) {
   return put(pathname, body, withLocalReadWriteToken(options));
+}
+
+function deleteBlobs(urls: string[]) {
+  return del(urls, withLocalReadWriteToken({}));
+}
+
+export function putTinyThoughtBlob(
+  pathname: string,
+  body: Parameters<typeof put>[1],
+  options: PutBlobOptions,
+) {
+  return putBlob(pathname, body, options);
 }
 
 export function putProjectBlob(
@@ -44,9 +56,9 @@ export function putProjectBlob(
   body: Parameters<typeof put>[1],
   options: PutBlobOptions,
 ) {
-  return put(pathname, body, withLocalReadWriteToken(options));
+  return putBlob(pathname, body, options);
 }
 
 export function deleteTinyThoughtBlobs(urls: string[]) {
-  return del(urls, withLocalReadWriteToken({}));
+  return deleteBlobs(urls);
 }

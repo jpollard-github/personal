@@ -4,6 +4,10 @@ A warm, weird, slightly spooky personal website built with Next.js App Router an
 
 The site is a personal hub for projects, writing, music, arcade memories, movies and TV, cat photo rooms, a random Signal Booth, and a moderated guestbook.
 
+Maintainability roadmap:
+
+- `docs/refactor-roadmap.md` - phased refactor plan with copy-paste prompts for future cleanup work
+
 ## Tech Stack
 
 - Next.js 16 App Router
