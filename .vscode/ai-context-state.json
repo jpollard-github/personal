@@ -1,0 +1,21 @@
+{
+  "lastStartPromptAt": "2026-06-20T20:27:41.627Z",
+  "lastFinishPromptAt": "2026-06-20T20:49:54.777Z",
+  "docs": {
+    "docs/decisions.md": {
+      "lastRefreshedAt": "2026-06-20T20:27:34.068Z"
+    },
+    "docs/repo-summary.md": {
+      "lastRefreshedAt": "2026-06-20T20:27:34.066Z"
+    },
+    "docs/architecture.md": {
+      "lastRefreshedAt": "2026-06-20T20:27:34.066Z"
+    },
+    "docs/current-work.md": {
+      "lastRefreshedAt": "2026-06-20T20:27:34.067Z"
+    },
+    "docs/refactor-roadmap.md": {
+      "lastRefreshedAt": "2026-06-20T20:27:34.067Z"
+    }
+  }
+}

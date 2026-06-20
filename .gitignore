@@ -6,3 +6,5 @@ dist
 *.log
 .vercel
 resume/
+playwright-report
+test-results

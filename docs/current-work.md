@@ -16,11 +16,15 @@ What is now in place:
 - Tiny Thoughts admin split into a hook plus focused UI pieces
 - curated music/site data split into smaller modules
 - lightweight regression tests added
+- Playwright e2e coverage added for stable public pages and admin session-protected routes
+- README local setup updated with unit and Playwright test commands
+- `docs/pnpm-migration.md` added as a repo-specific note about switching from `npm` to `pnpm`
 
 The app currently passes:
 
 - `npm run lint`
 - `npm test`
+- `npm run test:e2e`
 - `npm run build`
 
 ## Recently Stabilized Areas
@@ -88,12 +92,25 @@ Current tests live in `tests/` and cover:
 - project normalization helpers
 - Tiny Thoughts normalization helpers
 - selected music formatting helpers
+- Playwright public route coverage for `/`, `/music`, `/work-with-me`, `/arcade`, and `/movies-tv`
+- Playwright admin coverage for login/logout plus `/admin/guestbook`, `/admin/projects`, `/admin/now`, and `/admin/context-refresh`
 
 Run them with:
 
 ```bash
 npm test
 ```
+
+Playwright commands:
+
+```bash
+npm run test:e2e:install
+npm run test:e2e
+```
+
+Current e2e caveat:
+
+- the context refresh admin test performs a real export creation request, so repeated local runs can create persistent `context_refresh_exports` rows when the repo points at a live local database
 
 ## Practical “How To Change Things” Notes
 
@@ -137,9 +154,9 @@ If more cleanup happens later, the best next candidates are:
 
 1. Split `AdminProjects.tsx` the same way Tiny Thoughts was split
 2. Split `AdminNow.tsx` if it continues to grow
-3. Add a few more tests around admin route normalization and payload validation
-4. Reduce `app/globals.css` further for other large feature areas
-5. Add a small verification checklist for uploads and admin flows
+3. Add mutation-focused e2e coverage for admin flows that save real data, ideally with cleanup or isolated test data
+4. Add a few more tests around admin route normalization and payload validation
+5. Reduce `app/globals.css` further for other large feature areas
 
 ## Short Re-entry Summary
 
@@ -148,5 +165,40 @@ If another session needs a 30-second orientation:
 - this is a Next.js personal-site platform with small admin CMS features
 - homepage and music refactors are already done
 - Tiny Thoughts admin/upload cleanup is already done
-- tests/build/lint are green
+- unit tests, e2e tests, build, and lint are green
 - future work should extend the split module patterns, not collapse them back into giant files
+
+<!-- codex-session-kit:auto-start -->
+> Auto-generated snapshot. Refreshed 6/20/2026, 4:27:34 PM. This section is managed by Codex Session Kit.
+
+## Auto Snapshot
+
+### Current repo activity
+- Active git branch: `main`
+- Working tree has 6 changed file(s).
+
+### Changed files
+- M docs/architecture.md
+- M docs/current-work.md
+- M docs/refactor-roadmap.md
+- M docs/repo-summary.md
+- ?? .vscode/
+- ?? docs/decisions.md
+
+### Open editors
+- No visible editors detected.
+
+### Recently modified files
+- .vscode/ai-context-state.json (6/20/2026, 4:27:21 PM)
+- docs/decisions.md (6/20/2026, 4:27:21 PM)
+- docs/refactor-roadmap.md (6/20/2026, 4:27:21 PM)
+- docs/architecture.md (6/20/2026, 4:27:21 PM)
+- docs/current-work.md (6/20/2026, 4:27:21 PM)
+- docs/repo-summary.md (6/20/2026, 4:27:21 PM)
+- .vscode/ai-context.json (6/20/2026, 4:27:21 PM)
+- README.md (6/20/2026, 3:27:57 PM)
+- app/TinyThoughts.tsx (6/20/2026, 3:18:50 PM)
+- app/site-content/visual-media.ts (6/20/2026, 3:18:27 PM)
+- tests/upload.test.ts (6/20/2026, 3:18:11 PM)
+- app/lib/upload.ts (6/20/2026, 3:18:11 PM)
+<!-- codex-session-kit:auto-end -->

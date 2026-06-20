@@ -219,7 +219,10 @@ Key points:
 
 The current test layer is intentionally small and pragmatic.
 
-It covers helper/regression logic with Node's built-in test runner plus TypeScript execution through `tsx`.
+It now has two layers:
+
+1. helper/regression logic with Node's built-in test runner plus TypeScript execution through `tsx`
+2. browser e2e coverage with Playwright against a local `next dev` server
 
 Current focus:
 
@@ -227,8 +230,17 @@ Current focus:
 - upload validation
 - project helper normalization
 - selected music formatting helpers
+- public route smoke coverage for `/`, `/music`, `/work-with-me`, `/arcade`, and `/movies-tv`
+- admin auth and protected-route coverage for `/admin`, `/admin/guestbook`, `/admin/projects`, `/admin/now`, and `/admin/context-refresh`
 
-This is not a full component/integration test suite yet, but it is enough to catch several annoying regressions cheaply.
+Important implementation details:
+
+- Playwright lives under `tests/e2e/`
+- config lives in `playwright.config.ts`
+- the Playwright web server starts `next dev` on `127.0.0.1:3000`
+- admin e2e login currently reads `ADMIN_USERNAME` and `ADMIN_PASSWORD` from process env or `.env.local`
+
+This is still not a full component/integration test suite, but it now provides a meaningful browser-level safety net for routing, basic rendering, and admin-session access.
 
 ## Architectural Constraints
 
@@ -245,6 +257,43 @@ The main constraints to respect when extending the repo:
 Likely safe future improvements:
 
 - more targeted tests around route normalization and admin helpers
+- a few mutation-focused e2e tests for safe admin flows such as saving Now cards or saving context refresh exports
 - more CSS ownership cleanup in other large route areas
 - similar feature-splitting for other large admin files if they grow
 - selective browser/integration verification for admin upload workflows
+
+<!-- codex-session-kit:auto-start -->
+> Auto-generated snapshot. Refreshed 6/20/2026, 4:27:34 PM. This section is managed by Codex Session Kit.
+
+## Auto Snapshot
+
+### Top-level structure
+- `.vercel/`
+- `.vscode/`
+- `app/`
+- `app/admin/`
+- `app/admin/context-refresh/`
+- `app/admin/guestbook/`
+- `app/admin/now/`
+- `app/admin/projects/`
+- `app/admin/tiny-thoughts/`
+- `app/api/`
+- `app/api/admin/`
+- `app/api/admin/context-refresh/`
+
+### File mix
+- .jpeg: 292
+- .tsx: 59
+- .ts: 43
+- .png: 24
+- .jpg: 20
+- .md: 10
+- .json: 6
+- .css: 4
+
+### Likely integration points
+- Runtime dependencies detected: `@neondatabase/serverless`, `@vercel/analytics`, `@vercel/blob`, `next`, `react`, `react-dom`, `resend`.
+
+### Architectural notes from scan
+- Workspace-specific configuration is present under `.vscode/`.
+<!-- codex-session-kit:auto-end -->

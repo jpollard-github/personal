@@ -350,3 +350,23 @@ If you want to keep future asks very short, any of these are enough:
 - Prefer small refactors that preserve behavior and visual output
 - Run `npm run lint` after each phase
 - Browser verification is especially valuable after CSS or page-composition refactors
+
+<!-- codex-session-kit:auto-start -->
+> Auto-generated snapshot. Refreshed 6/20/2026, 4:27:34 PM. This section is managed by Codex Session Kit.
+
+## Auto Snapshot
+
+### Potential refactor signals
+- One or more larger JS/TS files may be worth splitting if responsibilities keep growing.
+
+### Large code files
+- public/games/between-two-lodges/game.js (56 KB)
+- app/twin-peaks-self/journey-data.ts (24 KB)
+- app/lib/context-refresh.ts (19 KB)
+- app/AdminProjects.tsx (15 KB)
+- app/work-with-me/page.tsx (13 KB)
+
+### Testing and maintenance gaps
+- A test directory appears to exist.
+- There are local changes, so docs may need a refresh before handoff.
+<!-- codex-session-kit:auto-end -->

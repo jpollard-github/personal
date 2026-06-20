@@ -48,6 +48,7 @@ Admin areas:
 - Vercel Blob for admin image uploads
 - Resend for guestbook notifications
 - Vercel Analytics
+- Playwright for browser e2e coverage
 
 ## Current Repo Shape
 
@@ -115,6 +116,9 @@ Available commands:
 - `npm run dev`
 - `npm run lint`
 - `npm test`
+- `npm run test:e2e`
+- `npm run test:e2e:headed`
+- `npm run test:e2e:install`
 - `npm run build`
 
 Current tests are lightweight and focused on:
@@ -123,6 +127,7 @@ Current tests are lightweight and focused on:
 - project normalization helpers
 - Tiny Thoughts normalization helpers
 - selected music formatting helpers
+- Playwright browser coverage for stable public pages and admin session-protected routes
 
 ## Recent Refactor State
 
@@ -148,3 +153,42 @@ It combines:
 - a curated personal-data showcase
 
 That mix is the main architectural characteristic to keep in mind when changing it.
+
+<!-- codex-session-kit:auto-start -->
+> Auto-generated snapshot. Refreshed 6/20/2026, 4:27:34 PM. This section is managed by Codex Session Kit.
+
+## Auto Snapshot
+
+### What this project appears to be
+- README suggests the project is "Jason's Awesome 80s Site".
+- Package id: `jasons-awesome-80s-site`
+
+### Repo signals
+- Workspace: `personal`
+- README title: Jason's Awesome 80s Site
+- Version: `0.1.0`
+- Tracked memory docs: `docs/repo-summary.md`, `docs/architecture.md`, `docs/current-work.md`, `docs/refactor-roadmap.md`, `docs/decisions.md`
+
+### Key files and directories
+- Directory: `.vercel/`
+- Directory: `.vscode/`
+- Directory: `app/`
+- Directory: `app/admin/`
+- Directory: `app/admin/context-refresh/`
+- Directory: `app/admin/guestbook/`
+- Directory: `app/admin/now/`
+- Directory: `app/admin/projects/`
+- File: `.env.local`
+- File: `.gitignore`
+- File: `.nvmrc`
+- File: `.vercel/README.txt`
+- File: `.vercel/repo.json`
+- File: `.vscode/ai-context-state.json`
+
+### Package scripts
+- `dev`
+- `build`
+- `start`
+- `lint`
+- `test`
+<!-- codex-session-kit:auto-end -->

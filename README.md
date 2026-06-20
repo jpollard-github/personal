@@ -252,6 +252,30 @@ Lint:
 npm run lint
 ```
 
+Run the unit tests:
+
+```bash
+npm test
+```
+
+Install the Playwright browser runtime once:
+
+```bash
+npm run test:e2e:install
+```
+
+Run the Playwright end-to-end tests:
+
+```bash
+npm run test:e2e
+```
+
+Run the Playwright suite in headed mode:
+
+```bash
+npm run test:e2e:headed
+```
+
 ## Admin
 
 The admin dashboard lives at `/admin` and links to both Guestbook Review and Tiny Thoughts. It uses the shared `arcadeghosts_admin` session cookie set by `/api/admin/session`, and the individual admin pages still require a successful session before loading protected data.
