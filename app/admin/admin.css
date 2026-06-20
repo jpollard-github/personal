@@ -93,10 +93,114 @@
   margin-top: 0;
 }
 
+.projects-admin-help {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.projects-admin-card {
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.projects-admin-card-collapsed {
+  padding-bottom: 0.9rem;
+}
+
+.projects-admin-card-dragging {
+  opacity: 0.6;
+}
+
+.projects-admin-card-drop-target {
+  border-color: rgba(41, 240, 212, 0.55);
+  box-shadow: 0 0 0 3px rgba(41, 240, 212, 0.1);
+}
+
+.projects-admin-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.projects-admin-summary-copy {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.projects-admin-summary-meta {
+  margin-bottom: 0;
+}
+
+.projects-admin-summary-grid {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.projects-admin-summary-title,
+.projects-admin-summary-subtitle,
+.projects-admin-summary-description {
+  margin: 0;
+}
+
+.projects-admin-summary-title {
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.projects-admin-summary-subtitle {
+  color: var(--amber);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.projects-admin-summary-description {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.projects-admin-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.projects-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.8rem;
+  border: 1px solid rgba(248, 239, 227, 0.16);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  color: var(--dim);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.projects-admin-badge-alert {
+  border-color: rgba(255, 198, 109, 0.4);
+  color: var(--amber);
+  background: rgba(255, 198, 109, 0.1);
+}
+
+.projects-admin-actions {
+  justify-content: flex-end;
+}
+
+.projects-admin-drag-handle:disabled {
+  cursor: not-allowed;
+}
+
 .projects-admin-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .projects-admin-form label {
@@ -464,12 +568,17 @@
 }
 
 @media (max-width: 560px) {
+  .projects-admin-summary,
   .admin-entry dl,
   .context-refresh-filebar,
   .projects-admin-form,
   .tiny-thought-attachment-form,
   .tiny-thought-attachment-list li {
     grid-template-columns: 1fr;
+  }
+
+  .projects-admin-actions {
+    justify-content: stretch;
   }
 
   .admin-toolbar,

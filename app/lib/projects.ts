@@ -244,6 +244,59 @@ export async function ensureProjectsTable() {
   `;
 }
 
+export async function seedDefaultProjectsIfEmpty() {
+  await ensureProjectsTable();
+  const sql = getGuestbookSql();
+  const countRows = await sql`
+    SELECT COUNT(*)::int AS count
+    FROM site_projects
+  `;
+  const count = Number((countRows as { count: number }[])[0]?.count ?? 0);
+
+  if (count > 0) {
+    return;
+  }
+
+  for (let index = 0; index < defaultProjects.length; index += 1) {
+    const project = defaultProjects[index];
+
+    await sql`
+      INSERT INTO site_projects (
+        id,
+        type,
+        title,
+        description,
+        href,
+        image_url,
+        status,
+        phase,
+        next_action,
+        blockers,
+        priority,
+        last_updated_at,
+        include_in_context_refresh,
+        display_order
+      )
+      VALUES (
+        ${project.id},
+        ${project.type},
+        ${project.title},
+        ${project.description},
+        ${project.href},
+        ${project.imageUrl},
+        ${project.status},
+        ${project.phase},
+        ${project.nextAction},
+        ${project.blockers},
+        ${project.priority},
+        ${project.lastUpdatedAt || null},
+        ${project.includeInContextRefresh},
+        ${index}
+      )
+    `;
+  }
+}
+
 export async function getPublicProjects() {
   return loadStoredPublicProjects().catch(() => defaultProjects);
 }

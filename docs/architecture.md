@@ -97,6 +97,30 @@ Tiny Thoughts admin is split into:
   - `TinyThoughtAttachmentEditor.tsx`
   - `TinyThoughtAdminList.tsx`
 
+### Projects admin
+
+Projects admin currently lives in:
+
+- `app/AdminProjects.tsx`
+- `app/api/admin/projects/route.ts`
+- `app/lib/projects.ts`
+
+The current workflow is intentionally editor-first but lighter than a full CMS:
+
+- project cards default to collapsed summary rows
+- each project saves independently instead of relying on one global save action
+- saved collapsed cards can be reordered with desktop drag-and-drop
+- unsaved drafts are not reorderable until they have been saved once
+
+This area now mixes:
+
+- local UI state for expand/collapse, draft edits, and drag state
+- per-project persistence
+- order persistence through `display_order`
+- image upload integration through the shared admin upload helpers
+
+If it grows further, it is a good candidate for a split similar to Tiny Thoughts.
+
 ## Data Architecture
 
 There are four different data patterns in this repo.
@@ -172,6 +196,13 @@ Shared API helpers:
 
 The goal is lightweight route handlers with shared normalization and auth response helpers instead of repeating the same route boilerplate.
 
+Notable current projects-admin behavior:
+
+- `GET /api/admin/projects` loads the current ordered list
+- `PUT /api/admin/projects` still supports replacing the full list
+- `PATCH /api/admin/projects` is now used for single-project saves and order-only updates
+- `DELETE /api/admin/projects` removes a single saved project
+
 ## Storage And External Services
 
 ### Neon Postgres
@@ -189,6 +220,11 @@ Tables are created/updated lazily by helper functions such as:
 - `ensureTinyThoughtsTable()`
 - `ensureNowItemsTable()`
 - `ensureProjectsTable()`
+
+For projects specifically:
+
+- `display_order` is the canonical persisted order for homepage/admin rendering
+- the repo still exposes `defaultProjects` as a fallback when the table is empty
 
 ### Vercel Blob
 

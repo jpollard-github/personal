@@ -66,10 +66,15 @@ test("authenticated admin can open projects editor", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Refresh" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Add Project" })).toBeVisible();
-  await expect(page.getByLabel("Title").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Expand" }).first()).toBeVisible();
   await expect(
     page.getByText(/^Projects loaded\.$|^No projects yet\.$/),
   ).toBeVisible();
+
+  const firstExpandButton = page.getByRole("button", { name: "Expand" }).first();
+  await firstExpandButton.click();
+  await expect(page.getByLabel("Title").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Save Project" }).first()).toBeVisible();
 });
 
 test("authenticated admin can open now editor", async ({ page }) => {

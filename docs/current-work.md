@@ -19,6 +19,7 @@ What is now in place:
 - Playwright e2e coverage added for stable public pages and admin session-protected routes
 - README local setup updated with unit and Playwright test commands
 - `docs/pnpm-migration.md` added as a repo-specific note about switching from `npm` to `pnpm`
+- projects admin now defaults to collapsed cards, supports per-project save/delete, and allows desktop drag-and-drop reordering for saved collapsed cards
 
 The app currently passes:
 
@@ -70,6 +71,7 @@ Upload and admin route behavior now shares helpers instead of duplicating valida
 - Blob uploads should go through `app/lib/upload.ts` and `app/lib/blob.ts`
 - admin route auth/error patterns should go through `app/lib/admin-route.ts`
 - route-specific CSS should stay local when a feature gets large
+- for projects admin specifically, keep reorder persistence tied to `display_order` instead of inventing a separate client-only ordering model
 
 ## Current Risk Areas
 
@@ -84,6 +86,20 @@ These are the files or areas most likely to need attention next if they grow:
 
 None of these are immediate breakage points, but they are the next likely maintenance hotspots.
 
+### Projects Admin
+
+Projects admin changed meaningfully and now has a few important behaviors to remember:
+
+- cards load collapsed by default
+- save/delete is per project, not global
+- reorder is desktop-first and only enabled for saved collapsed cards
+- image uploads still update local draft state and require a project save to persist
+- unsaved drafts can stay in the local list, but they cannot be drag-reordered until they have been saved once
+
+Important implementation caveat:
+
+- single-project project mutations currently seed `defaultProjects` into the table if the projects table is empty, because public/admin reads still use the checked-in defaults as the empty-state fallback
+
 ## Existing Test Coverage
 
 Current tests live in `tests/` and cover:
@@ -94,6 +110,12 @@ Current tests live in `tests/` and cover:
 - selected music formatting helpers
 - Playwright public route coverage for `/`, `/music`, `/work-with-me`, `/arcade`, and `/movies-tv`
 - Playwright admin coverage for login/logout plus `/admin/guestbook`, `/admin/projects`, `/admin/now`, and `/admin/context-refresh`
+
+Projects admin browser coverage currently verifies:
+
+- the page opens in its collapsed-by-default state
+- a project can be expanded
+- the per-project save button is present once expanded
 
 Run them with:
 
@@ -148,13 +170,20 @@ Start in:
 - matching `app/api/admin/*/route.ts`
 - matching admin component
 
+If updating projects admin interaction specifically, start in:
+
+- `app/AdminProjects.tsx`
+- `app/api/admin/projects/route.ts`
+- `app/lib/projects.ts`
+- `app/admin/admin.css`
+
 ## Suggested Next Improvements
 
 If more cleanup happens later, the best next candidates are:
 
-1. Split `AdminProjects.tsx` the same way Tiny Thoughts was split
+1. Split `AdminProjects.tsx` into smaller hooks/components now that it owns expand/collapse, per-card save/delete, and drag state
 2. Split `AdminNow.tsx` if it continues to grow
-3. Add mutation-focused e2e coverage for admin flows that save real data, ideally with cleanup or isolated test data
+3. Add mutation-focused e2e coverage for project save/reorder flows, ideally with cleanup or isolated test data
 4. Add a few more tests around admin route normalization and payload validation
 5. Reduce `app/globals.css` further for other large feature areas
 
@@ -165,6 +194,7 @@ If another session needs a 30-second orientation:
 - this is a Next.js personal-site platform with small admin CMS features
 - homepage and music refactors are already done
 - Tiny Thoughts admin/upload cleanup is already done
+- projects admin now uses collapsed cards, per-project persistence, and desktop drag-and-drop reorder for saved items
 - unit tests, e2e tests, build, and lint are green
 - future work should extend the split module patterns, not collapse them back into giant files
 
