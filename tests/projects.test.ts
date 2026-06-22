@@ -34,12 +34,16 @@ test("formatStoredProjectDate normalizes stored date values", () => {
   assert.equal(formatStoredProjectDate(""), "");
 });
 
+test("formatStoredProjectDate uses the project timezone for timestamps", () => {
+  assert.equal(formatStoredProjectDate("2026-06-22T01:30:00.000Z"), "2026-06-21");
+});
+
 test("resolveProjectLastUpdatedAt bumps unchanged save dates to today", () => {
   assert.equal(
     resolveProjectLastUpdatedAt({
       incomingLastUpdatedAt: "2026-06-20",
       existingLastUpdatedAt: "2026-06-20",
-      now: new Date("2026-06-21T12:00:00.000Z"),
+      now: new Date("2026-06-22T01:30:00.000Z"),
     }),
     "2026-06-21",
   );

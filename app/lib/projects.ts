@@ -8,6 +8,8 @@ export const projectStatuses = [
   "archived",
 ] as const;
 
+export const projectDateTimeZone = "America/New_York";
+
 export type ProjectStatus = (typeof projectStatuses)[number];
 
 export const projectPriorityOptions = [
@@ -176,11 +178,27 @@ export function formatStoredProjectDate(value: unknown) {
 
   const parsed = new Date(String(value));
 
-  return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString().slice(0, 10);
+  return Number.isNaN(parsed.getTime()) ? "" : formatProjectDateInTimeZone(parsed);
 }
 
 export function currentProjectDate(now = new Date()) {
-  return now.toISOString().slice(0, 10);
+  return formatProjectDateInTimeZone(now);
+}
+
+function formatProjectDateInTimeZone(value: Date) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: projectDateTimeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+  const parts = formatter.formatToParts(value);
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+
+  return year && month && day ? `${year}-${month}-${day}` : "";
 }
 
 export function resolveProjectLastUpdatedAt({
