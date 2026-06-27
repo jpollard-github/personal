@@ -12,15 +12,17 @@ export function HomeBuildLog() {
         The site is still actively being tuned. If you want the short version
         of what changed lately, start here and then wander outward.
       </SectionHeading>
-      <div className="build-log-preview-grid">
+      <div className="build-log-preview-list" aria-label="Recent build log entries">
         {entries.map((entry) => (
-          <article className="build-log-preview-card" key={entry.id}>
+          <article className="build-log-preview-item" key={entry.id}>
             <div className="update-meta">
               <span>{entry.category}</span>
               <time dateTime={entry.date}>{entry.date}</time>
             </div>
-            <h3>{entry.title}</h3>
-            <p>{entry.summary}</p>
+            <div className="build-log-preview-copy">
+              <h3>{entry.title}</h3>
+              <p>{entry.summary}</p>
+            </div>
           </article>
         ))}
       </div>

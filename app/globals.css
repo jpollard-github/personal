@@ -1004,21 +1004,19 @@ p {
   padding-bottom: clamp(3rem, 5vw, 4.5rem);
 }
 
-.build-log-preview-grid,
-.build-log-highlight,
+.build-log-preview-list,
 .build-log-stream {
   display: grid;
   gap: 1rem;
   margin-top: 1.8rem;
 }
 
-.build-log-preview-grid,
-.build-log-highlight {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.build-log-preview-list,
+.build-log-stream {
+  grid-template-columns: 1fr;
 }
 
-.build-log-preview-card,
-.build-log-highlight-card,
+.build-log-preview-item,
 .build-log-card {
   border: 1px solid rgba(248, 239, 227, 0.14);
   border-radius: 12px;
@@ -1027,10 +1025,6 @@ p {
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
     rgba(8, 9, 12, 0.82);
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.24);
-}
-
-.build-log-preview-card,
-.build-log-highlight-card {
   display: grid;
   gap: 0.75rem;
   padding: 1.1rem;
@@ -1042,13 +1036,38 @@ p {
   padding: 1.2rem;
 }
 
-.build-log-preview-card h3,
-.build-log-preview-card p,
-.build-log-highlight-card h2,
-.build-log-highlight-card p,
+.build-log-preview-item h3,
+.build-log-preview-item p,
 .build-log-card h2,
 .build-log-card p {
   margin: 0;
+}
+
+.build-log-preview-item h3,
+.build-log-card h2 {
+  font-size: clamp(1.3rem, 2vw, 1.85rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.build-log-preview-item,
+.build-log-card {
+  width: 100%;
+}
+
+.build-log-preview-item {
+  grid-template-columns: minmax(0, 1fr);
+  text-align: left;
+}
+
+.build-log-preview-copy {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.build-log-card p,
+.build-log-points {
+  max-width: 60rem;
 }
 
 .build-log-points {
@@ -3239,8 +3258,7 @@ p {
 
   .about-grid,
   .about-card-grid,
-  .build-log-highlight,
-  .build-log-preview-grid,
+  .build-log-preview-list,
   .card-grid,
   .fun-games-grid,
   .signal-booth-machine,

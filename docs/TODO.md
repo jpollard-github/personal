@@ -280,3 +280,16 @@ Reason: nice atmospheric polish, but not as useful as improving repeat-visit con
 
 - [ ] Create more bridges between emotional/personal pages and technical/project pages so visitors discover both sides of the site.
 Reason: partly already happening through related links, preview rooms, spotlighting, and search. Revisit later if discovery still feels siloed.
+
+## Pro ROI Vercel
+
+Reference: 2026-06-27 21:30 EDT
+
+- [ ] Watch the most decision-useful Vercel metrics after a Pro upgrade.
+Reason: pay attention to custom events, image optimization usage, top clicked homepage paths, search usage, and repeat-visit behavior so the subscription changes real decisions instead of just adding a bill.
+
+- [ ] Pick the first Vercel AI feature to build only after the traffic and interaction data settles a little.
+Reason: a small practical AI surface such as guided discovery, smarter search, or a content-assist workflow will be easier to choose once the new analytics show where visitors actually engage.
+
+- [ ] Separate Vercel Pro features worth coding around from features that are nice but unnecessary.
+Reason: custom events, spend controls, and AI Gateway are likely high-value for this site; a short keep/ignore list will help avoid building around platform features just because they exist.

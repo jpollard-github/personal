@@ -138,7 +138,11 @@ test("build log page surfaces recent site work", async ({ page }) => {
     page.getByRole("heading", { name: "What changed behind the curtain." }),
   ).toBeVisible();
   await expect(
-    page.getByLabel("Recent build log highlights").getByRole("heading", {
+    page.getByRole("article").filter({
+      has: page.getByRole("heading", {
+        name: "Compressed image-heavy rooms and homepage art",
+      }),
+    }).getByRole("heading", {
       name: "Compressed image-heavy rooms and homepage art",
     }),
   ).toBeVisible();

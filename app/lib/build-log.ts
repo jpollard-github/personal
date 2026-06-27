@@ -6,6 +6,7 @@ export type BuildLogEntry = {
   category: string;
   details: string[];
   impact: string;
+  public?: boolean;
   href?: string;
   linkLabel?: string;
 };
@@ -59,8 +60,7 @@ export const buildLogEntries: BuildLogEntry[] = [
     ],
     impact:
       "Makes it easier to capture worthwhile fragments quickly and shape them later instead of losing them to inertia.",
-    href: "/admin/content-inbox",
-    linkLabel: "Open the capture flow",
+    public: false,
   },
   {
     id: "spotlight-queue",
@@ -70,7 +70,7 @@ export const buildLogEntries: BuildLogEntry[] = [
       "The homepage spotlight can now be curated as a small queue instead of one card you have to keep rewriting by hand.",
     category: "Homepage",
     details: [
-      "Added homepage spotlight queue support in admin.",
+      "Added a reusable queue behind the homepage spotlight.",
       "Made the top of the homepage feel more current without needing a full redesign every time.",
       "Kept the spotlight intentionally editorial rather than algorithmic.",
     ],
@@ -115,8 +115,12 @@ export const buildLogEntries: BuildLogEntry[] = [
   },
 ];
 
+export function getPublicBuildLogEntries() {
+  return buildLogEntries.filter((entry) => entry.public !== false);
+}
+
 export function getRecentBuildLogEntries(limit = 3) {
-  return [...buildLogEntries]
+  return [...getPublicBuildLogEntries()]
     .sort((left, right) => right.date.localeCompare(left.date))
     .slice(0, limit);
 }

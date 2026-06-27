@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TrackedLink } from "../TrackedLink";
-import { getRecentBuildLogEntries, buildLogEntries } from "../lib/build-log";
+import { getPublicBuildLogEntries } from "../lib/build-log";
 
 export const metadata: Metadata = {
   title: "Build Log",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default function BuildLogPage() {
-  const highlighted = getRecentBuildLogEntries(3);
+  const entries = getPublicBuildLogEntries();
 
   return (
     <main className="updates-page">
@@ -37,18 +37,8 @@ export default function BuildLogPage() {
           </p>
         </div>
 
-        <div className="build-log-highlight" aria-label="Recent build log highlights">
-          {highlighted.map((entry) => (
-            <article className="build-log-highlight-card" key={entry.id}>
-              <p className="card-eyebrow">{entry.category}</p>
-              <h2>{entry.title}</h2>
-              <p>{entry.summary}</p>
-            </article>
-          ))}
-        </div>
-
         <div className="build-log-stream">
-          {buildLogEntries.map((entry) => (
+          {entries.map((entry) => (
             <article className="build-log-card" key={entry.id}>
               <div className="update-meta">
                 <span>{entry.category}</span>
