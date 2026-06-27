@@ -10,6 +10,7 @@ export const navItems = [
   { label: "Now", href: "#now" },
   { label: "Projects", href: "#projects" },
   { label: "Writing", href: "#writing" },
+  { label: "Search", href: "/search" },
   { label: "Fun & Games", href: "#fun-and-games" },
   { label: "About", href: "#about" },
   { label: "Work With Me", href: "/work-with-me" },
@@ -19,6 +20,20 @@ export const navItems = [
 ];
 
 export const githubRepoUrl = "https://github.com/jpollard-github/personal";
+
+export const surpriseMeLinks = [
+  { href: "/writings/it-aint-over-till-its-over" },
+  { href: "/writings/my-first-cat" },
+  { href: "/games/between-two-lodges" },
+  { href: "/twin-peaks-self" },
+  { href: "/music" },
+  { href: "/movies-tv" },
+  { href: "/arcade" },
+  { href: "/cats/beverly-and-lucinda" },
+  { href: "/cats/thomas-jones-missy-cass" },
+  { href: "/updates" },
+  { href: "/#signal-booth" },
+];
 
 export const startHereCards = [
   {

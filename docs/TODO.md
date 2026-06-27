@@ -8,22 +8,22 @@ This checklist prioritizes changes that are most likely to improve first impress
 - [x] Pick and ship one recurring content format so the site feels alive on repeat visits.
 - [x] Add RSS feeds for writings, tiny thoughts, and other update-style content.
 - [x] Add related links at the bottom of writings and key feature pages.
-- [ ] Improve project cards so each one communicates why it matters, what state it is in, and where to go next.
+- [x] Improve project cards so each one communicates why it matters, what state it is in, and where to go next.
 
 ## Priority 2
 
 - [x] Add an `/updates` or `/changelog` page that shows what is new across the site.
-- [ ] Add richer structured data for writings and projects, not just `Person` and `WebSite`.
-- [ ] Add lightweight site search across writings, projects, tiny thoughts, and other browsable content.
-- [ ] Review whether the homepage really needs `force-dynamic` or could be static/revalidated for better performance.
+- [x] Add richer structured data for writings and projects, not just `Person` and `WebSite`.
+- [x] Add lightweight site search across writings, projects, tiny thoughts, and other browsable content.
+- [x] Review whether the homepage really needs `force-dynamic` or could be static/revalidated for better performance.
 - [ ] Add event tracking for key interactions so future changes can follow real visitor behavior.
 
 ## Priority 3
 
-- [ ] Add a `Surprise Me` button that sends visitors to a random page, writing, game, or signal.
+- [x] Add a `Surprise Me` button that sends visitors to a random page, writing, game, or signal.
 - [ ] Add a rotating homepage spotlight such as current signal, current fixation, featured project, or featured essay.
-- [ ] Surface a few recent guestbook messages higher on the homepage so community activity is easier to notice.
-- [ ] Add custom Open Graph images for major pages so shared links feel more polished and clickable.
+- [x] Surface a few recent guestbook messages higher on the homepage so community activity is easier to notice.
+- [x] Add custom Open Graph images for major pages so shared links feel more polished and clickable.
 - [ ] Add small connective transitions or micro-copy between sections so the homepage feels even more like one world.
 
 ## Longer-Term Ideas

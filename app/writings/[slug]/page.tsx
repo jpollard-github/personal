@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RelatedSignals } from "../../RelatedSignals";
+import { absoluteUrl } from "../../seo";
 import { writings } from "../../writings";
 
 type PageProps = {
@@ -97,6 +98,22 @@ export default async function WritingPage({ params }: PageProps) {
   return (
     <main className="writing-page">
       <article className="writing-article">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: writing.title,
+              description: writing.description,
+              url: absoluteUrl(`/writings/${writing.slug}`),
+              author: {
+                "@type": "Person",
+                name: "Jason Pollard",
+              },
+            }),
+          }}
+        />
         <Link className="back-link" href="/#writing">
           Back to Writing
         </Link>

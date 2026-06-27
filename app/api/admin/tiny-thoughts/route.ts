@@ -5,6 +5,7 @@ import {
   requireAdminJson,
   routeFailure,
 } from "../../../lib/admin-route";
+import { revalidateTinyThoughtViews } from "../../../lib/admin-revalidation";
 import { deleteTinyThoughtBlobs } from "../../../lib/blob";
 import { getGuestbookSql } from "../../../lib/guestbook";
 import {
@@ -192,6 +193,8 @@ export async function POST(request: Request) {
         updated_at
     `;
 
+    revalidateTinyThoughtViews();
+
     return Response.json({
       ok: true,
       thought: toTinyThought((rows as TinyThoughtRow[])[0]),
@@ -273,6 +276,7 @@ export async function PUT(request: Request) {
     }
 
     const savedThought = toTinyThought((rows as TinyThoughtRow[])[0]);
+    revalidateTinyThoughtViews();
     const nextImageUrls = new Set(imageUrls(payload.attachments));
     const removedImageUrls = imageUrls(oldThought.attachments).filter(
       (url) => !nextImageUrls.has(url),
@@ -326,6 +330,7 @@ export async function DELETE(request: Request) {
     }
 
     const deletedThought = toTinyThought((rows as TinyThoughtRow[])[0]);
+    revalidateTinyThoughtViews();
     await deleteBlobImages(imageUrls(deletedThought.attachments));
 
     return Response.json({

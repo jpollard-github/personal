@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { HomeDevTerminal } from "./HomeDevTerminal";
+import { HomeSurpriseMe } from "./HomeSurpriseMe";
 import { githubRepoUrl, navItems } from "./data";
 
 export function HomeHero() {
@@ -54,6 +55,7 @@ export function HomeHero() {
           <a className="button secondary" href="#projects">
             See Projects
           </a>
+          <HomeSurpriseMe />
         </div>
         <HomeDevTerminal />
       </div>

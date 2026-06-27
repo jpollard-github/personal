@@ -8,12 +8,15 @@ import { HomeHashScroller } from "./home/HomeHashScroller";
 import { HomeIntroBand } from "./home/HomeIntroBand";
 import { HomeNow } from "./home/HomeNow";
 import { HomeProjects } from "./home/HomeProjects";
+import { HomeRecentSignals } from "./home/HomeRecentSignals";
 import { HomeStartHere } from "./home/HomeStartHere";
 import { HomeTinyThoughts } from "./home/HomeTinyThoughts";
 import { HomeWriting } from "./home/HomeWriting";
+import { getPublicGuestbookEntries } from "./lib/guestbook";
 import { getPublicNowItems } from "./lib/now";
 import { getPublicProjects } from "./lib/projects";
 import { absoluteUrl, siteConfig } from "./seo";
+import { writings } from "./writings";
 
 export const dynamic = "force-dynamic";
 
@@ -33,9 +36,10 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [nowItems, projects] = await Promise.all([
+  const [nowItems, projects, guestbookEntries] = await Promise.all([
     getPublicNowItems(),
     getPublicProjects(),
+    getPublicGuestbookEntries(3).catch(() => []),
   ]);
   const jsonLd = {
     "@context": "https://schema.org",
@@ -66,6 +70,34 @@ export default async function Home() {
           "@id": absoluteUrl("/#jason-pollard"),
         },
       },
+      {
+        "@type": "ItemList",
+        "@id": absoluteUrl("/#project-list"),
+        name: "Featured projects",
+        itemListElement: projects.slice(0, 6).map((project, index) => ({
+          "@type": project.href.startsWith("/") ? "SoftwareApplication" : "CreativeWork",
+          position: index + 1,
+          name: project.title,
+          description: project.description,
+          url: absoluteUrl(project.href || "/#projects"),
+          applicationCategory: project.type,
+          creativeWorkStatus: project.status,
+        })),
+      },
+      {
+        "@type": "Blog",
+        "@id": absoluteUrl("/#writing-list"),
+        name: "ArcadeGhosts writing",
+        blogPost: writings.map((writing) => ({
+          "@type": "BlogPosting",
+          headline: writing.title,
+          description: writing.description,
+          url: absoluteUrl(`/writings/${writing.slug}`),
+          author: {
+            "@id": absoluteUrl("/#jason-pollard"),
+          },
+        })),
+      },
     ],
   };
 
@@ -82,6 +114,7 @@ export default async function Home() {
       <HomeHero />
       <HomeStartHere />
       <HomeIntroBand />
+      <HomeRecentSignals entries={guestbookEntries} />
       <HomeNow items={nowItems} />
       <HomeProjects projects={projects} />
       <HomeWriting />

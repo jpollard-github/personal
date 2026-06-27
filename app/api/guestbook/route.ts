@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "crypto";
 import {
   ensureGuestbookTable,
   getGuestbookSql,
+  getPublicGuestbookEntries,
   guestbookCategories,
   toGuestbookEntry,
   type GuestbookCategory,
@@ -84,18 +85,8 @@ async function enforceRateLimit(sql: ReturnType<typeof getGuestbookSql>, ipHash:
 
 export async function GET() {
   try {
-    await ensureGuestbookTable();
-    const sql = getGuestbookSql();
-    const rows = await sql`
-      SELECT id, name, category, message, created_at
-      FROM guestbook_entries
-      WHERE status = 'approved'
-      ORDER BY created_at DESC
-      LIMIT 24
-    `;
-
     return Response.json({
-      entries: (rows as GuestbookRow[]).map(toGuestbookEntry),
+      entries: await getPublicGuestbookEntries(),
     });
   } catch (error) {
     console.error("Guestbook GET failed", error);

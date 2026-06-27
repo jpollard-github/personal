@@ -5,6 +5,7 @@ import {
   requireAdminJson,
   routeFailure,
 } from "../../../lib/admin-route";
+import { revalidateProjectViews } from "../../../lib/admin-revalidation";
 import { getGuestbookSql } from "../../../lib/guestbook";
 import {
   ensureProjectsTable,
@@ -214,6 +215,8 @@ export async function PUT(request: Request) {
       }
     }
 
+    revalidateProjectViews();
+
     const rows = await sql`
       SELECT
         id,
@@ -292,6 +295,8 @@ export async function PATCH(request: Request) {
           WHERE id = ${orderedIds[index]}
         `;
       }
+
+      revalidateProjectViews();
 
       return Response.json({
         ok: true,
@@ -383,6 +388,8 @@ export async function PATCH(request: Request) {
         updated_at = now()
     `;
 
+    revalidateProjectViews();
+
     const rows = await sql`
       SELECT
         id,
@@ -458,6 +465,8 @@ export async function DELETE(request: Request) {
         WHERE id = ${remainingRows[index].id}
       `;
     }
+
+    revalidateProjectViews();
 
     return Response.json({
       ok: true,

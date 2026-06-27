@@ -197,3 +197,17 @@ export function toAdminGuestbookEntry(row: GuestbookRow): AdminGuestbookEntry {
     status: row.status ?? "pending",
   };
 }
+
+export async function getPublicGuestbookEntries(limit = 24) {
+  await ensureGuestbookTable();
+  const sql = getGuestbookSql();
+  const rows = await sql`
+    SELECT id, name, category, message, created_at
+    FROM guestbook_entries
+    WHERE status = 'approved'
+    ORDER BY created_at DESC
+    LIMIT ${limit}
+  `;
+
+  return (rows as GuestbookRow[]).map(toGuestbookEntry);
+}

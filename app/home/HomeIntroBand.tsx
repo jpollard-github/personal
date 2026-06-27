@@ -6,6 +6,7 @@ export function HomeIntroBand() {
       <p>
         A living portfolio for software, writing, and strange little
         experiments. <Link href="/updates">Recent updates</Link>.{" "}
+        <Link href="/search">Site search</Link>.{" "}
         <a href="/writings/rss.xml">Writing RSS</a>.{" "}
         <a href="/tiny-thoughts/rss.xml">Tiny Thoughts RSS</a>.{" "}
         <Link
