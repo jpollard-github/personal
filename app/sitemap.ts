@@ -7,6 +7,7 @@ const staticRoutes = [
   "/arcade",
   "/music",
   "/movies-tv",
+  "/updates",
   "/twin-peaks-self",
   "/cats/beverly-and-lucinda",
   "/cats/thomas-jones-missy-cass",

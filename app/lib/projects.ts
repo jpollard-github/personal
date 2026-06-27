@@ -62,7 +62,7 @@ export const defaultProjects: SiteProject[] = [
     title: "Between Two Lodges",
     description:
       "A moody, original text adventure about coffee, woods, clues, dreams, and the kind of hallway that knows your name.",
-    href: "/games/between-two-lodges/index.html",
+    href: "/games/between-two-lodges",
     imageUrl: "",
     status: "active",
     phase: "",

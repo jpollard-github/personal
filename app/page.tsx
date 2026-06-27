@@ -8,6 +8,7 @@ import { HomeHashScroller } from "./home/HomeHashScroller";
 import { HomeIntroBand } from "./home/HomeIntroBand";
 import { HomeNow } from "./home/HomeNow";
 import { HomeProjects } from "./home/HomeProjects";
+import { HomeStartHere } from "./home/HomeStartHere";
 import { HomeTinyThoughts } from "./home/HomeTinyThoughts";
 import { HomeWriting } from "./home/HomeWriting";
 import { getPublicNowItems } from "./lib/now";
@@ -79,6 +80,7 @@ export default async function Home() {
         Back Up Top
       </a>
       <HomeHero />
+      <HomeStartHere />
       <HomeIntroBand />
       <HomeNow items={nowItems} />
       <HomeProjects projects={projects} />

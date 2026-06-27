@@ -50,7 +50,7 @@ export function TinyThoughts() {
   return (
     <div className="tiny-thought-grid">
       {thoughts.map((thought) => (
-        <article className="tiny-thought-card" key={thought.id}>
+        <article className="tiny-thought-card" id={`tiny-thought-${thought.id}`} key={thought.id}>
           {thought.attachments
             .filter((attachment) => attachment.type === "image")
             .slice(0, 1)

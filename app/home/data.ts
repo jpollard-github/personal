@@ -6,6 +6,7 @@ import {
 } from "../site-data";
 
 export const navItems = [
+  { label: "Start Here", href: "#start-here" },
   { label: "Now", href: "#now" },
   { label: "Projects", href: "#projects" },
   { label: "Writing", href: "#writing" },
@@ -18,6 +19,39 @@ export const navItems = [
 ];
 
 export const githubRepoUrl = "https://github.com/jpollard-github/personal";
+
+export const startHereCards = [
+  {
+    variant: "workbench",
+    glyph: "[_]",
+    eyebrow: "Workbench",
+    title: "See Projects",
+    text: "Useful software, active experiments, and practical little systems with enough context to tell what is shipped, what is moving, and what still has sawdust on it.",
+    audience: "Start here if you want the builder version of me first.",
+    href: "#projects",
+    cta: "Step Into The Workbench",
+  },
+  {
+    variant: "voice",
+    glyph: "//",
+    eyebrow: "Voice",
+    title: "Read Writing",
+    text: "Essays and reflections on grief, attention, technology, comedy, identity, and the suspiciously brave act of trying again tomorrow.",
+    audience: "Start here if you want the person behind the projects.",
+    href: "#writing",
+    cta: "Read A Few Signals",
+  },
+  {
+    variant: "static",
+    glyph: "~*",
+    eyebrow: "Static",
+    title: "Try Something Strange",
+    text: "Interactive toys, symbolic journeys, a browser game, and other small rooms for people who like a little meaning hiding in the static.",
+    audience: "Start here if you want the site's odd little heartbeat.",
+    href: "#fun-and-games",
+    cta: "Follow The Strange Signal",
+  },
+];
 
 export const funAndGamesCards = [
   {

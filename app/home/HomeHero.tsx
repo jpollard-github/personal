@@ -48,8 +48,8 @@ export function HomeHero() {
           the neon forest.
         </p>
         <div className="hero-actions" aria-label="Primary links">
-          <a className="button primary" href="#now">
-            What&apos;s Now
+          <a className="button primary" href="#start-here">
+            Start Here
           </a>
           <a className="button secondary" href="#projects">
             See Projects

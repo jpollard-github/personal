@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { RelatedSignals } from "../../RelatedSignals";
 import { SectionHeading } from "../../SectionHeading";
 import { beverlyAndLucindaPhotos } from "../../site-data";
 
@@ -17,6 +18,33 @@ export const metadata: Metadata = {
     url: "/cats/beverly-and-lucinda",
   },
 };
+
+const relatedSignals = [
+  {
+    href: "/cats/thomas-jones-missy-cass",
+    title: "Thomas, Jones, Missy, and Cass",
+    description:
+      "The older memory room with a wider cat orbit, more years, and a little more grief in the wallpaper.",
+    reason: "Because the current crew makes more sense beside the longer cat history.",
+    cta: "Visit the memory room",
+  },
+  {
+    href: "/writings/my-first-cat",
+    title: "My First Cat",
+    description:
+      "An essay about Finnegan, first companionship, and the shape of goodbye when an animal changes your life.",
+    reason: "Because cat photos and cat stories belong beside each other here.",
+    cta: "Read the story",
+  },
+  {
+    href: "/#tiny-thoughts",
+    title: "Tiny Thoughts",
+    description:
+      "Smaller notes from the counter for the moments when a feeling or observation only needs a short form.",
+    reason: "Because some cat-related emotions are quick sparks rather than full rooms.",
+    cta: "Read smaller signals",
+  },
+];
 
 export default function BeverlyAndLucindaPage() {
   return (
@@ -50,6 +78,7 @@ export default function BeverlyAndLucindaPage() {
             </figure>
           ))}
         </div>
+        <RelatedSignals items={relatedSignals} title="A few neighboring cat signals." />
       </section>
     </main>
   );

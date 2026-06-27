@@ -246,3 +246,25 @@ export function toTinyThought(row: TinyThoughtRow): TinyThought {
     updatedAt: row.updated_at,
   };
 }
+
+export async function getPublicTinyThoughts(limit = 24) {
+  await ensureTinyThoughtsTable();
+  const sql = getGuestbookSql();
+  const rows = await sql`
+    SELECT
+      id,
+      category,
+      content,
+      image_url,
+      attachments,
+      inspired_by_category,
+      inspired_by,
+      created_at,
+      updated_at
+    FROM tiny_thoughts
+    ORDER BY created_at DESC
+    LIMIT ${limit}
+  `;
+
+  return (rows as TinyThoughtRow[]).map(toTinyThought);
+}

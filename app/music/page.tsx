@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { RelatedSignals } from "../RelatedSignals";
 import { MusicAllTimeLeaders } from "./MusicAllTimeLeaders";
 import { MusicConsole } from "./MusicConsole";
 import { MusicCurrentSignal } from "./MusicCurrentSignal";
@@ -28,6 +29,33 @@ export const metadata: Metadata = {
   },
 };
 
+const relatedSignals = [
+  {
+    href: "/#tiny-thoughts",
+    title: "Tiny Thoughts",
+    description:
+      "Shorter notes from the counter where a song, reaction, or sudden opinion can land without becoming a full essay.",
+    reason: "Because music taste and quick observations often travel together.",
+    cta: "Read smaller signals",
+  },
+  {
+    href: "/movies-tv",
+    title: "Movies & TV",
+    description:
+      "A parallel taste map full of atmospheric favorites, strange comedies, and recurring emotional weather.",
+    reason: "Because the same sensibility shaping this listening room also shapes the screen obsessions.",
+    cta: "Browse the taste map",
+  },
+  {
+    href: "/#about",
+    title: "About",
+    description:
+      "A fuller picture of the person behind the playlists, synth weather, and odd little listening fixations.",
+    reason: "Because music is one of the clearest routes into the whole site's personality.",
+    cta: "Read the field notes",
+  },
+];
+
 export default function MusicPage() {
   return (
     <main className="collection-page" id="top">
@@ -50,6 +78,7 @@ export default function MusicPage() {
         <MusicAllTimeLeaders />
         <MusicFixations />
         <MusicPlaylists />
+        <RelatedSignals items={relatedSignals} title="A few nearby frequencies." />
       </section>
     </main>
   );

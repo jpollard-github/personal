@@ -3,6 +3,7 @@ import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { RelatedSignals } from "../../RelatedSignals";
 import { writings } from "../../writings";
 
 type PageProps = {
@@ -117,6 +118,7 @@ export default async function WritingPage({ params }: PageProps) {
             return <p key={block}>{renderInline(block.replace(/\n/g, " "))}</p>;
           })}
         </div>
+        <RelatedSignals items={writing.related} />
       </article>
     </main>
   );
