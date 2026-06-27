@@ -44,6 +44,7 @@ export default function ThomasJonesMissyCassPage() {
                 src={photo.src}
                 alt={photo.alt}
                 fill
+                unoptimized
                 sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw"
                 className="cat-photo-image"
               />

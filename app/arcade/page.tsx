@@ -48,6 +48,7 @@ export default function ArcadePage() {
                   src={game.image}
                   alt={`${game.title} arcade artwork`}
                   fill
+                  unoptimized
                   sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 20vw"
                   className="arcade-image"
                 />

@@ -37,6 +37,7 @@ export function MusicPlaylists() {
               src="/images/music-league.png"
               alt="Music League"
               fill
+              unoptimized
               sizes="(max-width: 860px) 100vw, 520px"
               className="music-league-image"
             />

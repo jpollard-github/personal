@@ -45,6 +45,7 @@ export function SignalBooth() {
           src={activeSignal.image}
           alt=""
           fill
+          unoptimized
           sizes="(max-width: 860px) 100vw, 520px"
           className="signal-booth-image"
         />

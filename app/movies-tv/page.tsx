@@ -47,6 +47,7 @@ export default function MoviesTvPage() {
                   src={item.image}
                   alt={`${item.title} poster or key art`}
                   fill
+                  unoptimized
                   sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 20vw"
                   className={`media-image${item.fit === "contain" ? " contain" : ""}`}
                 />
