@@ -34,7 +34,7 @@ export default function MoviesTvPage() {
           and other shows and films that stuck around.
         </SectionHeading>
         <div className="media-grid">
-          {visualMedia.map((item) => (
+          {visualMedia.map((item, index) => (
             <article className="media-card" key={item.title}>
               <a
                 className="media-image-link"
@@ -47,6 +47,7 @@ export default function MoviesTvPage() {
                   src={item.image}
                   alt={`${item.title} poster or key art`}
                   fill
+                  priority={index < 3}
                   unoptimized
                   sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 20vw"
                   className={`media-image${item.fit === "contain" ? " contain" : ""}`}

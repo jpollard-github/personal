@@ -1,5 +1,42 @@
 import Link from "next/link";
-import { aboutCards, resonanceLinks } from "./data";
+import { aboutCards } from "./data";
+
+function AboutCardLink({
+  href,
+  title,
+  eyebrow,
+  text,
+  cta,
+}: {
+  href: string;
+  title: string;
+  eyebrow: string;
+  text: string;
+  cta: string;
+}) {
+  const content = (
+    <>
+      <span className="card-eyebrow">{eyebrow}</span>
+      <h3>{title}</h3>
+      <p>{text}</p>
+      <span>{cta}</span>
+    </>
+  );
+
+  if (href.startsWith("/") || href.startsWith("#")) {
+    return (
+      <Link className="section-link-card" href={href}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <a className="section-link-card" href={href}>
+      {content}
+    </a>
+  );
+}
 
 export function HomeAbout() {
   return (
@@ -25,27 +62,12 @@ export function HomeAbout() {
           arcade cabinets, weird dreams, cat rituals, and sudden
           self-understanding.
         </p>
-
-        <h3>If you&apos;re the type of person who enjoys:</h3>
-        <ul className="about-list">
-          <li>The strange atmosphere of Twin Peaks</li>
-          <li>Finding hidden meaning in songs and films</li>
-          <li>Losing track of time in an old arcade</li>
-          <li>Deep conversations that skip the small talk</li>
-          <li>Learning for the sheer joy of learning</li>
-          <li>Cats</li>
-          <li>Building things just because they&apos;re interesting</li>
-          <li>The feeling of discovering your people</li>
+        <ul className="about-preview-list">
+          <li>Twin Peaks atmosphere</li>
+          <li>Hidden meaning in songs and films</li>
+          <li>Old arcades and forgotten cabinets</li>
+          <li>Deep conversations and strange ideas</li>
         </ul>
-
-        <h3>Some places on the internet that resonate with me:</h3>
-        <div className="resonance-links">
-          {resonanceLinks.map((link) => (
-            <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
-              {link.label}
-            </a>
-          ))}
-        </div>
 
         <p>
           ArcadeGhosts is ultimately an experiment in whether a collection of
@@ -54,14 +76,20 @@ export function HomeAbout() {
           <Link href="/work-with-me">I occasionally take on small side projects too.</Link>
         </p>
 
+        <p className="about-preview-link">
+          <Link href="/about">Read the full About room</Link>
+        </p>
+
         <div className="section-link-grid about-card-grid">
           {aboutCards.map((card) => (
-            <a className="section-link-card" href={card.href} key={card.title}>
-              <span className="card-eyebrow">{card.eyebrow}</span>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-              <span>{card.cta}</span>
-            </a>
+            <AboutCardLink
+              cta={card.cta}
+              eyebrow={card.eyebrow}
+              href={card.href}
+              key={card.title}
+              text={card.text}
+              title={card.title}
+            />
           ))}
         </div>
       </div>

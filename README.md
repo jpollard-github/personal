@@ -9,12 +9,18 @@ It is a Next.js App Router application deployed on Vercel, mixing:
 - music, arcade, movie/TV, and cat collection pages
 - small single-user admin tools for keeping the site current
 - lightweight storage through Neon Postgres and Vercel Blob
+- lightweight editorial workflows for homepage curation and quick content capture
 
 ## What The Site Includes
 
 Main public areas:
 
 - `/`
+- `/about`
+- `/updates`
+- `/search`
+- `/tiny-thoughts`
+- `/writings`
 - `/work-with-me`
 - `/music`
 - `/arcade`
@@ -27,6 +33,10 @@ Interactive/public features:
 
 - guestbook with moderated submissions
 - Tiny Thoughts short-form posts
+- homepage `Start Here` section
+- homepage spotlight near the top for one curated signal
+- RSS feeds for writings and Tiny Thoughts
+- related links on writing pages
 - Signal Booth random prompt/oracle experience
 - faux `80s Dev Terminal` widget in the homepage hero
 - custom Twin Peaks-style 404 and 500 pages
@@ -34,8 +44,11 @@ Interactive/public features:
 Admin areas:
 
 - `/admin`
+- `/admin/home-spotlight`
+- `/admin/content-inbox`
 - `/admin/guestbook`
 - `/admin/tiny-thoughts`
+- `/admin/writing-drafts`
 - `/admin/now`
 - `/admin/projects`
 - `/admin/social-quest-log`
@@ -58,10 +71,14 @@ Admin areas:
 
 Useful internal docs:
 
-- `docs/project-brief.md`
 - `docs/current-work.md`
-- `docs/decisions.md`
+- `docs/TODO.md`
+- `docs/low-friction-content-flow.md`
 - `docs/project-memory-snapshot.md`
+
+Note:
+
+- `docs/low-friction-content-flow.md` is rendered directly inside the `Content Inbox` admin page, so editing that file updates the in-app instructions too.
 
 If you are using Codex or another AI coding assistant here, those docs should be treated as the primary source of truth before inspecting implementation files.
 
@@ -71,14 +88,16 @@ If you are using Codex or another AI coding assistant here, those docs should be
   Routes, components, layouts, API handlers, and local helpers
 - `app/home/`
   Homepage section components and terminal widget pieces
+- `app/about/`
+  Full About room extracted from the homepage preview
 - `app/music/`
   Music page sections and route-local styles
-- `app/site-content/`
-  Shared arcade, media, and cat data
 - `app/tiny-thought-admin/`
   Tiny Thoughts admin hook and UI pieces
 - `app/lib/`
   Shared auth, DB, upload, Blob, and normalization helpers
+- `app/api/admin/`
+  Admin JSON routes for session, content, curation, and uploads
 - `tests/`
   Regression tests and Playwright coverage
 - `docs/`
@@ -143,13 +162,23 @@ Start the dev server:
 npm run dev
 ```
 
+Note:
+
+- if port `3000` is already occupied, Next.js will pick another port such as `3001`
+
 Lint:
 
 ```bash
 npm run lint
 ```
 
-Run unit/regression tests:
+Run unit tests:
+
+```bash
+npm run test:unit
+```
+
+Run the default full test command:
 
 ```bash
 npm test
@@ -204,9 +233,9 @@ Open them from:
 
 The docs task opens:
 
-- `docs/project-brief.md`
 - `docs/current-work.md`
-- `docs/decisions.md`
+- `docs/TODO.md`
+- `docs/low-friction-content-flow.md`
 - `docs/project-memory-snapshot.md`
 
 Note:
@@ -221,6 +250,7 @@ Current browser coverage includes:
 - homepage terminal behavior
 - custom error-page preview routes
 - admin login and protected route access
+- content inbox draft imports for Now, Projects, Tiny Thoughts, and Writing Drafts
 
 Important caveat:
 
@@ -231,10 +261,13 @@ Playwright uses a local `next dev` server bound to `127.0.0.1:3000`.
 ## Current Architectural Notes
 
 - Homepage composition is split under `app/home/`; extend those modules instead of collapsing logic back into `app/page.tsx`.
+- The homepage now intentionally uses a curated top-of-page sequence: intro band, hero, `Start Here`, and spotlight.
+- Some homepage sections now preview fuller rooms instead of fully expanding on the homepage, notably `/about`, `/writings`, and `/tiny-thoughts`.
 - Music composition is split under `app/music/`.
 - Projects admin uses per-project save/delete plus persisted `display_order` for drag-and-drop ordering.
 - The homepage terminal is intentionally data-driven through `app/home/terminal-data.ts`.
 - The site now has explicit `not-found`, route `error`, and `global-error` surfaces, plus preview routes under `/error-preview/*`.
+- Admin content capture is split across `Content Inbox` for raw fragments, `Tiny Thoughts` for short publishable posts, `Writing Drafts` for longer-form shaping, `Projects` for project cards and updates, `Now` for current homepage signals, and `Homepage Spotlight` for top-of-home curation.
 
 ## Guestbook And Tiny Thoughts
 
@@ -250,6 +283,16 @@ Tiny Thoughts:
 - short public posts with structured attachments
 - admin create/edit/delete UI
 - optional image uploads through Vercel Blob
+
+## Content Workflow
+
+The site now has a lightweight publishing pipeline:
+
+1. capture fragments in `/admin/content-inbox`
+2. route promising items into `Now`, `Tiny Thoughts`, `Projects`, or `Writing Drafts`
+3. promote only the strongest material into fuller rooms like `/writings` or `/about`
+
+The goal is to reduce writing friction without publishing every note or every ChatGPT exchange.
 
 ## Music Insights
 

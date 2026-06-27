@@ -11,6 +11,7 @@ export function revalidateNowViews() {
 
 export function revalidateTinyThoughtViews() {
   revalidatePath("/");
+  revalidatePath("/tiny-thoughts");
   revalidatePath("/updates");
   revalidatePath("/search");
   revalidatePath("/tiny-thoughts/rss.xml");

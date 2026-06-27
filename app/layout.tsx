@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { ControlRoomLink } from "./ControlRoomLink";
 import { SiteLogo } from "./SiteLogo";
 import { absoluteUrl, siteConfig } from "./seo";
 import "./globals.css";
@@ -66,6 +67,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SiteLogo />
+        <ControlRoomLink />
         {children}
         <Analytics />
       </body>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { SectionHeading } from "../SectionHeading";
+import { TrackedLink } from "../TrackedLink";
 import type { SiteProject } from "../lib/projects";
 import { formatProjectDate, projectCta, projectStatusLabels } from "./project-helpers";
 
@@ -117,9 +118,22 @@ export function HomeProjects({ projects }: { projects: SiteProject[] }) {
               </p>
             ) : null}
             {project.href ? (
-              <a className="project-link" href={project.href} target="_blank" rel="noreferrer">
+              <TrackedLink
+                className="project-link"
+                href={project.href}
+                target="_blank"
+                rel="noreferrer"
+                trackingEvent="Project Link Clicked"
+                trackingProperties={{
+                  projectId: project.id,
+                  title: project.title,
+                  destination: project.href,
+                  status: project.status,
+                  type: project.type,
+                }}
+              >
                 {projectCta(project.href)}
-              </a>
+              </TrackedLink>
             ) : null}
           </article>
         ))}

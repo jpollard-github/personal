@@ -1,23 +1,51 @@
-import Link from "next/link";
+import { TrackedLink } from "../TrackedLink";
 
 export function HomeIntroBand() {
   return (
     <section className="intro-band" aria-label="Site mood">
       <p>
         A living portfolio for software, writing, and strange little
-        experiments. <Link href="/updates">Recent updates</Link>.{" "}
-        <Link href="/search">Site search</Link>.{" "}
-        <a href="/writings/rss.xml">Writing RSS</a>.{" "}
-        <a href="/tiny-thoughts/rss.xml">Tiny Thoughts RSS</a>.{" "}
-        <Link
-          className="admin-cup-link"
-          href="/admin"
-          aria-label="Open Control Room"
-          title="Control Room"
+        experiments.{" "}
+        <TrackedLink
+          href="/build-log"
+          trackingEvent="Intro Band Link Clicked"
+          trackingProperties={{ destination: "/build-log" }}
         >
-          <span aria-hidden="true">☕</span>
-          <span className="admin-cup-label">Control Room</span>
-        </Link>
+          Build log
+        </TrackedLink>
+        .{" "}
+        <TrackedLink
+          href="/updates"
+          trackingEvent="Intro Band Link Clicked"
+          trackingProperties={{ destination: "/updates" }}
+        >
+          Recent updates
+        </TrackedLink>
+        .{" "}
+        <TrackedLink
+          href="/search"
+          trackingEvent="Intro Band Link Clicked"
+          trackingProperties={{ destination: "/search" }}
+        >
+          Site search
+        </TrackedLink>
+        .{" "}
+        <TrackedLink
+          href="/writings/rss.xml"
+          trackingEvent="Intro Band Link Clicked"
+          trackingProperties={{ destination: "/writings/rss.xml" }}
+        >
+          Writing RSS
+        </TrackedLink>
+        .{" "}
+        <TrackedLink
+          href="/tiny-thoughts/rss.xml"
+          trackingEvent="Intro Band Link Clicked"
+          trackingProperties={{ destination: "/tiny-thoughts/rss.xml" }}
+        >
+          Tiny Thoughts RSS
+        </TrackedLink>
+        .
       </p>
     </section>
   );

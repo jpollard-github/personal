@@ -35,7 +35,7 @@ export default function ArcadePage() {
           making the homepage scroll forever.
         </SectionHeading>
         <div className="arcade-grid">
-          {arcadeGames.map((game) => (
+          {arcadeGames.map((game, index) => (
             <article className="arcade-card" key={game.title}>
               <a
                 className="arcade-image-link"
@@ -48,6 +48,7 @@ export default function ArcadePage() {
                   src={game.image}
                   alt={`${game.title} arcade artwork`}
                   fill
+                  priority={index < 3}
                   unoptimized
                   sizes="(max-width: 640px) 50vw, (max-width: 980px) 33vw, 20vw"
                   className="arcade-image"

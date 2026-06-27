@@ -5,7 +5,7 @@ export function SiteLogo() {
   return (
     <Link className="site-logo" href="/" aria-label="ArcadeGhosts home">
       <Image
-        src="/images/logo.png"
+        src="/images/logo.webp"
         alt="ArcadeGhosts"
         width={1536}
         height={1024}

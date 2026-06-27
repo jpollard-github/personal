@@ -4,10 +4,17 @@ import {
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const limitValue = Number(searchParams.get("limit") ?? "");
+    const limit =
+      Number.isFinite(limitValue) && limitValue > 0
+        ? Math.min(Math.floor(limitValue), 60)
+        : undefined;
+
     return Response.json({
-      thoughts: await getPublicTinyThoughts(),
+      thoughts: await getPublicTinyThoughts(limit),
     });
   } catch (error) {
     console.error("Tiny thoughts GET failed", error);

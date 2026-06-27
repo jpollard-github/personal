@@ -19,6 +19,11 @@ test("homepage renders the hero and key sections", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
+      name: "Recent changes worth noticing.",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
       name: "Shipped, active, paused, and becoming.",
     }),
   ).toBeVisible();
@@ -35,6 +40,17 @@ test("homepage navigation reaches the work page", async ({ page }) => {
     page.getByRole("heading", {
       name: "Small projects. Clear problems. Personal attention.",
     }),
+  ).toBeVisible();
+});
+
+test("homepage build log preview links to the full build log", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("link", { name: "Open the full build log" }).click();
+
+  await expect(page).toHaveURL(/\/build-log$/);
+  await expect(
+    page.getByRole("heading", { name: "What changed behind the curtain." }),
   ).toBeVisible();
 });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { startTransition } from "react";
+import { trackEvent } from "../lib/analytics";
 import { surpriseMeLinks } from "./data";
 
 function pickRandomLink() {
@@ -12,11 +13,13 @@ export function HomeSurpriseMe() {
     <button
       className="button tertiary"
       type="button"
-      onClick={() =>
+      onClick={() => {
+        const destination = pickRandomLink().href;
+        trackEvent("Surprise Me Clicked", { destination });
         startTransition(() => {
-          window.location.href = pickRandomLink().href;
-        })
-      }
+          window.location.href = destination;
+        });
+      }}
     >
       Surprise Me
     </button>

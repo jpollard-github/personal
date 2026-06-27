@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { TrackedLink } from "../TrackedLink";
+import { trackEvent } from "../lib/analytics";
 import { terminalCommands, terminalProfileLines } from "./terminal-data";
 
 type HistoryEntry = {
@@ -63,12 +65,14 @@ export function HomeDevTerminal() {
     }
 
     if (normalizedCommand === "help") {
+      trackEvent("Terminal Command Run", { command: normalizedCommand, outcome: "help" });
       setHistory((currentHistory) => [...currentHistory, createHelpEntry()]);
       setCommand("");
       return;
     }
 
     if (normalizedCommand === "reset") {
+      trackEvent("Terminal Command Run", { command: normalizedCommand, outcome: "reset" });
       resetTerminal();
       return;
     }
@@ -76,6 +80,11 @@ export function HomeDevTerminal() {
     const match = commandMap.get(normalizedCommand);
 
     if (match) {
+      trackEvent("Terminal Command Run", {
+        command: normalizedCommand,
+        outcome: "known",
+        hasLink: Boolean(match.href),
+      });
       setHistory((currentHistory) => [
         ...currentHistory,
         {
@@ -89,6 +98,7 @@ export function HomeDevTerminal() {
       return;
     }
 
+    trackEvent("Terminal Command Run", { command: normalizedCommand, outcome: "unknown" });
     setHistory((currentHistory) => [
       ...currentHistory,
       {
@@ -141,9 +151,18 @@ export function HomeDevTerminal() {
                   </p>
                 ))}
                 {entry.href && entry.linkLabel ? (
-                  <a href={entry.href} target="_blank" rel="noreferrer">
+                  <TrackedLink
+                    href={entry.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    trackingEvent="Terminal Link Clicked"
+                    trackingProperties={{
+                      destination: entry.href,
+                      command: entry.command,
+                    }}
+                  >
                     {entry.linkLabel}
-                  </a>
+                  </TrackedLink>
                 ) : null}
               </div>
             </div>

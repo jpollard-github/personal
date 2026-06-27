@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { NowItem } from "./lib/now";
+import { consumeSessionDraft } from "./lib/session-draft";
+
+const nowDraftStorageKey = "arcadeghosts-now-draft";
 
 function emptyNowItem(): NowItem {
   return {
@@ -37,10 +40,28 @@ export function AdminNow() {
     }
 
     const data = (await response.json()) as { items: NowItem[] };
+    let nextItems = data.items;
+    let nextStatus = data.items.length ? "Now cards loaded." : "No Now cards yet.";
 
-    setItems(data.items);
+    if (typeof window !== "undefined") {
+      const imported = consumeSessionDraft<Partial<NowItem>>(window.sessionStorage, nowDraftStorageKey);
+
+      if (imported.value) {
+        const nextItem = {
+          ...emptyNowItem(),
+          ...imported.value,
+          id: crypto.randomUUID(),
+        };
+        nextItems = [...data.items, nextItem];
+        nextStatus = "Imported draft from Content Inbox. Save changes when you're ready.";
+      } else if (imported.parseError) {
+        nextStatus = "A Now draft was found but could not be imported cleanly.";
+      }
+    }
+
+    setItems(nextItems);
     setSavedItems(data.items);
-    setStatus(data.items.length ? "Now cards loaded." : "No Now cards yet.");
+    setStatus(nextStatus);
   }
 
   useEffect(() => {

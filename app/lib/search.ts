@@ -8,6 +8,19 @@ import { writings } from "../writings";
 
 const staticEntries: SearchEntry[] = [
   {
+    id: "page-build-log",
+    type: "page",
+    title: "Build Log",
+    description:
+      "A public work log of recent site improvements, fixes, experiments, and structural changes.",
+    href: "/build-log",
+    eyebrow: "Behind the curtain",
+    cta: "Open build log",
+    priority: 94,
+    searchText:
+      "build log work log changelog recent changes shipped fixes improvements tests analytics editorial workflow performance",
+  },
+  {
     id: "page-updates",
     type: "page",
     title: "Updates",
@@ -18,6 +31,18 @@ const staticEntries: SearchEntry[] = [
     priority: 95,
     searchText:
       "updates changelog recent writing tiny thoughts fresh signals latest activity archive",
+  },
+  {
+    id: "page-tiny-thoughts",
+    type: "page",
+    title: "Tiny Thoughts",
+    description: "A fuller archive of short signals, observations, and counter notes.",
+    href: "/tiny-thoughts",
+    eyebrow: "Short-form archive",
+    cta: "Open tiny thoughts",
+    priority: 91,
+    searchText:
+      "tiny thoughts short signals observations opinions funny notes archive counter signals short form",
   },
   {
     id: "page-music",
@@ -184,7 +209,7 @@ export async function getSearchEntries() {
     type: "tiny-thought" as const,
     title: summarizeText(thought.content, 88),
     description: summarizeText(thought.content, 180),
-    href: `/#tiny-thought-${thought.id}`,
+    href: `/tiny-thoughts#tiny-thought-${thought.id}`,
     eyebrow: `Tiny Thought / ${thought.category}`,
     cta: "Jump to signal",
     priority: 70 - Math.min(index, 20),

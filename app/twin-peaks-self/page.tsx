@@ -58,7 +58,7 @@ export default function TwinPeaksSelfPage() {
 
       <section className="lodge-hero">
         <Image
-          src="/images/neon-forest-diner.png"
+          src="/images/neon-forest-diner.webp"
           alt="A neon-lit diner at the edge of a misty evergreen forest"
           fill
           priority

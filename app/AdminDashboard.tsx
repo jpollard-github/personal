@@ -106,6 +106,36 @@ export function AdminDashboard() {
             <div className="admin-entry-list admin-dashboard-grid">
               <article className="admin-entry">
                 <div className="admin-entry-meta">
+                  <span>Curate</span>
+                </div>
+                <h2>Homepage Spotlight</h2>
+                <p>Edit the curated spotlight near the top of the homepage.</p>
+                <Link className="admin-action-link" href="/admin/home-spotlight">
+                  Open Homepage Spotlight
+                </Link>
+              </article>
+              <article className="admin-entry">
+                <div className="admin-entry-meta">
+                  <span>Capture</span>
+                </div>
+                <h2>Content Inbox</h2>
+                <p>Paste fragments, bucket ideas, and turn the promising ones into Tiny Thoughts later.</p>
+                <Link className="admin-action-link" href="/admin/content-inbox">
+                  Open Content Inbox
+                </Link>
+              </article>
+              <article className="admin-entry">
+                <div className="admin-entry-meta">
+                  <span>Draft</span>
+                </div>
+                <h2>Writing Drafts</h2>
+                <p>Shape longer-form pieces before they become public writing rooms.</p>
+                <Link className="admin-action-link" href="/admin/writing-drafts">
+                  Open Writing Drafts
+                </Link>
+              </article>
+              <article className="admin-entry">
+                <div className="admin-entry-meta">
                   <span>Review</span>
                 </div>
                 <h2>Guestbook</h2>

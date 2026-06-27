@@ -10,6 +10,8 @@ import {
   toTinyThoughtFormState,
 } from "./shared";
 
+const tinyThoughtDraftStorageKey = "arcadeghosts-tiny-thought-draft";
+
 function sortThoughtsByCreatedAt(thoughts: TinyThought[]) {
   return [...thoughts].sort(
     (left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
@@ -64,6 +66,37 @@ export function useTinyThoughtAdmin() {
     }
 
     loadSession().catch(() => setStatus("Tiny Thoughts admin is temporarily unavailable."));
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const draft = window.sessionStorage.getItem(tinyThoughtDraftStorageKey);
+
+    if (!draft) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(draft) as Partial<TinyThoughtFormState>;
+      queueMicrotask(() => {
+        setForm({
+          ...emptyForm,
+          ...parsed,
+          attachments: Array.isArray(parsed.attachments) ? parsed.attachments : [],
+        });
+        setAttachmentDraft(emptyAttachmentDraft);
+        setStatus("Imported draft from Content Inbox. Edit it, then save when it feels right.");
+      });
+    } catch {
+      queueMicrotask(() => {
+        setStatus("A Content Inbox draft was found but could not be imported cleanly.");
+      });
+    } finally {
+      window.sessionStorage.removeItem(tinyThoughtDraftStorageKey);
+    }
   }, []);
 
   async function handleLogout() {

@@ -89,6 +89,10 @@
   width: min(1120px, 100%);
 }
 
+.content-inbox-shell {
+  width: min(1120px, 100%);
+}
+
 .projects-admin-list {
   margin-top: 0;
 }
@@ -257,6 +261,128 @@
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.content-inbox-instructions {
+  margin-bottom: 1rem;
+}
+
+.content-inbox-instructions summary {
+  display: grid;
+  gap: 0.35rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.content-inbox-instructions summary::-webkit-details-marker {
+  display: none;
+}
+
+.content-inbox-instructions summary span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.content-inbox-instructions summary strong {
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+
+.content-inbox-instructions-note {
+  margin: 1rem 0 0.75rem;
+}
+
+.content-inbox-instructions-body {
+  margin: 0;
+  overflow-x: auto;
+  border: 1px solid rgba(248, 239, 227, 0.12);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--muted);
+  white-space: pre-wrap;
+  background: rgba(255, 255, 255, 0.04);
+  font-family: "Courier New", "SFMono-Regular", Consolas, monospace;
+  line-height: 1.6;
+}
+
+.content-inbox-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.content-inbox-stats span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  border: 1px solid rgba(248, 239, 227, 0.16);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.content-inbox-form {
+  max-width: none;
+  margin-bottom: 1rem;
+}
+
+.content-inbox-form textarea {
+  min-height: 10rem;
+  white-space: pre-wrap;
+}
+
+.content-inbox-form-actions,
+.content-inbox-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.content-inbox-list {
+  margin-top: 1rem;
+}
+
+.content-inbox-card h2 {
+  margin-bottom: 0.7rem;
+}
+
+.content-inbox-card p {
+  white-space: pre-wrap;
+}
+
+.content-inbox-notes {
+  color: var(--ink) !important;
+  font-size: 0.95rem;
+}
+
+.writing-draft-publish {
+  margin-bottom: 1rem;
+}
+
+.writing-draft-match {
+  max-width: none;
+}
+
+.writing-draft-publish textarea {
+  width: 100%;
+  min-height: 14rem;
+  border: 1px solid rgba(248, 239, 227, 0.18);
+  border-radius: 8px;
+  padding: 0.9rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.07);
+  font-family: "Courier New", "SFMono-Regular", Consolas, monospace;
+  line-height: 1.6;
+  resize: vertical;
 }
 
 .side-hustle-prompt textarea {

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { SectionHeading } from "../SectionHeading";
+import { TrackedLink } from "../TrackedLink";
 import { startHereCards } from "./data";
 
 export function HomeStartHere() {
@@ -11,10 +11,16 @@ export function HomeStartHere() {
       </SectionHeading>
       <div className="start-here-grid" aria-label="Recommended first paths">
         {startHereCards.map((card) => (
-          <Link
+          <TrackedLink
             className={`start-here-card start-here-card-${card.variant}`}
             href={card.href}
             key={card.title}
+            trackingEvent="Start Here Card Clicked"
+            trackingProperties={{
+              title: card.title,
+              destination: card.href,
+              variant: card.variant,
+            }}
           >
             <div className="start-here-card-topline">
               <span className="start-here-glyph" aria-hidden="true">
@@ -26,7 +32,7 @@ export function HomeStartHere() {
             <p>{card.text}</p>
             <small>{card.audience}</small>
             <span>{card.cta}</span>
-          </Link>
+          </TrackedLink>
         ))}
       </div>
     </section>

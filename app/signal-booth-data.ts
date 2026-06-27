@@ -21,16 +21,16 @@ export const signalBoothModes = [
 export type SignalBoothMode = (typeof signalBoothModes)[number]["value"];
 
 const signalImages = [
-  "/images/signal-booth/radio-tower.png",
-  "/images/signal-booth/theater-lobby.png",
-  "/images/signal-booth/baseball-field.png",
-  "/images/signal-booth/road-trip.png",
-  "/images/signal-booth/jukebox.png",
-  "/images/signal-booth/kitten-motel.png",
-  "/images/signal-booth/cat-moon.png",
-  "/images/signal-booth/trivia-table.png",
-  "/images/signal-booth/idea-wall.png",
-  "/images/signal-booth/coding-cabin.png",
+  "/images/signal-booth/radio-tower.webp",
+  "/images/signal-booth/theater-lobby.webp",
+  "/images/signal-booth/baseball-field.webp",
+  "/images/signal-booth/road-trip.webp",
+  "/images/signal-booth/jukebox.webp",
+  "/images/signal-booth/kitten-motel.webp",
+  "/images/signal-booth/cat-moon.webp",
+  "/images/signal-booth/trivia-table.webp",
+  "/images/signal-booth/idea-wall.webp",
+  "/images/signal-booth/coding-cabin.webp",
 ];
 
 const signalSeeds = [

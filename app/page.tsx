@@ -3,16 +3,20 @@ import { HomeAbout } from "./home/HomeAbout";
 import { HomeCats } from "./home/HomeCats";
 import { HomeFunAndGames } from "./home/HomeFunAndGames";
 import { HomeGuestbook } from "./home/HomeGuestbook";
+import { HomeBuildLog } from "./home/HomeBuildLog";
 import { HomeHero } from "./home/HomeHero";
 import { HomeHashScroller } from "./home/HomeHashScroller";
 import { HomeIntroBand } from "./home/HomeIntroBand";
 import { HomeNow } from "./home/HomeNow";
 import { HomeProjects } from "./home/HomeProjects";
 import { HomeRecentSignals } from "./home/HomeRecentSignals";
+import { HomeSectionBridge } from "./home/HomeSectionBridge";
+import { HomeSpotlight } from "./home/HomeSpotlight";
 import { HomeStartHere } from "./home/HomeStartHere";
 import { HomeTinyThoughts } from "./home/HomeTinyThoughts";
 import { HomeWriting } from "./home/HomeWriting";
 import { getPublicGuestbookEntries } from "./lib/guestbook";
+import { getPublicHomeSpotlight } from "./lib/home-spotlight";
 import { getPublicNowItems } from "./lib/now";
 import { getPublicProjects } from "./lib/projects";
 import { absoluteUrl, siteConfig } from "./seo";
@@ -36,11 +40,16 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [nowItems, projects, guestbookEntries] = await Promise.all([
+  const [nowItems, projects, guestbookEntries, customSpotlight] = await Promise.all([
     getPublicNowItems(),
     getPublicProjects(),
     getPublicGuestbookEntries(3).catch(() => []),
+    getPublicHomeSpotlight().catch(() => null),
   ]);
+  const featuredProject =
+    projects.find((project) => project.status === "active") ?? projects[0] ?? null;
+  const featuredWriting = writings[0] ?? null;
+  const currentItem = nowItems[0] ?? null;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -111,14 +120,37 @@ export default async function Home() {
       <a className="back-up-top" href="#top">
         Back Up Top
       </a>
+      <HomeIntroBand />
       <HomeHero />
       <HomeStartHere />
-      <HomeIntroBand />
+      <HomeSpotlight
+        customSpotlight={customSpotlight}
+        currentItem={currentItem}
+        featuredProject={featuredProject}
+        featuredWriting={featuredWriting}
+      />
+      <HomeSectionBridge
+        eyebrow="Signal Check"
+        text="If you like a quick proof of life before you dive deep, the site keeps a small public work log now."
+        href="/build-log"
+        linkLabel="See recent changes."
+      />
+      <HomeBuildLog />
       <HomeRecentSignals entries={guestbookEntries} />
       <HomeNow items={nowItems} />
+      <HomeSectionBridge
+        eyebrow="From The Counter"
+        text="The next few rooms answer a simple question: what feels current, what is being built, and where the longer thoughts are going."
+      />
       <HomeProjects projects={projects} />
       <HomeWriting />
       <HomeTinyThoughts />
+      <HomeSectionBridge
+        eyebrow="Wider Hallways"
+        text="Once you have the practical and personal signal, the stranger side rooms are where the site loosens its tie."
+        href="#fun-and-games"
+        linkLabel="Follow the odd little heartbeat."
+      />
       <HomeFunAndGames />
       <HomeAbout />
       <HomeCats />

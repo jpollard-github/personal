@@ -11,7 +11,8 @@
     "start": "next start",
     "go": "npm run lint && npm run build && npm run start",
     "lint": "eslint .",
-    "test": "node --import tsx --test tests/*.test.ts",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "node --import tsx --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:install": "playwright install chromium"

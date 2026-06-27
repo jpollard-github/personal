@@ -7,7 +7,7 @@ export function HomeHero() {
   return (
     <section className="hero" id="top">
       <Image
-        src="/images/neon-forest-diner.png"
+        src="/images/neon-forest-diner.webp"
         alt="A neon-lit diner at the edge of a misty evergreen forest at night"
         fill
         priority

@@ -785,7 +785,7 @@ p {
   text-align: center;
 }
 
-.intro-band p a:not(.admin-cup-link) {
+.intro-band p a {
   color: var(--amber);
   font-weight: 850;
   text-decoration: underline;
@@ -793,25 +793,41 @@ p {
   text-underline-offset: 0.18em;
 }
 
-.intro-band p a:not(.admin-cup-link):hover {
+.intro-band p a:hover {
   color: var(--teal);
 }
 
-.admin-cup-link {
+.control-room-link {
+  position: fixed;
+  top: calc(1rem + clamp(5.8rem, 11vw, 8.25rem) + 0.35rem);
+  left: 1rem;
+  z-index: 55;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.7rem;
-  min-height: 1.7rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
-  color: inherit;
+  color: var(--muted);
   text-decoration: none;
-  vertical-align: -0.08em;
+  background: rgba(5, 6, 9, 0.32);
+  backdrop-filter: blur(14px);
+  opacity: 0.42;
   gap: 0.45rem;
-  transition: background 160ms ease, transform 160ms ease;
+  transition:
+    opacity 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
 }
 
-.admin-cup-label {
+.control-room-icon {
+  line-height: 1;
+}
+
+.control-room-label {
   opacity: 0;
   max-width: 0;
   overflow: hidden;
@@ -825,18 +841,28 @@ p {
   transition: opacity 160ms ease, max-width 160ms ease, transform 160ms ease;
 }
 
-.admin-cup-link:hover,
-.admin-cup-link:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
+.control-room-link:hover,
+.control-room-link:focus-visible {
+  opacity: 1;
+  border-color: rgba(255, 198, 109, 0.24);
+  color: var(--ink);
+  background: rgba(8, 9, 12, 0.82);
   outline: none;
   transform: translateY(-1px);
 }
 
-.admin-cup-link:hover .admin-cup-label,
-.admin-cup-link:focus-visible .admin-cup-label {
+.control-room-link:hover .control-room-label,
+.control-room-link:focus-visible .control-room-label {
   opacity: 1;
   max-width: 9rem;
   transform: translateX(0);
+}
+
+@media (max-width: 720px) {
+  .control-room-link {
+    top: calc(1rem + clamp(5.8rem, 11vw, 8.25rem) + 0.2rem);
+    opacity: 0.3;
+  }
 }
 
 .content-section,
@@ -884,6 +910,187 @@ p {
   border-color: rgba(255, 198, 109, 0.42);
   color: var(--ink);
   background: rgba(255, 198, 109, 0.14);
+}
+
+.spotlight-section {
+  position: relative;
+  padding-top: clamp(2.5rem, 4vw, 3.75rem);
+  padding-bottom: clamp(3rem, 5vw, 4.75rem);
+}
+
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+
+.spotlight-card {
+  display: grid;
+  gap: 0.85rem;
+  min-height: 14rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(248, 239, 227, 0.16);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 9, 12, 0.82);
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.24);
+}
+
+.spotlight-card-current {
+  background:
+    radial-gradient(circle at top right, rgba(41, 240, 212, 0.12), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 9, 12, 0.82);
+}
+
+.spotlight-card-project {
+  background:
+    radial-gradient(circle at top right, rgba(255, 198, 109, 0.12), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 9, 12, 0.82);
+}
+
+.spotlight-card-writing {
+  background:
+    radial-gradient(circle at top right, rgba(255, 54, 95, 0.13), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 9, 12, 0.82);
+}
+
+.spotlight-card p,
+.spotlight-card h3 {
+  margin: 0;
+}
+
+.spotlight-card a {
+  margin-top: auto;
+  color: var(--amber);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.spotlight-card a:hover {
+  color: var(--teal);
+}
+
+.home-section-bridge {
+  width: min(calc(var(--max) - 10rem), calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 0.35rem 0 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.home-section-bridge p:last-child {
+  margin: 0.35rem 0 0;
+  font-size: 0.98rem;
+}
+
+.home-section-bridge a {
+  color: var(--amber);
+  font-weight: 800;
+}
+
+.home-section-bridge a:hover {
+  color: var(--teal);
+}
+
+.build-log-preview-section {
+  padding-top: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+
+.build-log-preview-grid,
+.build-log-highlight,
+.build-log-stream {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+
+.build-log-preview-grid,
+.build-log-highlight {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.build-log-preview-card,
+.build-log-highlight-card,
+.build-log-card {
+  border: 1px solid rgba(248, 239, 227, 0.14);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 198, 109, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 9, 12, 0.82);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.24);
+}
+
+.build-log-preview-card,
+.build-log-highlight-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.1rem;
+}
+
+.build-log-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.2rem;
+}
+
+.build-log-preview-card h3,
+.build-log-preview-card p,
+.build-log-highlight-card h2,
+.build-log-highlight-card p,
+.build-log-card h2,
+.build-log-card p {
+  margin: 0;
+}
+
+.build-log-points {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.build-log-points li::marker {
+  color: var(--amber);
+}
+
+.build-log-impact {
+  color: var(--ink);
+}
+
+.about-preview-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1.4rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--ink);
+}
+
+.about-preview-list li::marker {
+  color: var(--amber);
+}
+
+.about-preview-link {
+  margin-top: 1.2rem;
+}
+
+.about-preview-link a {
+  color: var(--teal);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.about-preview-link a:hover {
+  color: var(--amber);
 }
 
 .about-grid,
@@ -2413,6 +2620,65 @@ p {
   text-transform: uppercase;
 }
 
+.list-panel-more {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 1rem;
+  color: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.writing-index-page {
+  min-height: 100vh;
+  padding: 8rem 1rem 4rem;
+}
+
+.writing-index-section {
+  width: min(var(--max), 100%);
+  margin: 0 auto;
+}
+
+.writing-index-header {
+  max-width: 48rem;
+}
+
+.writing-index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.writing-index-card {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.15rem;
+  border: 1px solid rgba(248, 239, 227, 0.14);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 54, 95, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 9, 12, 0.82);
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.22);
+}
+
+.writing-index-card h2,
+.writing-index-card p {
+  margin: 0;
+}
+
+.about-page {
+  min-height: 100vh;
+  padding: clamp(6rem, 10vw, 8rem) 1rem clamp(3rem, 6vw, 5rem);
+}
+
+.about-page-section {
+  padding-top: 0;
+}
+
 .writing-page {
   min-height: 100vh;
   padding: clamp(6rem, 10vw, 8rem) 1rem clamp(2rem, 6vw, 5rem);
@@ -2973,6 +3239,8 @@ p {
 
   .about-grid,
   .about-card-grid,
+  .build-log-highlight,
+  .build-log-preview-grid,
   .card-grid,
   .fun-games-grid,
   .signal-booth-machine,
@@ -2981,12 +3249,14 @@ p {
   .media-grid,
   .music-league,
   .now-grid,
+  .spotlight-grid,
   .recent-signals-grid,
   .related-signals-grid,
   .section-link-grid,
   .start-here-grid,
   .tiny-thought-grid,
   .tape-row,
+  .writing-index-grid,
   .split-section,
   .guestbook-shell {
     grid-template-columns: 1fr;

@@ -10,7 +10,7 @@ import {
 } from "./lib/tiny-thought-display";
 import type { TinyThought } from "./lib/tiny-thoughts";
 
-export function TinyThoughts() {
+export function TinyThoughts({ limit }: { limit?: number }) {
   const [thoughts, setThoughts] = useState<TinyThought[]>([]);
   const [status, setStatus] = useState("Loading tiny thoughts...");
 
@@ -18,7 +18,9 @@ export function TinyThoughts() {
     let isMounted = true;
 
     async function loadThoughts() {
-      const response = await fetch("/api/tiny-thoughts");
+      const response = await fetch(
+        limit ? `/api/tiny-thoughts?limit=${limit}` : "/api/tiny-thoughts",
+      );
 
       if (!response.ok) {
         throw new Error("Unable to load tiny thoughts.");
@@ -41,7 +43,7 @@ export function TinyThoughts() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [limit]);
 
   if (status && !thoughts.length) {
     return <p className="tiny-thought-status">{status}</p>;

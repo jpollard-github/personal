@@ -8,6 +8,7 @@ import {
   type GuestbookCategory,
   type GuestbookRow,
 } from "../../lib/guestbook";
+import { trackServerEvent } from "../../lib/analytics-server";
 import { sendGuestbookEmail } from "../../lib/guestbook-email";
 
 export const runtime = "nodejs";
@@ -195,6 +196,13 @@ export async function POST(request: Request) {
         WHERE id = ${id}
       `;
     }
+
+    await trackServerEvent("Guestbook Entry Submitted", {
+      category,
+      hasEmail: Boolean(email),
+      notifyOwner,
+      emailSent,
+    });
 
     return Response.json({
       ok: true,

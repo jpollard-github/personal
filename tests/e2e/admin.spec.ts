@@ -19,6 +19,15 @@ async function loginAsAdmin(page: Page) {
   ).toBeVisible();
 }
 
+async function seedSessionDraft(page: Page, key: string, value: unknown) {
+  await page.addInitScript(
+    ({ draftKey, draftValue }) => {
+      window.sessionStorage.setItem(draftKey, JSON.stringify(draftValue));
+    },
+    { draftKey: key, draftValue: value },
+  );
+}
+
 test("admin dashboard supports sign in and sign out", async ({ page }) => {
   await page.goto("/admin");
 
@@ -93,6 +102,79 @@ test("authenticated admin can open now editor", async ({ page }) => {
   await expect(page.getByLabel("Title").first()).toBeVisible();
   await expect(
     page.getByText(/^Now cards loaded\.$|^No Now cards yet\.$/),
+  ).toBeVisible();
+});
+
+test("content inbox now drafts import into the now editor", async ({ page }) => {
+  await seedSessionDraft(page, "arcadeghosts-now-draft", {
+    label: "Current",
+    title: "AI Connections",
+    text: "A note about how AI tools connect ideas.",
+  });
+  await loginAsAdmin(page);
+
+  await page.goto("/admin/now");
+
+  await expect(page.getByLabel("Title").last()).toHaveValue("AI Connections");
+  await expect(page.getByLabel("Text").last()).toHaveValue("A note about how AI tools connect ideas.");
+  await expect(
+    page.getByText("Imported draft from Content Inbox. Save changes when you're ready."),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Save Changes" })).toBeVisible();
+});
+
+test("content inbox project drafts import into the projects editor", async ({ page }) => {
+  await seedSessionDraft(page, "arcadeghosts-project-draft", {
+    title: "Imported Project Draft",
+    type: "Project update",
+    description: "Imported from Content Inbox.",
+    phase: "Phase 0",
+  });
+  await loginAsAdmin(page);
+
+  await page.goto("/admin/projects");
+
+  await expect(page.getByRole("button", { name: "Collapse" })).toBeVisible();
+  await expect(page.getByLabel("Title").last()).toHaveValue("Imported Project Draft");
+  await expect(
+    page.getByText("Imported draft from Content Inbox. Refine it, then save when ready."),
+  ).toBeVisible();
+});
+
+test("content inbox tiny thought drafts import into the tiny thoughts editor", async ({ page }) => {
+  await seedSessionDraft(page, "arcadeghosts-tiny-thought-draft", {
+    content: "AI connections keep turning into site ideas.",
+    category: "other",
+    inspiredByCategory: "conversation",
+    inspiredBy: "ChatGPT",
+  });
+  await loginAsAdmin(page);
+
+  await page.goto("/admin/tiny-thoughts");
+
+  await expect(page.getByLabel("Thought")).toHaveValue("AI connections keep turning into site ideas.");
+  await expect(
+    page.getByText("Imported draft from Content Inbox. Edit it, then save when it feels right."),
+  ).toBeVisible();
+});
+
+test("content inbox writing drafts import into the writing drafts editor", async ({ page }) => {
+  await seedSessionDraft(page, "arcadeghosts-writing-draft", {
+    title: "AI Connections",
+    slug: "ai-connections",
+    summary: "A note about how AI tools connect ideas.",
+    body: "Longer-form draft body.",
+    status: "draft",
+  });
+  await loginAsAdmin(page);
+
+  await page.goto("/admin/writing-drafts");
+
+  await expect(page.getByLabel("Title")).toHaveValue("AI Connections");
+  await expect(page.getByLabel("Slug")).toHaveValue("ai-connections");
+  await expect(page.getByLabel("Body")).toHaveValue("Longer-form draft body.");
+  await expect(
+    page.getByText("Imported draft from Content Inbox. Shape it, then save when ready."),
   ).toBeVisible();
 });
 

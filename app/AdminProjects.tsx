@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { consumeSessionDraft } from "./lib/session-draft";
 import {
   projectPriorityOptions,
   projectStatuses,
@@ -16,6 +17,8 @@ const statusLabels = new Map<ProjectStatus, string>([
   ["shipped", "Shipped"],
   ["archived", "Archived"],
 ]);
+
+const projectDraftStorageKey = "arcadeghosts-project-draft";
 
 function emptyProject(): SiteProject {
   return {
@@ -108,11 +111,34 @@ export function AdminProjects() {
     }
 
     const data = (await response.json()) as { projects: SiteProject[] };
+    let nextProjects = data.projects;
+    let nextExpandedIds: string[] = [];
+    let nextStatus = data.projects.length ? "Projects loaded." : "No projects yet.";
 
-    setProjects(data.projects);
+    if (typeof window !== "undefined") {
+      const imported = consumeSessionDraft<Partial<SiteProject>>(
+        window.sessionStorage,
+        projectDraftStorageKey,
+      );
+
+      if (imported.value) {
+        const project = {
+          ...emptyProject(),
+          ...imported.value,
+          id: crypto.randomUUID(),
+        };
+        nextProjects = [...data.projects, project];
+        nextExpandedIds = [project.id];
+        nextStatus = "Imported draft from Content Inbox. Refine it, then save when ready.";
+      } else if (imported.parseError) {
+        nextStatus = "A Content Inbox project draft was found but could not be imported cleanly.";
+      }
+    }
+
+    setProjects(nextProjects);
     setSavedProjects(data.projects);
-    setExpandedProjectIds([]);
-    setStatus(data.projects.length ? "Projects loaded." : "No projects yet.");
+    setExpandedProjectIds(nextExpandedIds);
+    setStatus(nextStatus);
   }
 
   useEffect(() => {

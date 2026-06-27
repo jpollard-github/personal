@@ -21,10 +21,18 @@ This checklist prioritizes changes that are most likely to improve first impress
 ## Priority 3
 
 - [x] Add a `Surprise Me` button that sends visitors to a random page, writing, game, or signal.
-- [ ] Add a rotating homepage spotlight such as current signal, current fixation, featured project, or featured essay.
+- [x] Add a rotating homepage spotlight such as current signal, current fixation, featured project, or featured essay.
 - [x] Surface a few recent guestbook messages higher on the homepage so community activity is easier to notice.
 - [x] Add custom Open Graph images for major pages so shared links feel more polished and clickable.
 - [ ] Add small connective transitions or micro-copy between sections so the homepage feels even more like one world.
+
+## Priority 4
+
+- [x] Reduce homepage overwhelm by making the top of the site feel more curated than comprehensive.
+- [x] Create a low-friction content inbox so good fragments can be captured before they evaporate.
+- [x] Add a homepage spotlight module for one current signal, featured project, or featured essay.
+- [x] Decide which homepage sections should preview content versus fully expand it.
+- [x] Add a lightweight editorial rhythm for `Tiny Thoughts`, project updates, and occasional longer writing.
 
 ## Longer-Term Ideas
 
@@ -33,6 +41,73 @@ This checklist prioritizes changes that are most likely to improve first impress
 - [ ] Add tiny collectible artifacts, badges, or stamps for visitors who explore different rooms of the site.
 - [ ] Add seasonal or occasional homepage variations that keep the atmosphere fresh without changing the site's identity.
 - [ ] Create more bridges between emotional/personal pages and technical/project pages so visitors discover both sides of the site.
+
+## Content Workflow Notes
+
+- Treat the site as a layered publishing system:
+- raw capture
+- light publishable post
+- full writing or room
+- Not everything from ChatGPT belongs on the site. Save fragments that sound like you, then decide later what form they deserve.
+- Favor frequent capture and occasional publishing over waiting for the perfect essay-writing block.
+
+## New Implementation Roadmap
+
+### 4. Reduce Overwhelm At The Top Of The Homepage
+
+Goal:
+
+- Help first-time visitors feel guided instead of flooded by making the top of the homepage more curated than comprehensive.
+
+Suggested approach:
+
+- Keep only a few high-signal decisions near the top.
+- Add a single spotlight block such as `Current Signal`, `Featured Project`, or `Start Here This Week`.
+- Convert some lower sections into previews with `See more` links rather than full expansions.
+- Let the homepage imply there is a bigger world without asking people to take in the whole map immediately.
+
+Definition of done:
+
+- A new visitor can understand the site's shape quickly
+- The homepage feels intentional instead of exhaustive
+- At least one section lower on the page becomes a preview rather than full-detail content
+
+Status:
+
+- Done: homepage spotlight module added near the top
+- Done: writing section turned into a preview with a dedicated `/writings` room
+- Done: about section turned into a preview with a dedicated `/about` room
+
+### 5. Low-Friction Content Inbox And Draft Pipeline
+
+Goal:
+
+- Make it easy to capture worthwhile fragments from ChatGPT, daily life, and project work without needing a formal writing session every time.
+
+Suggested approach:
+
+- Add a private admin `Content Inbox` page for quick capture.
+- Each inbox entry should support:
+- raw content
+- source
+- bucket
+- short note about why it matters
+- status such as `Inbox`, `Drafted`, or `Archived`
+- Add a shortcut to send promising entries into the Tiny Thoughts editor as a draft.
+- Write down the workflow so future-you does not have to rediscover it.
+
+Definition of done:
+
+- There is one obvious place to paste good fragments fast
+- A saved inbox item can be turned into a Tiny Thought draft with minimal friction
+- The workflow is documented either on the page, in `docs`, or both
+
+Status:
+
+- Done: admin `Content Inbox` page exists with source, bucket, notes, and status
+- Done: inbox items can be sent into `Tiny Thoughts` drafts
+- Done: inbox items can now also be sent into `Projects` drafts
+- Done: workflow is documented on the page and in `docs/low-friction-content-flow.md`
 
 ## Recommended First Three
 
@@ -164,3 +239,44 @@ Definition of done:
 - [x] Ship writing RSS second because it is small, useful, and low-risk
 - [x] Add manual related links to writings third because it improves exploration without heavy infrastructure
 - [x] Expand recurring updates around `Tiny Thoughts` once the feed and navigation path exist
+
+## Next Candidate Items
+
+These came out of the latest homepage and workflow pass and are worth returning to next.
+
+- [x] Add a `Send To Writing Draft` flow from the Content Inbox for longer-form ideas that deserve a fuller draft path.
+- [x] Convert one more content-heavy homepage section into a preview plus dedicated room if the homepage still feels too dense.
+- [x] Add simple spotlight freshness support such as rotation, history, or a short queue so the homepage spotlight changes more easily over time.
+
+Status:
+
+- Done: Content Inbox can now hand off to `Writing Drafts`, `Now`, `Projects`, and `Tiny Thoughts`
+- Done: Tiny Thoughts now has a dedicated `/tiny-thoughts` room while the homepage shows a shorter preview
+- Done: Homepage Spotlight now supports a rotating queue of alternate spotlight cards
+
+## Next Steps
+
+Reference: 2026-06-27 18:47 EDT
+
+These are the remaining TODO ideas that still look worthwhile right now, ordered by likely value versus effort.
+
+- [x] Add event tracking for key interactions so future changes can be guided by real visitor behavior.
+Reason: Now that the site has stronger structure, search, spotlighting, feeds, and content funnels, lightweight analytics on things like `Start Here`, `Surprise Me`, project clicks, RSS clicks, search usage, and admin content handoffs would help you decide what is actually working.
+
+- [x] Add small connective transitions or micro-copy between sections so the homepage feels even more like one world.
+Reason: This is still a good polish item, but it is less urgent than analytics because the homepage is already much more curated than before. Worth doing when you want a quality-of-feel pass rather than a capability pass.
+
+- [x] Add a public build log or work log that makes ongoing changes more visible to returning visitors.
+Reason: This is probably the strongest of the longer-term ideas because it matches your current pace of iteration and would create an easier publishing path than full essays.
+
+- [ ] Create a visual signal map that connects projects, writing, music, games, cats, and media pages by theme.
+Reason: interesting, but higher effort and easy to overbuild before the site's information architecture fully settles.
+
+- [ ] Add tiny collectible artifacts, badges, or stamps for visitors who explore different rooms of the site.
+Reason: fun, but more novelty than leverage at the moment.
+
+- [ ] Add seasonal or occasional homepage variations that keep the atmosphere fresh without changing the site's identity.
+Reason: nice atmospheric polish, but not as useful as improving repeat-visit content loops.
+
+- [ ] Create more bridges between emotional/personal pages and technical/project pages so visitors discover both sides of the site.
+Reason: partly already happening through related links, preview rooms, spotlighting, and search. Revisit later if discovery still feels siloed.

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useEffect, useRef, useState } from "react";
+import { TrackedLink } from "../TrackedLink";
+import { trackEvent } from "../lib/analytics";
 import type { SearchEntry } from "../lib/search-shared";
 import { searchEntries } from "../lib/search-shared";
 
@@ -14,6 +16,22 @@ export function SearchPageClient({ entries }: { entries: SearchEntry[] }) {
   const deferredQuery = useDeferredValue(query);
   const results = searchEntries(entries, deferredQuery);
   const showingFeatured = !deferredQuery.trim();
+  const lastTrackedQuery = useRef("");
+
+  useEffect(() => {
+    const normalizedQuery = deferredQuery.trim();
+
+    if (!normalizedQuery || normalizedQuery === lastTrackedQuery.current) {
+      return;
+    }
+
+    lastTrackedQuery.current = normalizedQuery;
+    trackEvent("Search Performed", {
+      queryLength: normalizedQuery.length,
+      termCount: normalizedQuery.split(/\s+/).filter(Boolean).length,
+      resultCount: results.length,
+    });
+  }, [deferredQuery, results.length]);
 
   return (
     <section className="content-section search-section">
@@ -58,14 +76,20 @@ export function SearchPageClient({ entries }: { entries: SearchEntry[] }) {
               </div>
               <h2>{entry.title}</h2>
               <p>{entry.description}</p>
-              <a
+              <TrackedLink
                 className="search-result-link"
                 href={entry.href}
                 target={isExternalLink(entry.href) ? "_blank" : undefined}
                 rel={isExternalLink(entry.href) ? "noreferrer" : undefined}
+                trackingEvent="Search Result Clicked"
+                trackingProperties={{
+                  resultId: entry.id,
+                  resultType: entry.type,
+                  destination: entry.href,
+                }}
               >
                 {entry.cta}
-              </a>
+              </TrackedLink>
             </article>
           ))
         ) : (
