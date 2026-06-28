@@ -5,9 +5,18 @@ export type PersonaSection = {
   body: string;
 };
 
+export type PersonaSectionGroup = {
+  identity: PersonaSection[];
+  behavior: PersonaSection[];
+  evaluation: PersonaSection[];
+  other: PersonaSection[];
+};
+
 export type PersonaProfile = {
   name: string;
   sections: PersonaSection[];
+  sectionMap: Record<string, string>;
+  groupedSections: PersonaSectionGroup;
   fullText: string;
   markdown: string;
   keywords: string[];
@@ -89,9 +98,9 @@ export function parsePersonaMarkdown(markdown: string): PersonaProfile {
   let currentLines: string[] = [];
 
   for (const line of lines.slice(1)) {
-    if (line.startsWith("## ")) {
+    if (/^#{2,3}\s+/.test(line)) {
       pushSection(sections, currentHeading, currentLines);
-      currentHeading = line.replace(/^## /, "").trim();
+      currentHeading = line.replace(/^#{2,3}\s+/, "").trim();
       currentLines = [];
       continue;
     }
@@ -106,6 +115,8 @@ export function parsePersonaMarkdown(markdown: string): PersonaProfile {
   return {
     name,
     sections,
+    sectionMap: buildSectionMap(sections),
+    groupedSections: groupSections(sections),
     fullText,
     markdown,
     keywords: extractKeywords(markdown),
@@ -121,6 +132,78 @@ function pushSection(sections: PersonaSection[], heading: string, lines: string[
 
   sections.push({ heading, body });
 }
+
+function buildSectionMap(sections: PersonaSection[]) {
+  return Object.fromEntries(
+    sections.map((section) => [normalizeHeading(section.heading), section.body]),
+  );
+}
+
+function groupSections(sections: PersonaSection[]): PersonaSectionGroup {
+  const grouped: PersonaSectionGroup = {
+    identity: [],
+    behavior: [],
+    evaluation: [],
+    other: [],
+  };
+
+  for (const section of sections) {
+    const normalized = normalizeHeading(section.heading);
+
+    if (IDENTITY_HEADINGS.has(normalized)) {
+      grouped.identity.push(section);
+      continue;
+    }
+
+    if (BEHAVIOR_HEADINGS.has(normalized)) {
+      grouped.behavior.push(section);
+      continue;
+    }
+
+    if (EVALUATION_HEADINGS.has(normalized)) {
+      grouped.evaluation.push(section);
+      continue;
+    }
+
+    grouped.other.push(section);
+  }
+
+  return grouped;
+}
+
+function normalizeHeading(heading: string) {
+  return heading.trim().toLowerCase();
+}
+
+const IDENTITY_HEADINGS = new Set([
+  "identity fields",
+  "identity",
+  "background",
+  "values",
+  "emotional needs",
+  "trust signals",
+  "red flags",
+]);
+
+const BEHAVIOR_HEADINGS = new Set([
+  "behavior fields",
+  "behavior",
+  "preferred rooms",
+  "ignored rooms",
+  "first-visit behavior",
+  "default archetype",
+  "scenario",
+  "context",
+  "return triggers",
+]);
+
+const EVALUATION_HEADINGS = new Set([
+  "evaluation fields",
+  "evaluation",
+  "reflection",
+  "success",
+  "failure",
+]);
 
 function extractKeywords(markdown: string) {
   const counts = new Map<string, number>();

@@ -16,10 +16,10 @@ test.describe.serial("persona audit suite", () => {
     });
   }
 
-  test("persona: overall-persona aggregate", async () => {
+  test("persona: overall-audit aggregate", async () => {
     const outputs = writeOverallPersonaReport(summaries);
 
     expect(summaries.length).toBe(personaDefinitions.length);
-    expect(outputs.reportPath).toContain("test-results/personas/overall-persona/report.md");
+    expect(outputs.reportPath).toContain("persona-results/personas/overall-audit/report.md");
   });
 });

@@ -1,9 +1,41 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { Page } from "@playwright/test";
 import type { PersonaDefinition } from "./persona-manifest";
 import type { PersonaProfile } from "./persona-profile";
 import type { SiteSurface } from "./site-surfaces";
+
+export function getPersonaResultsRoot() {
+  return resolve(process.cwd(), "persona-results", "personas");
+}
+
+export function getPersonaOutputDir(personaSlug: string) {
+  return resolve(getPersonaResultsRoot(), personaSlug);
+}
+
+export function getPersonaJourneyOutputDir(personaSlug: string) {
+  return resolve(getPersonaOutputDir(personaSlug), "journeys");
+}
+
+export function getOverallAuditOutputDir() {
+  return resolve(getPersonaResultsRoot(), "overall-audit");
+}
+
+export function getLegacyOverallAuditOutputDir() {
+  return resolve(getPersonaResultsRoot(), "overall-persona");
+}
+
+export function getOverallJourneyOutputDir() {
+  return resolve(getPersonaResultsRoot(), "overall-journeys");
+}
+
+export function getCombinedPersonaJourneyOutputDir() {
+  return resolve(getPersonaResultsRoot(), "overall-personas-and-journeys");
+}
+
+export function shouldCapturePersonaScreenshots() {
+  return process.env.PERSONA_CAPTURE_SCREENSHOTS === "1";
+}
 
 export type SurfaceObservation = {
   surface: SiteSurface;
@@ -44,6 +76,10 @@ export type PersonaReportSummary = {
   generatedAt: string;
   personaDescription: string;
   personaProfileMarkdown: string;
+  confidenceThreshold?: "low" | "medium" | "high";
+  defaultArchetype?: string;
+  defaultScenario?: string;
+  defaultContext?: string;
   verdict: PersonaVerdict;
   averages: {
     interest: number;
@@ -52,6 +88,68 @@ export type PersonaReportSummary = {
   };
   todos: PersonaTodoBuckets;
   observations: SurfaceObservation[];
+};
+
+export type JourneySummaryRecord = {
+  persona: string;
+  personaSlug: string;
+  generatedAt: string;
+  scenarioId: string;
+  scenarioLabel: string;
+  scenarioGoal: string;
+  scenarioInfluences: string[];
+  archetype: string;
+  archetypeInfluences: string[];
+  context: string;
+  contextInfluences: string[];
+  targetPageCount: number;
+  maxPageCount: number;
+  visitedRoutes: string[];
+  skippedRoutes: string[];
+  expectedRoutes: string[];
+  missingExpectedRoutes: string[];
+  expectedRouteWarnings: string[];
+  skippedRouteReasons: Array<{
+    surfaceId: string;
+    label: string;
+    route: string;
+    reason: string;
+  }>;
+  searchQueries: string[];
+  bounceRisk: "low" | "medium" | "high";
+  bounceReasons: string[];
+  nearBounceRoute?: string;
+  success: boolean;
+  matchedSuccessConditionLabels: string[];
+  trustSignalHits: Array<{
+    surfaceId: string;
+    label: string;
+    route: string;
+    reason: string;
+  }>;
+  goalSatisfactionEvidence: Array<{
+    surfaceId: string;
+    label: string;
+    route: string;
+    reason: string;
+  }>;
+  exitState: "leave" | "bookmark" | "contact" | "subscribe" | "return-later" | "continue-exploring";
+  journeyNotes: string[];
+};
+
+export type PersonaJourneyAggregateSummary = {
+  generatedAt: string;
+  journeysReviewed: number;
+  averageVisitedRouteCount: number;
+  bounceRiskCounts: Record<"low" | "medium" | "high", number>;
+  scenarioCounts: Record<string, number>;
+  archetypeCounts: Record<string, number>;
+  journeySummaries: Array<
+    JourneySummaryRecord & {
+      reportPath: string;
+      summaryPath: string;
+    }
+  >;
 };
 
 export async function inspectSurface(
@@ -86,9 +184,13 @@ export async function inspectSurface(
   const weightedInterestScore = applyPersonaWeight(interestScore, personaPriority);
   const usabilityScore = scoreUsability({ headings, linkCount, buttonCount, inputCount, excerpt });
   const overwhelmLevel = computeOverwhelm({ linkCount, buttonCount, inputCount, excerpt });
-  const screenshotPath = resolve(outputDir, `${surface.id}.png`);
+  const screenshotPath = shouldCapturePersonaScreenshots()
+    ? resolve(outputDir, `${surface.id}.png`)
+    : undefined;
 
-  await page.screenshot({ path: screenshotPath, fullPage: true });
+  if (screenshotPath) {
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+  }
 
   return {
     surface,
@@ -138,7 +240,7 @@ export function writePersonaReport(args: {
   observations: SurfaceObservation[];
 }) {
   const { personaSlug, profile, definition, observations } = args;
-  const outputDir = resolve(process.cwd(), "test-results", "personas", personaSlug);
+  const outputDir = getPersonaOutputDir(personaSlug);
   mkdirSync(outputDir, { recursive: true });
 
   const reportPath = resolve(outputDir, "report.md");
@@ -202,10 +304,33 @@ ${renderCheckboxes(todos.low)}
 
 ${renderBullets([
   `Preferred tags: ${definition.preferredTags.map((tag) => `\`${tag}\``).join(", ")}`,
+  definition.confidenceThreshold
+    ? `Confidence threshold: \`${definition.confidenceThreshold}\``
+    : "Confidence threshold: not specified",
+  definition.defaultArchetype ? `Default archetype: ${definition.defaultArchetype}` : "Default archetype: not specified",
+  definition.defaultScenario ? `Scenario: ${definition.defaultScenario}` : "Scenario: not specified",
+  definition.defaultContext ? `Context: ${definition.defaultContext}` : "Context: not specified",
   definition.preferredSurfaceIds?.length
     ? `Preferred surfaces: ${definition.preferredSurfaceIds.map((id) => `\`${id}\``).join(", ")}`
     : "Preferred surfaces: none explicitly listed",
+  definition.ignoredSurfaceIds?.length
+    ? `Ignored surfaces: ${definition.ignoredSurfaceIds.map((id) => `\`${id}\``).join(", ")}`
+    : "Ignored surfaces: none explicitly listed",
 ])}
+
+## Persona Field Groups
+
+### Identity
+
+${renderSectionGroup(profile.groupedSections.identity)}
+
+### Behavior
+
+${renderSectionGroup(profile.groupedSections.behavior)}
+
+### Evaluation
+
+${renderSectionGroup(profile.groupedSections.evaluation)}
 
 ## Public Surface Notes
 
@@ -228,6 +353,10 @@ ${renderBullets(profile.keywords.slice(0, 20).map((keyword) => `\`${keyword}\``)
     generatedAt: new Date().toISOString(),
     personaDescription: definition.description,
     personaProfileMarkdown: profile.markdown,
+    confidenceThreshold: definition.confidenceThreshold,
+    defaultArchetype: definition.defaultArchetype,
+    defaultScenario: definition.defaultScenario,
+    defaultContext: definition.defaultContext,
     verdict,
     averages: {
       interest: averageInterest,
@@ -244,8 +373,8 @@ ${renderBullets(profile.keywords.slice(0, 20).map((keyword) => `\`${keyword}\``)
 }
 
 export function writeOverallPersonaReport(summaries: PersonaReportSummary[]) {
-  const personaSlug = "overall-persona";
-  const outputDir = resolve(process.cwd(), "test-results", "personas", personaSlug);
+  const personaSlug = "overall-audit";
+  const outputDir = getOverallAuditOutputDir();
   mkdirSync(outputDir, { recursive: true });
 
   const reportPath = resolve(outputDir, "report.md");
@@ -295,7 +424,7 @@ export function writeOverallPersonaReport(summaries: PersonaReportSummary[]) {
     .filter((surface) => surface.highOverwhelmCount > 0 || surface.averageUsability < 4.5)
     .slice(0, 8);
 
-  const report = `# Overall Persona Audit
+  const report = `# Overall Audit
 
 Generated: ${new Date().toISOString()}
 
@@ -366,10 +495,14 @@ ${renderBullets(summary.todos.high.slice(0, 3))}
       personaSlug: summary.personaSlug,
       personaDescription: summary.personaDescription,
       personaProfileMarkdown: summary.personaProfileMarkdown,
+      confidenceThreshold: summary.confidenceThreshold,
+      defaultArchetype: summary.defaultArchetype,
+      defaultScenario: summary.defaultScenario,
+      defaultContext: summary.defaultContext,
       averages: summary.averages,
       topHighTodos: summary.todos.high.slice(0, 3),
-      reportPath: resolve(process.cwd(), "test-results", "personas", summary.personaSlug, "report.md"),
-      summaryPath: resolve(process.cwd(), "test-results", "personas", summary.personaSlug, "summary.json"),
+      reportPath: resolve(getPersonaOutputDir(summary.personaSlug), "report.md"),
+      summaryPath: resolve(getPersonaOutputDir(summary.personaSlug), "summary.json"),
     })),
   };
 
@@ -386,7 +519,218 @@ ${renderBullets(summary.todos.high.slice(0, 3))}
     }),
   );
 
+  writeCombinedPersonasAndJourneysPacket({ auditSummary: combinedSummary });
+
   return { outputDir, reportPath, summaryPath, bundlePath, csvPath, promptsPath };
+}
+
+export function writeOverallJourneyReport(summaries: JourneySummaryRecord[]) {
+  const outputDir = getOverallJourneyOutputDir();
+  mkdirSync(outputDir, { recursive: true });
+
+  const reportPath = resolve(outputDir, "report.md");
+  const summaryPath = resolve(outputDir, "summary.json");
+  const bundlePath = resolve(outputDir, "journey-bundle.json");
+  const csvPath = resolve(outputDir, "journey-summary.csv");
+  const promptsPath = resolve(outputDir, "chatgpt-prompts.md");
+
+  const aggregateSummaries = summaries.map((summary) => ({
+    ...summary,
+    reportPath: resolve(getPersonaJourneyOutputDir(summary.personaSlug), `${summary.scenarioId}.md`),
+    summaryPath: resolve(getPersonaJourneyOutputDir(summary.personaSlug), `${summary.scenarioId}.json`),
+  }));
+  const averageVisitedRouteCount = average(summaries.map((summary) => summary.visitedRoutes.length));
+  const bounceRiskCounts = {
+    low: summaries.filter((summary) => summary.bounceRisk === "low").length,
+    medium: summaries.filter((summary) => summary.bounceRisk === "medium").length,
+    high: summaries.filter((summary) => summary.bounceRisk === "high").length,
+  };
+  const scenarioCounts = countBy(summaries.map((summary) => summary.scenarioLabel));
+  const archetypeCounts = countBy(summaries.map((summary) => summary.archetype));
+  const exitStateCounts = countBy(summaries.map((summary) => summary.exitState));
+  const commonSkippedReasons = countBy(
+    summaries.flatMap((summary) => summary.skippedRouteReasons.map((entry) => entry.reason)),
+  );
+  const trustSignalOutcomeCounts = countBy(
+    summaries.flatMap((summary) => summary.trustSignalHits.map((entry) => entry.route)),
+  );
+  const goalEvidenceCounts = countBy(
+    summaries.flatMap((summary) => summary.goalSatisfactionEvidence.map((entry) => entry.route)),
+  );
+  const nearBounceRouteCounts = countBy(
+    summaries.flatMap((summary) => (summary.nearBounceRoute ? [summary.nearBounceRoute] : [])),
+  );
+  const successCountByScenario = countBy(
+    summaries.filter((summary) => summary.success).map((summary) => summary.scenarioLabel),
+  );
+  const searchUsageByArchetype = countBy(
+    summaries.flatMap((summary) => (summary.searchQueries.length ? [summary.archetype] : [])),
+  );
+  const missingExpectedRouteCounts = countBy(
+    summaries.flatMap((summary) => summary.missingExpectedRoutes),
+  );
+  const successfulJourneys = summaries.filter((summary) => summary.success).length;
+
+  const combinedSummary: PersonaJourneyAggregateSummary = {
+    generatedAt: new Date().toISOString(),
+    journeysReviewed: summaries.length,
+    averageVisitedRouteCount,
+    bounceRiskCounts,
+    scenarioCounts,
+    archetypeCounts,
+    journeySummaries: aggregateSummaries,
+  };
+
+  const report = `# Overall Journeys
+
+Generated: ${combinedSummary.generatedAt}
+
+## Combined View
+
+- Journeys reviewed: \`${combinedSummary.journeysReviewed}\`
+- Average visited route count: \`${combinedSummary.averageVisitedRouteCount.toFixed(1)}\`
+- Successful journeys: \`${successfulJourneys}/${combinedSummary.journeysReviewed}\`
+- Bounce risk counts:
+  - low: \`${combinedSummary.bounceRiskCounts.low}\`
+  - medium: \`${combinedSummary.bounceRiskCounts.medium}\`
+  - high: \`${combinedSummary.bounceRiskCounts.high}\`
+
+## Scenario Coverage
+
+${renderBullets(
+    Object.entries(combinedSummary.scenarioCounts).map(([label, count]) => `\`${label}\`: ${count}`),
+  )}
+
+## Archetype Coverage
+
+${renderBullets(
+    Object.entries(combinedSummary.archetypeCounts).map(([label, count]) => `\`${label}\`: ${count}`),
+  )}
+
+## Exit State Counts
+
+${renderBullets(Object.entries(exitStateCounts).map(([label, count]) => `Exit \`${label}\`: ${count}`))}
+
+## Journey Success Count By Scenario
+
+${renderBullets(
+    rankCountEntries(successCountByScenario).map(([label, count]) => `\`${label}\`: ${count} successful journey${count === 1 ? "" : "s"}`),
+  )}
+
+## Search Usage Count By Archetype
+
+${renderBullets(
+    rankCountEntries(searchUsageByArchetype).map(([label, count]) => `\`${label}\`: ${count} journey${count === 1 ? "" : "s"} used search`),
+  )}
+
+## Most Common Skipped-Route Reasons
+
+${renderBullets(rankCountEntries(commonSkippedReasons).slice(0, 6).map(([reason, count]) => `${reason} (${count})`))}
+
+## Most Common Goal Satisfaction Routes
+
+${renderBullets(
+    rankCountEntries(goalEvidenceCounts).slice(0, 6).map(([route, count]) => `\`${route}\` (${count})`),
+  )}
+
+## Most Common Near-Bounce Routes
+
+${renderBullets(
+    rankCountEntries(nearBounceRouteCounts).slice(0, 6).map(([route, count]) => `\`${route}\` (${count})`),
+  )}
+
+## Routes Most Often Expected But Missing
+
+${renderBullets(
+    rankCountEntries(missingExpectedRouteCounts).slice(0, 8).map(([route, count]) => `\`${route}\` (${count})`),
+  )}
+
+## Trust Signals That Most Often Changed Direction
+
+${renderBullets(
+    rankCountEntries(trustSignalOutcomeCounts).slice(0, 6).map(([route, count]) => `\`${route}\` (${count})`),
+  )}
+
+## Journey Snapshots
+
+${aggregateSummaries
+  .map(
+    (summary) => `### ${summary.persona}
+
+- Scenario: \`${summary.scenarioLabel}\`
+- Goal: \`${summary.scenarioGoal}\`
+- Scenario influences: ${summary.scenarioInfluences.slice(0, 2).join(" ")}
+- Archetype: \`${summary.archetype}\`
+- Archetype influences: ${summary.archetypeInfluences.slice(0, 2).join(" ")}
+- Context influences: ${summary.contextInfluences.slice(0, 2).join(" ")}
+- Target / max pages: \`${summary.targetPageCount} / ${summary.maxPageCount}\`
+- Bounce risk: \`${summary.bounceRisk}\`
+- Success: \`${summary.success ? "yes" : "no"}\`
+- Exit state: \`${summary.exitState}\`
+- Near-bounce route: ${summary.nearBounceRoute ? `\`${summary.nearBounceRoute}\`` : "None"}
+- Why routes were skipped: ${summary.skippedRouteReasons.slice(0, 2).map((entry) => `\`${entry.route}\` (${entry.reason})`).join("; ") || "None"}
+- Trust signals that mattered: ${summary.trustSignalHits.slice(0, 2).map((entry) => `\`${entry.route}\``).join(", ") || "None"}
+- Goal satisfaction pages: ${summary.goalSatisfactionEvidence.slice(0, 2).map((entry) => `\`${entry.route}\``).join(", ") || "None"}
+- Expected but missing routes: ${summary.missingExpectedRoutes.slice(0, 3).map((route) => `\`${route}\``).join(", ") || "None"}
+- Expected-route warnings: ${summary.expectedRouteWarnings.join(" ") || "None"}
+- Visited routes: ${summary.visitedRoutes.map((route) => `\`${route}\``).join(", ")}
+- Search queries: ${summary.searchQueries.length ? summary.searchQueries.map((query) => `\`${query}\``).join(", ") : "None"}
+`,
+  )
+  .join("\n")}
+`;
+
+  writeFileSync(reportPath, report);
+  writeFileSync(summaryPath, JSON.stringify(combinedSummary, null, 2));
+  writeFileSync(bundlePath, JSON.stringify({ generatedAt: new Date().toISOString(), overall: combinedSummary }, null, 2));
+  writeFileSync(csvPath, buildJourneyCsv(summaries));
+  writeFileSync(promptsPath, buildJourneyChatGptPrompts());
+
+  writeCombinedPersonasAndJourneysPacket({ journeySummary: combinedSummary });
+
+  return { outputDir, reportPath, summaryPath, bundlePath, csvPath, promptsPath, summary: combinedSummary };
+}
+
+function writeCombinedPersonasAndJourneysPacket(args: {
+  auditSummary?: unknown;
+  journeySummary?: PersonaJourneyAggregateSummary;
+}) {
+  const outputDir = getCombinedPersonaJourneyOutputDir();
+  mkdirSync(outputDir, { recursive: true });
+
+  const resolvedAuditSummary =
+    args.auditSummary ??
+    readJsonIfExists(resolve(getOverallAuditOutputDir(), "summary.json")) ??
+    readJsonIfExists(resolve(getLegacyOverallAuditOutputDir(), "summary.json"));
+  const resolvedJourneySummary =
+    args.journeySummary ?? readJsonIfExists(resolve(getOverallJourneyOutputDir(), "summary.json"));
+
+  const combined = {
+    generatedAt: new Date().toISOString(),
+    audit: resolvedAuditSummary ?? null,
+    journeys: resolvedJourneySummary ?? null,
+  };
+
+  const report = `# Overall Personas And Journeys
+
+Generated: ${combined.generatedAt}
+
+## Included Artifacts
+
+- Audit summary present: \`${combined.audit ? "yes" : "no"}\`
+- Journey summary present: \`${combined.journeys ? "yes" : "no"}\`
+
+## Recommended Review Order
+
+1. Read \`../overall-audit/report.md\` for broad full-surface findings.
+2. Read \`../overall-journeys/report.md\` for realistic path summaries.
+3. Use \`combined-bundle.json\` plus the two folders above as the ChatGPT handoff packet.
+`;
+
+  writeFileSync(resolve(outputDir, "report.md"), report);
+  writeFileSync(resolve(outputDir, "summary.json"), JSON.stringify(combined, null, 2));
+  writeFileSync(resolve(outputDir, "combined-bundle.json"), JSON.stringify(combined, null, 2));
+  writeFileSync(resolve(outputDir, "chatgpt-prompts.md"), buildCombinedChatGptPrompts());
 }
 
 function buildNotes(
@@ -567,6 +911,16 @@ function renderBullets(items: string[]) {
   return items.map((item) => `- ${item}`).join("\n");
 }
 
+function renderSectionGroup(sections: PersonaProfile["groupedSections"]["identity"]) {
+  if (sections.length === 0) {
+    return "- None captured yet.";
+  }
+
+  return sections
+    .map((section) => `#### ${section.heading}\n\n${section.body}`)
+    .join("\n\n");
+}
+
 function renderCheckboxes(items: string[]) {
   if (items.length === 0) {
     return "- [ ] Nothing queued here yet.";
@@ -651,6 +1005,10 @@ function getPersonaPriority(
   definition: PersonaDefinition,
   matchedTags: string[],
 ): "primary" | "secondary" | "ambient" {
+  if (definition.ignoredSurfaceIds?.includes(surface.id)) {
+    return "ambient";
+  }
+
   if (definition.preferredSurfaceIds?.includes(surface.id)) {
     return "primary";
   }
@@ -723,6 +1081,10 @@ function buildPersonaBundle(summaries: PersonaReportSummary[], combinedSummary: 
       personaSlug: summary.personaSlug,
       personaDescription: summary.personaDescription,
       personaProfileMarkdown: summary.personaProfileMarkdown,
+      confidenceThreshold: summary.confidenceThreshold,
+      defaultArchetype: summary.defaultArchetype,
+      defaultScenario: summary.defaultScenario,
+      defaultContext: summary.defaultContext,
       averages: summary.averages,
       verdict: summary.verdict,
       todos: summary.todos,
@@ -789,6 +1151,132 @@ Please review the attached outputs and propose:
 If helpful, suggest concrete fields, formulas, and JSON schema changes.
 \`\`\`
 `;
+}
+
+function buildJourneyCsv(summaries: JourneySummaryRecord[]) {
+  const rows = [
+    [
+      "persona_slug",
+      "persona_name",
+      "scenario_id",
+      "scenario_label",
+      "scenario_goal",
+      "archetype",
+      "target_pages",
+      "max_pages",
+      "bounce_risk",
+      "success",
+      "exit_state",
+      "visited_routes",
+      "search_queries",
+    ],
+    ...summaries.map((summary) => [
+      summary.personaSlug,
+      summary.persona,
+      summary.scenarioId,
+      summary.scenarioLabel,
+      summary.scenarioGoal,
+      summary.archetype,
+      String(summary.targetPageCount),
+      String(summary.maxPageCount),
+      summary.bounceRisk,
+      summary.success ? "yes" : "no",
+      summary.exitState,
+      summary.visitedRoutes.join(" | "),
+      summary.searchQueries.join(" | "),
+    ]),
+  ];
+
+  return rows.map((row) => row.map(csvEscape).join(",")).join("\n");
+}
+
+function buildJourneyChatGptPrompts() {
+  return `# ChatGPT Prompts For Journey Review
+
+Use these prompts with the files in this folder:
+
+- \`journey-summary.csv\`
+- \`journey-bundle.json\`
+- \`summary.json\`
+
+## Prompt 1: Review Journey Realism
+
+\`\`\`text
+I am giving you deterministic journey outputs from a persona-testing system for my website.
+
+Please do all of the following:
+1. tell me which journeys feel emotionally and behaviorally plausible
+2. tell me which journeys still feel too heuristic or repetitive
+3. point out where scenario, archetype, or context is not visibly changing the route enough
+4. suggest better route variations without replacing the deterministic approach
+5. recommend the next 5 improvements for the journey engine
+\`\`\`
+
+## Prompt 2: Improve The Scenario Matrix
+
+\`\`\`text
+I am giving you a scenario matrix and journey outputs for a deterministic persona-testing system.
+
+Please review:
+1. whether the scenarios are reusable enough across personas
+2. whether any scenarios overlap too much and should merge
+3. which scenarios are missing
+4. how context should change route choice more visibly
+5. whether the journey outputs are giving enough signal for product decisions
+\`\`\`
+`;
+}
+
+function buildCombinedChatGptPrompts() {
+  return `# ChatGPT Prompts For Combined Audit And Journey Review
+
+Use the folders next to this packet:
+
+- \`../overall-audit/\`
+- \`../overall-journeys/\`
+- this folder's \`combined-bundle.json\`
+
+## Prompt 1: Compare Audit vs Journey Findings
+
+\`\`\`text
+I am giving you both full-surface audit outputs and deterministic journey outputs from a persona-testing system for my website.
+
+Please do all of the following:
+1. compare which findings appear in both audit mode and journey mode
+2. identify which audit findings are probably structural and which journey findings feel behaviorally real
+3. rank the top improvements I should make next
+4. tell me whether the journey engine is producing meaningfully different behavior across personas yet
+5. suggest the next deterministic improvements before adding more AI interpretation
+\`\`\`
+`;
+}
+
+function readJsonIfExists(filePath: string) {
+  if (!existsSync(filePath)) {
+    return null;
+  }
+
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readCombinedPersonasAndJourneysSummary() {
+ return readJsonIfExists(
+    resolve(getCombinedPersonaJourneyOutputDir(), "summary.json"),
+  );
+}
+
+function countBy(values: string[]) {
+  const counts: Record<string, number> = {};
+
+  for (const value of values) {
+    counts[value] = (counts[value] ?? 0) + 1;
+  }
+
+  return counts;
+}
+
+function rankCountEntries(counts: Record<string, number>) {
+  return Object.entries(counts).sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]));
 }
 
 function computeOverwhelm(args: {

@@ -5,6 +5,7 @@ import { personaDefinitions } from "./persona-manifest";
 import { loadPersonaProfile } from "./persona-profile";
 import {
   createSkippedObservation,
+  getPersonaOutputDir,
   inspectSurface,
   writePersonaReport,
   type SurfaceObservation,
@@ -12,17 +13,22 @@ import {
 } from "./persona-report";
 import { adminSurfaces, getPublicPersonaSurfaces } from "./site-surfaces";
 
+export function shouldIncludeAdminSurfacesInPersonaAudit() {
+  return process.env.PERSONA_INCLUDE_ADMIN !== "0";
+}
+
 export async function runPersonaAudit(page: Page, personaSlug: string): Promise<PersonaReportSummary> {
   const personaProfilePath = resolve(
     process.cwd(),
     "tests",
     "persona-testing",
+    "personas",
     personaSlug,
     "profile.md",
   );
   const profile = loadPersonaProfile(personaProfilePath);
   const definition = personaDefinitions.find((persona) => persona.slug === personaSlug);
-  const outputDir = resolve(process.cwd(), "test-results", "personas", personaSlug);
+  const outputDir = getPersonaOutputDir(personaSlug);
   const observations: SurfaceObservation[] = [];
   const publicSurfaces = await getPublicPersonaSurfaces();
 
@@ -32,6 +38,15 @@ export async function runPersonaAudit(page: Page, personaSlug: string): Promise<
 
   for (const surface of publicSurfaces) {
     observations.push(await inspectSurface(page, surface, profile, definition, outputDir));
+  }
+
+  if (!shouldIncludeAdminSurfacesInPersonaAudit()) {
+    return writePersonaReport({
+      personaSlug,
+      profile,
+      definition,
+      observations,
+    }).summary;
   }
 
   const credentials = getAdminCredentials();
