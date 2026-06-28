@@ -135,7 +135,7 @@ function extractKeywords(markdown: string) {
     counts.set(word, (counts.get(word) ?? 0) + 1);
   }
 
-  return [...counts.entries()]
+  return Array.from(counts.entries())
     .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
     .slice(0, 40)
     .map(([word]) => word);

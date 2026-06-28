@@ -260,7 +260,7 @@ export function writeOverallPersonaReport(summaries: PersonaReportSummary[]) {
     summary.observations.filter((observation) => observation.status === "visited"),
   );
 
-  const surfaceStats = [...groupBySurface(allVisitedObservations).entries()]
+  const surfaceStats = Array.from(groupBySurface(allVisitedObservations).entries())
     .map(([label, observations]) => ({
       label,
       averageInterest: average(observations.map((observation) => observation.weightedInterestScore)),
@@ -269,7 +269,7 @@ export function writeOverallPersonaReport(summaries: PersonaReportSummary[]) {
       mediumOverwhelmCount: observations.filter((observation) => observation.overwhelmLevel === "medium").length,
       primaryPriorityCount: observations.filter((observation) => observation.personaPriority === "primary").length,
       secondaryPriorityCount: observations.filter((observation) => observation.personaPriority === "secondary").length,
-      samplePaths: [...new Set(observations.map((observation) => observation.surface.path))],
+      samplePaths: Array.from(new Set(observations.map((observation) => observation.surface.path))),
     }))
     .sort(
       (left, right) =>
@@ -599,7 +599,7 @@ function rankTodoCounts(items: string[]) {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
 
-  return [...counts.entries()]
+  return Array.from(counts.entries())
     .map(([text, count]) => ({ text, count }))
     .sort((left, right) => right.count - left.count || left.text.localeCompare(right.text));
 }
