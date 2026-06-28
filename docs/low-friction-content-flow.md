@@ -5,6 +5,18 @@ If you update the workflow guidance here, the admin page will reflect it automat
 
 This is the lightweight publishing system for ArcadeGhosts.
 
+`CONTENT-TODO.md` is the long-term backlog, and `EDITORIAL-GUIDE.md` is the voice guide.
+
+Responsibility:
+
+This document owns the Content Inbox and admin-to-draft workflow for turning captured fragments into usable content.
+
+## How These Work Together
+
+- `low-friction-content-flow.md` explains how captured fragments move through the admin workflow.
+- `CONTENT-TODO.md` tracks the longer-term publishing backlog and pipeline.
+- `EDITORIAL-GUIDE.md` keeps the tone and publishing philosophy consistent.
+
 ## Goal
 
 Make it easy to capture good raw material without forcing every idea to become a polished essay right away.

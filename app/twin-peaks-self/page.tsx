@@ -21,20 +21,20 @@ export const metadata: Metadata = {
 
 const relatedSignals = [
   {
+    href: "/games/between-two-lodges",
+    title: "Between Two Lodges",
+    description:
+      "A game-shaped Twin Peaks room full of clues, choices, recurring witnesses, and dream logic.",
+    reason: "Because this symbolic weather also has a more playful, exploratory sibling.",
+    cta: "Play the game",
+  },
+  {
     href: "/movies-tv",
     title: "Movies & TV",
     description:
       "The larger screen-signal room where Twin Peaks sits beside other strange, resonant obsessions.",
     reason: "Because this project came from the same symbolic weather as the media that shaped it.",
     cta: "Browse screen signals",
-  },
-  {
-    href: "/#fun-and-games",
-    title: "Fun & Games",
-    description:
-      "Interactive rooms, strange prompts, and game-shaped paths through the same neon forest.",
-    reason: "Because this reflection tool belongs beside the site's more playful experiments.",
-    cta: "Return to the playful side",
   },
   {
     href: "/writings/it-aint-over-till-its-over",

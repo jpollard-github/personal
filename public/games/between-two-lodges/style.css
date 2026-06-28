@@ -236,6 +236,42 @@ meter::-webkit-meter-optimum-value {
   line-height: 1.5;
 }
 
+.return-paths {
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.return-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.return-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.3rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: #111514;
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.return-links a:hover,
+.return-links a:focus-visible {
+  border-color: var(--gold);
+  background: #27312d;
+  outline: none;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 860px) {
   .game-shell {
     grid-template-columns: 1fr;

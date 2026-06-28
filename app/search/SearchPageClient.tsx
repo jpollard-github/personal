@@ -7,6 +7,39 @@ import { trackEvent } from "../lib/analytics";
 import type { SearchEntry } from "../lib/search-shared";
 import { searchEntries } from "../lib/search-shared";
 
+const quickLinks = [
+  {
+    eyebrow: "Professional",
+    title: "Proof, trust, and next step",
+    text: "If you are here with practical intent, skip the hallway and go straight to the trust path.",
+    links: [
+      { href: "/build-log", label: "Build Log" },
+      { href: "/work-with-me", label: "Work With Me" },
+      { href: "/about", label: "About" },
+    ],
+  },
+  {
+    eyebrow: "Returning",
+    title: "Fresh things and living rooms",
+    text: "If you already know the place a little, these are the fastest ways to see what is alive right now.",
+    links: [
+      { href: "/updates", label: "Updates" },
+      { href: "/tiny-thoughts", label: "Tiny Thoughts" },
+      { href: "/writings", label: "Writings" },
+    ],
+  },
+  {
+    eyebrow: "Weird",
+    title: "Stranger corners",
+    text: "Search is good for direct finding, but these are the rooms people usually mean when they want the odder heartbeat.",
+    links: [
+      { href: "/twin-peaks-self", label: "Twin Peaks Self" },
+      { href: "/games/between-two-lodges", label: "Between Two Lodges" },
+      { href: "/arcade", label: "Arcade" },
+    ],
+  },
+];
+
 function isExternalLink(href: string) {
   return href.startsWith("http://") || href.startsWith("https://");
 }
@@ -44,6 +77,11 @@ export function SearchPageClient({ entries }: { entries: SearchEntry[] }) {
           Search writings, projects, Tiny Thoughts, cat rooms, games, and other
           corners of ArcadeGhosts.
         </p>
+        <p className="search-helper-copy">
+          Search is best when you already have a signal in mind. If you just
+          want a faster path, use the quick routes below instead of making
+          Search do all the navigation work.
+        </p>
       </div>
 
       <div className="search-shell">
@@ -63,6 +101,32 @@ export function SearchPageClient({ entries }: { entries: SearchEntry[] }) {
             ? "Showing a featured mix of places to start."
             : `${results.length} result${results.length === 1 ? "" : "s"} for "${deferredQuery.trim()}".`}
         </p>
+      </div>
+
+      <div className="section-link-grid search-quick-links" aria-label="Quick routes">
+        {quickLinks.map((group) => (
+          <article className="section-link-card search-quick-link-card" key={group.title}>
+            <span className="card-eyebrow">{group.eyebrow}</span>
+            <h2>{group.title}</h2>
+            <p>{group.text}</p>
+            <div className="search-quick-link-row">
+              {group.links.map((link) => (
+                <TrackedLink
+                  className="search-quick-link-chip"
+                  href={link.href}
+                  key={link.href}
+                  trackingEvent="Search Quick Link Clicked"
+                  trackingProperties={{
+                    destination: link.href,
+                    source: group.title,
+                  }}
+                >
+                  {link.label}
+                </TrackedLink>
+              ))}
+            </div>
+          </article>
+        ))}
       </div>
 
       <div className="search-results" aria-live="polite">

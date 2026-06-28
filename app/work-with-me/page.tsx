@@ -166,6 +166,30 @@ const faqItems = [
   },
 ];
 
+const trustClusterCards = [
+  {
+    eyebrow: "Human Context",
+    title: "Who you are working with",
+    text: "Before scope, pricing, or next steps, here is the human context: how I think, what I care about, and the person you would actually be working with.",
+    href: "/about",
+    cta: "Meet Jason",
+  },
+  {
+    eyebrow: "Proof Of Life",
+    title: "Build Log",
+    text: "A public record of recent shipped improvements, structural changes, editorial cleanup, and the ongoing tuning behind ArcadeGhosts.",
+    href: "/build-log",
+    cta: "See Recent Changes",
+  },
+  {
+    eyebrow: "Current Work",
+    title: "Projects",
+    text: "A visible workbench of shipped, active, paused, and becoming projects so you do not have to guess what kind of builder I am.",
+    href: "/#projects",
+    cta: "Open The Workbench",
+  },
+];
+
 export const metadata: Metadata = {
   title: "Work With Me",
   description:
@@ -202,6 +226,10 @@ export default function WorkWithMePage() {
             internal tool, or technical problem solved? I help businesses and
             teams turn messy technical problems into practical solutions.
           </p>
+          <p className="work-hero-note">
+            If you want to start with the human context before the practical
+            details, <Link className="work-inline-link" href="/about">meet Jason here</Link>.
+          </p>
           <div className="hero-actions" aria-label="Work with me links">
             <a
               className="button primary"
@@ -236,6 +264,16 @@ export default function WorkWithMePage() {
           hours. They are hiring a thoughtful developer who can understand a
           messy problem, communicate clearly, and build something useful.
         </SectionHeading>
+        <div className="section-link-grid">
+          {trustClusterCards.map((card) => (
+            <Link className="section-link-card" href={card.href} key={card.title}>
+              <span className="card-eyebrow">{card.eyebrow}</span>
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+              <span>{card.cta}</span>
+            </Link>
+          ))}
+        </div>
         <article className="work-panel work-outcomes-panel">
           <h3>Most projects start with a discovery session.</h3>
           <p>

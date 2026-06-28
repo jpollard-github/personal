@@ -4,11 +4,19 @@ Reference: 2026-06-27 22:10 EDT
 
 This document expands the three `Pro ROI Vercel` items into a concrete implementation and review backlog for ArcadeGhosts. The ordering favors highest leverage first, then usefulness, then the more playful experiments.
 
+Practical operating checklist:
+
+- [VERCEL-PRO-OPERATIONS-TODO.md](/Users/jasonp/repos/personal/docs/VERCEL-PRO-OPERATIONS-TODO.md)
+
 ## 1. Watch The Right Vercel Metrics
 
 Goal:
 
 - Use Vercel Pro analytics and usage data to make better site decisions, not just to admire dashboards.
+
+Primary execution doc:
+
+- [VERCEL-PRO-OPERATIONS-TODO.md](/Users/jasonp/repos/personal/docs/VERCEL-PRO-OPERATIONS-TODO.md)
 
 ### Highest Priority
 
@@ -68,6 +76,10 @@ Goal:
 Goal:
 
 - Build around the Pro features that genuinely help ArcadeGhosts, and deliberately ignore the ones that do not.
+
+Primary execution doc:
+
+- [VERCEL-PRO-OPERATIONS-TODO.md](/Users/jasonp/repos/personal/docs/VERCEL-PRO-OPERATIONS-TODO.md)
 
 ### Worth Using Soon
 

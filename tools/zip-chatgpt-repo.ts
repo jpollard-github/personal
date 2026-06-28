@@ -14,18 +14,40 @@ const excludes = [
   "node_modules/*",
   ".next/*",
   ".git/*",
+  ".vscode/*",
   "test-results/*",
   "playwright-report/*",
+  "coverage/*",
+  "persona-results/*",
   "out/*",
   "dist/*",
   ".vercel/*",
+  "chatgpt-zip-packets/*",
   ".env*",
   "*.log",
   ".DS_Store",
   "**/.DS_Store",
   "public/images/*",
   "merch/**/exports/*",
+  "*.png",
+  "*.jpg",
+  "*.jpeg",
+  "*.gif",
+  "*.webp",
+  "*.svg",
+  "*.ico",
+  "*.mp4",
+  "*.mov",
+  "*.mp3",
+  "*.wav",
+  "*.woff",
+  "*.woff2",
+  "*.ttf",
+  "*.otf",
 ];
+
+// TODO: Consider switching this archive script to `git ls-files` later so packet
+// generation stays aligned with tracked source files and cleaner exclusion rules.
 
 async function removeExistingArchive() {
   try {

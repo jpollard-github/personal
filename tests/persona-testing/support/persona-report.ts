@@ -111,6 +111,9 @@ export type JourneySummaryRecord = {
   visitedRoutes: string[];
   skippedRoutes: string[];
   expectedRoutes: string[];
+  // These fields currently track routes actually visited, not routes that were
+  // clearly exposed on-page as strong next steps. Keep that nuance in mind when
+  // interpreting flat trust-route metrics after UI cross-linking improvements.
   missingExpectedRoutes: string[];
   expectedRouteWarnings: string[];
   expectedRouteMisses: Array<{
@@ -223,6 +226,7 @@ type ProductBacklogArea =
   | "Tiny Thoughts"
   | "Cats"
   | "Twin Peaks"
+  | "Arcade"
   | "Search"
   | "Navigation"
   | "Cross-linking"
@@ -244,6 +248,7 @@ type ProductRecommendation = {
   suggestedImprovement: string;
   expectedBenefit: string;
   rationale: string;
+  statusNote?: string;
 };
 
 export async function inspectSurface(
@@ -755,8 +760,11 @@ Generated: ${combinedSummary.generatedAt}
 
 - Journeys reviewed: \`${combinedSummary.journeysReviewed}\`
 - Average visited route count: \`${combinedSummary.averageVisitedRouteCount.toFixed(1)}\`
-- Successful journeys: \`${successfulJourneys}/${combinedSummary.journeysReviewed}\`
-- Partial / failed journeys: \`${partialOrFailedJourneys.length}/${combinedSummary.journeysReviewed}\`
+- Goal satisfied: \`${successfulJourneys}/${combinedSummary.journeysReviewed}\`
+- Journey outcomes:
+  - success: \`${aggregateSummaries.filter((summary) => summary.journeyOutcome === "success").length}\`
+  - partial: \`${aggregateSummaries.filter((summary) => summary.journeyOutcome === "partial").length}\`
+  - failed: \`${aggregateSummaries.filter((summary) => summary.journeyOutcome === "failed").length}\`
 - Bounce risk counts:
   - low: \`${combinedSummary.bounceRiskCounts.low}\`
   - medium: \`${combinedSummary.bounceRiskCounts.medium}\`
@@ -1511,10 +1519,16 @@ function buildRecommendedJourneyImprovements(args: {
   const topSkippedReason = rankCountEntries(args.commonSkippedReasons)[0];
   const topSearchArchetype = rankCountEntries(args.searchUsageByArchetype)[0];
   const topCatalogWarning = rankCountEntries(args.routeCatalogWarnings)[0];
+  const topProfessionalTrustMiss =
+    topPartialOrFailed
+    && ["potential-client", "hiring-manager"].includes(topPartialOrFailed.personaSlug)
+    && topPartialOrFailed.missingExpectedRoutes.includes("/about");
 
   if (topPartialOrFailed) {
     improvements.push(
-      `Fix \`${topPartialOrFailed.persona}\` / \`${topPartialOrFailed.scenarioLabel}\` first, because it currently resolves as \`${topPartialOrFailed.journeyOutcome}\`.`,
+      topProfessionalTrustMiss
+        ? `Re-test \`${topPartialOrFailed.persona}\` / \`${topPartialOrFailed.scenarioLabel}\` carefully before forcing \`/about\` harder again, because this journey still resolves as \`${topPartialOrFailed.journeyOutcome}\` even after visible UI trust-path improvements.`
+        : `Fix \`${topPartialOrFailed.persona}\` / \`${topPartialOrFailed.scenarioLabel}\` first, because it currently resolves as \`${topPartialOrFailed.journeyOutcome}\`.`,
     );
   }
 
@@ -1532,7 +1546,9 @@ function buildRecommendedJourneyImprovements(args: {
 
   if (topMissingExpected) {
     improvements.push(
-      `Strengthen the path toward \`${topMissingExpected[0]}\`, which was the most commonly expected-but-missed route anchor.`,
+      topMissingExpected[0] === "/about"
+        ? "Treat repeated `/about` misses as a mixed signal: the route may still matter, but recent human review can justify pausing additional route forcing unless fresh evidence shows real discoverability friction."
+        : `Strengthen the path toward \`${topMissingExpected[0]}\`, which was the most commonly expected-but-missed route anchor.`,
     );
   }
 
@@ -1592,6 +1608,10 @@ function renderProductRecommendations(items: ProductRecommendation[]) {
     .join("\n");
 }
 
+function isImplementedRecommendation(item: ProductRecommendation) {
+  return item.statusNote?.startsWith("Implemented") || item.statusNote?.startsWith("Human review says");
+}
+
 function writePersonaTestsResultsTodoDoc(args: {
   auditSummary: {
     recurringTodos?: unknown;
@@ -1635,11 +1655,14 @@ function writePersonaTestsResultsTodoDoc(args: {
         .map((item) => {
           const personas = summarizeNames(item.affectedPersonas, 4);
           const scenarios = summarizeNames(item.affectedScenarios, 3);
+          const acceptanceCriteria = renderAcceptanceCriteria(area);
+          const statusNote = item.statusNote ? `\n  Current note:\n  - ${item.statusNote}` : "";
+          const checkbox = isImplementedRecommendation(item) ? "[x]" : "[ ]";
 
-          return `- [ ] ${item.priority} · ${item.confidence} · Evidence count: \`${item.evidenceCount}\`
+          return `- ${checkbox} ${item.priority} · ${item.confidence} · Evidence count: \`${item.evidenceCount}\`
   Affected visitors: ${personas}; scenarios: ${scenarios}
   Suggested improvement: ${item.suggestedImprovement}
-  Expected benefit: ${item.expectedBenefit}`;
+  Expected benefit: ${item.expectedBenefit}${acceptanceCriteria ? `\n  Acceptance criteria:\n${acceptanceCriteria}` : ""}${statusNote}`;
         })
         .join("\n\n")}`;
     })
@@ -1649,14 +1672,167 @@ function writePersonaTestsResultsTodoDoc(args: {
 
 Generated: ${new Date().toISOString()}
 
+Website work starts here.
+
+Framework work lives in \`docs/PERSONA-TODO.md\`.
+
+Start with the highest-confidence active website items.
+
+Pick 1–3 website TODOs, implement them, then re-run \`npm run test:users:fast\`.
+
+Address high-confidence website TODOs before expanding the persona engine.
+
 This is the canonical handoff from persona testing into ArcadeGhosts website work.
 
 The goal is not to preserve every raw audit note. The goal is to turn repeated evidence into a practical product backlog that can be implemented, re-tested, and measured over time.
 
+## Recommended Work Order
+
+1. Search support without over-reliance
+2. Twin Peaks cross-linking
+3. Arcade / games visibility if still relevant
+4. Retest after each small batch
+5. Lower-confidence items only after retesting
+
+## Current Status
+
+- First website batch: completed
+- Second trust-routing pass: completed
+- Movies & TV reframing: completed
+- Human review says the trust links are clearly exposed enough for real visitors.
+- The deterministic trust-route metrics may still reflect planner expectations, route-budget behavior, and the difference between route visited versus route exposed.
+- Pause additional \`/about\` route forcing unless future evidence shows a real discoverability problem.
+
+## Current Focus
+
+Keep the next pass focused on:
+
+- Search support without over-reliance
+- Twin Peaks cross-linking
+- Arcade / games visibility if still relevant
+- retest after each small batch
+
+## First Implementation Batch
+
+Recommended first batch:
+
+- Homepage Start Here block
+- About trust-hub links
+- Trust Cluster links among About, Work With Me, and Build Log
+
+This batch is intentionally small so results can be measured cleanly on the next persona rerun.
+
+Status note:
+
+- [x] Homepage Start Here / calmer first screen landed in the UI
+- [x] About trust-hub links landed in the UI
+- [x] Trust-cluster links among About, Work With Me, and Build Log landed in the UI
+- [x] First website batch completed
+- [ ] Deterministic trust-route metrics have not improved yet
+
+## Second Trust-Routing Pass
+
+- [x] Work With Me → About was strengthened
+- [x] Build Log → About was strengthened
+- [x] Homepage proof path now points toward \`/build-log\`
+- [x] Human review says this path is clear
+- [ ] Deterministic trust-route metrics have not improved yet
+
+## Completed But No Longer Active
+
+- Homepage Start Here / calmer first screen
+- Trust cluster initial implementation
+- Work With Me → About
+- Build Log → About
+- Movies & TV reframing
+
+## Retest Workflow
+
+1. Pick 1–3 website TODOs.
+2. Implement them.
+3. Run \`npm run test:users:fast\`.
+4. Compare new results against prior results.
+5. Update \`docs/PERSONA-TESTS-RESULTS-TODO.md\`.
+6. Only then consider framework changes.
+
+## Retest Target
+
+After the first implementation batch, run:
+
+\`npm run test:users:fast\`
+
+Expected improvements:
+
+- lower homepage near-bounce pressure
+- fewer \`/about\` expected-route misses
+- stronger Potential Client / Hiring Manager trust journeys
+- clearer professional path without relying entirely on Search
+- improved confidence in \`docs/PERSONA-TESTS-RESULTS-TODO.md\` priorities
+
+Current read after this pass:
+
+- The major homepage, trust-cluster, and Movies & TV UI work is implemented.
+- Some deterministic recommendations may still reference already-completed work.
+- When that happens, interpret them as "implemented but not yet reflected in deterministic metrics" unless fresh human review shows continued friction.
+
 ${body}
+
+## Trust Cluster
+
+The trust cluster is:
+
+- About
+- Work With Me
+- Build Log
+- Projects / Updates when relevant
+
+Working definition:
+
+- Professional visitors should not have to rely on Search to connect proof, personality, and next steps.
+
+TODOs:
+
+- [ ] Add visible cross-links between About, Work With Me, Build Log, and relevant Projects / Updates surfaces.
+- [ ] Make each trust-cluster page explain why the other pages matter.
+- [ ] Make it easy to move from personality to proof to next step without losing context.
+- [ ] Professional visitors should not have to rely on Search to connect personality, proof, and next step.
+
+Acceptance criteria:
+
+- [ ] About, Work With Me, and Build Log cross-link visibly.
+- [ ] Work With Me points to proof of active building.
+- [ ] Build Log points to human context / About.
+- [ ] About points to Work With Me without becoming salesy.
+- [ ] Professional visitors do not have to rely on Search to connect personality, proof, and next step.
 `;
 
   writeFileSync(getPersonaTestsResultsTodoPath(), doc);
+}
+
+function renderAcceptanceCriteria(area: ProductBacklogArea) {
+  if (area === "Homepage") {
+    return [
+      "  - [ ] Homepage has one short plain-language summary of ArcadeGhosts.",
+      "  - [ ] Homepage has a visible `Start Here` or `New here?` block.",
+      "  - [ ] The block contains 3-5 clear paths.",
+      "  - [ ] The paths include personal, professional, and creative entry points.",
+      "  - [ ] The denser room grid appears after orientation, not before it.",
+      "  - [ ] Persona tests should reduce homepage near-bounce pressure after implementation.",
+      "  - [ ] Suggested paths include `I want to know Jason -> About`, `I'm here for projects -> Projects / Build Log`, `I'm thinking about working with you -> Work With Me`, and `I want writing, music, cats, or weird rooms -> Writings / Music / Cats / Twin Peaks`.",
+    ].join("\n");
+  }
+
+  if (area === "About") {
+    return [
+      "  - [ ] About is easy to reach from homepage.",
+      "  - [ ] About links to Writings, Cats, Music, Projects, Build Log, and Work With Me.",
+      "  - [ ] About explains Jason as both person and builder.",
+      "  - [ ] Professional visitors can move from About to proof or next-step pages.",
+      "  - [ ] Personal visitors can move from About to warm or creative pages.",
+    ].join("\n");
+  }
+
+  return "";
 }
 
 function buildProductRecommendations(args: {
@@ -1680,6 +1856,13 @@ function buildProductRecommendations(args: {
 }) {
   const { auditSummaries, journeySummaries, recurringTodos, surfaceStats } = args;
   const recommendations: ProductRecommendation[] = [];
+  const journeyEligibleRoutes = Array.from(
+    new Set(journeySummaries.flatMap((summary) => summary.catalogCoverage.journeyEligibleRoutes)),
+  );
+  const selectedRoutes = Array.from(
+    new Set(journeySummaries.flatMap((summary) => summary.catalogCoverage.selectedRoutes)),
+  );
+  const routesNeverSelected = journeyEligibleRoutes.filter((route) => !selectedRoutes.includes(route));
   const homepageStats = surfaceStats.find((surface) => surface.samplePaths.includes("/"));
   const moviesStats = surfaceStats.find((surface) => surface.samplePaths.includes("/movies-tv"));
   const missingAboutJourneys = journeySummaries.filter(
@@ -1734,11 +1917,13 @@ function buildProductRecommendations(args: {
       affectedPersonas: Array.from(personas),
       affectedScenarios: Array.from(scenarios),
       suggestedImprovement:
-        "Give the homepage a calmer first screen: one short site summary, two or three clear starting paths, and one warm personal hook before the denser room grid.",
+        "Give the homepage a calmer first screen: one short site summary, two or three clear starting paths, one warm personal hook before the denser room grid, and a visible \"New here?\" or \"Start here\" block.",
       expectedBenefit:
         "Reduces first-visit fatigue, improves orientation, and helps both personal and professional visitors choose a path faster.",
       rationale:
         "Multiple visitors independently point to homepage density, weak first-step orientation, and a need for a clearer emotional entry point.",
+      statusNote:
+        "Implemented but not yet reflected in deterministic metrics. Human review says the first-screen path is clearer, so pause unless future evidence shows continued friction.",
     }));
   }
 
@@ -1753,11 +1938,13 @@ function buildProductRecommendations(args: {
       affectedPersonas: Array.from(new Set(missingAboutJourneys.map((summary) => summary.persona))),
       affectedScenarios: Array.from(new Set(missingAboutJourneys.map((summary) => summary.scenarioLabel))),
       suggestedImprovement:
-        "Make the About page easier to reach from the homepage, Work With Me, and Build Log, and frame it as the human trust anchor rather than a secondary biography page.",
+        "Make the About page easier to reach from the homepage, Work With Me, and Build Log; position it as the human trust hub; and add clear paths onward to writing, cats, music, projects, and Work With Me.",
       expectedBenefit:
         "Improves credibility for trust-seeking visitors and makes professional journeys feel more complete before they decide whether to continue.",
       rationale:
         "The same trust-oriented journeys keep forming only partial confidence when they never reach About.",
+      statusNote:
+        "Human review says this path is clear. Treat this as implemented but not yet reflected in deterministic metrics, and pause unless future evidence shows continued friction.",
     }));
   }
 
@@ -1772,11 +1959,13 @@ function buildProductRecommendations(args: {
       affectedPersonas: Array.from(new Set(buildLogTrustMisses.map((summary) => summary.persona))),
       affectedScenarios: Array.from(new Set(buildLogTrustMisses.map((summary) => summary.scenarioLabel))),
       suggestedImprovement:
-        "Make Build Log easier to discover from professional trust paths and clarify near the top why it matters as evidence of real iteration.",
+        "Make Build Log easier to discover from professional trust paths, cross-link it with About and Work With Me, and clarify near the top why it matters as evidence of real iteration.",
       expectedBenefit:
         "Helps proof-seeking visitors reach a concrete credibility signal sooner without forcing everything through Search.",
       rationale:
         "Professional and trust-oriented journeys repeatedly expect Build Log to help confirm credibility, but that proof path is still too easy to miss.",
+      statusNote:
+        "Human review says this path is clear enough now. Keep it out of top active work unless later evidence shows it is genuinely weak.",
     }));
   }
 
@@ -1791,11 +1980,13 @@ function buildProductRecommendations(args: {
       affectedPersonas: Array.from(new Set(professionalPartials.map((summary) => summary.persona))),
       affectedScenarios: Array.from(new Set(professionalPartials.map((summary) => summary.scenarioLabel))),
       suggestedImprovement:
-        "Treat About, Work With Me, and Build Log as one trust cluster with visible cross-links so proof, personality, and next steps reinforce each other.",
+        "Treat About, Work With Me, and Build Log as one trust cluster with visible cross-links, and make each page explain why the others matter so proof, personality, and next steps reinforce each other.",
       expectedBenefit:
         "Makes client and hiring-manager journeys feel more coherent and lowers the odds of a technically impressive but emotionally incomplete visit.",
       rationale:
         "Professional trust journeys are no longer failing silently; they are explicitly landing as partial when the trust cluster is incomplete.",
+      statusNote:
+        "Implemented but not yet reflected in deterministic metrics. Human review says this trust cluster is clear, so pause unless future evidence shows continued friction.",
     }));
   }
 
@@ -1810,11 +2001,13 @@ function buildProductRecommendations(args: {
       affectedPersonas: auditSummaries.map((summary) => summary.persona),
       affectedScenarios: [],
       suggestedImprovement:
-        "Reframe the Movies & TV page so its top section explains why the room exists before dropping visitors into dense content.",
+        "Reframe the Movies & TV page so its top section explains why the room exists before dropping visitors into dense content, and make the opening feel more intentionally paced.",
       expectedBenefit:
         "Prevents a non-core room from feeling as busy as the homepage and makes the site feel more intentionally paced overall.",
       rationale:
         "This room repeatedly shows up as high-density without offering clear first-visit payoff for most audiences.",
+      statusNote:
+        "Implemented but not yet reflected in deterministic metrics. Pause unless future evidence shows continued friction.",
     }));
   }
 
@@ -1858,6 +2051,29 @@ function buildProductRecommendations(args: {
         "Improves payoff for niche visitors without raising first-visit complexity for everyone else.",
       rationale:
         "The Twin Peaks slice is interesting once found, but representative journeys do not naturally reach all of it yet.",
+    }));
+  }
+
+  const arcadeOrGameNeverSelected = routesNeverSelected.filter((route) =>
+    ["/arcade", "/games/between-two-lodges"].includes(route),
+  );
+
+  if (arcadeOrGameNeverSelected.length > 0) {
+    recommendations.push(makeRecommendation({
+      id: "arcade-games-visibility",
+      area: "Arcade",
+      priority: "Low Priority",
+      evidenceCount: arcadeOrGameNeverSelected.length,
+      personaCount: 0,
+      scenarioCount: 0,
+      affectedPersonas: [],
+      affectedScenarios: [],
+      suggestedImprovement:
+        "Review whether Arcade and Between Two Lodges should stay intentionally niche or get one stronger path from Search, Movies & TV, or the homepage's weirder routes.",
+      expectedBenefit:
+        "Clarifies whether these rooms should be more discoverable or simply remain rewarding side paths for people who find them.",
+      rationale:
+        "Some eligible weird or game routes are still not selected by representative journeys, which may reflect either niche intent or a discoverability gap.",
     }));
   }
 

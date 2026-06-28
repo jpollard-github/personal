@@ -69,18 +69,27 @@ Admin areas:
 
 ## Repo Notes
 
-Useful internal docs:
+Documentation hub:
 
-- `docs/current-work.md`
-- `docs/TODO.md`
+- `docs/README.md`
+
+Start there for:
+
+- current priorities
+- which doc to use for content, website, framework, AI, or operations work
+- daily, weekly, and occasional project rhythm
+
+Especially useful companion docs:
+
+- `docs/CONTENT-TODO.md`
+- `docs/PERSONA-TESTS-RESULTS-TODO.md`
 - `docs/low-friction-content-flow.md`
-- `docs/project-memory-snapshot.md`
 
 Note:
 
 - `docs/low-friction-content-flow.md` is rendered directly inside the `Content Inbox` admin page, so editing that file updates the in-app instructions too.
 
-If you are using Codex or another AI coding assistant here, those docs should be treated as the primary source of truth before inspecting implementation files.
+If you are using Codex or another AI coding assistant here, read `docs/README.md` first, then follow its links before inspecting implementation files.
 
 ## Important Areas
 
@@ -233,10 +242,10 @@ Open them from:
 
 The docs task opens:
 
-- `docs/current-work.md`
-- `docs/TODO.md`
+- `docs/README.md`
+- `docs/CONTENT-TODO.md`
+- `docs/PERSONA-TESTS-RESULTS-TODO.md`
 - `docs/low-friction-content-flow.md`
-- `docs/project-memory-snapshot.md`
 
 Note:
 

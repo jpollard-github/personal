@@ -1,3 +1,9 @@
+Status:
+
+- Historical handoff context kept for reference.
+- Do not use this as the active operating queue.
+- Use `docs/README.md` to find the current working documents.
+
 I added the handoff packet at [report.md](/Users/jasonp/repos/personal/persona-results/personas/overall-personas-and-journeys/report.md) and updated [AI-TODO.md](/Users/jasonp/repos/personal/docs/AI-TODO.md) with the AI-specific notes: use AI as a second-pass interpreter, keep deterministic Playwright/heuristic capture as the source of truth, and add a follow-up task for persona-specific weighting after review.
 
 For the weighting improvement, ChatGPT is the best next step right now. I’d use it as a reviewer, not as the thing that directly changes scoring logic. The practical workflow is:

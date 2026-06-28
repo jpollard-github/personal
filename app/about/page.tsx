@@ -2,6 +2,54 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { aboutCards, resonanceLinks } from "../home/data";
 
+const aboutTrustCards = [
+  {
+    eyebrow: "Proof",
+    title: "Build Log",
+    text: "A public work log showing shipped improvements, editorial cleanup, test passes, and the behind-the-scenes tuning that keeps the site alive.",
+    href: "/build-log",
+    cta: "See Recent Changes",
+  },
+  {
+    eyebrow: "Next Step",
+    title: "Work With Me",
+    text: "If you are wondering whether I can help with a software problem, this is the practical path from personality into scope, proof, and contact.",
+    href: "/work-with-me",
+    cta: "See The Work Path",
+  },
+  {
+    eyebrow: "Current Work",
+    title: "Projects",
+    text: "Active, shipped, paused, and becoming: the workbench view of what I am building right now.",
+    href: "/#projects",
+    cta: "Open The Workbench",
+  },
+];
+
+const aboutWarmCards = [
+  {
+    eyebrow: "Writing",
+    title: "Writings",
+    text: "Essays and reflections on grief, technology, comedy, attention, and the suspiciously brave act of trying again tomorrow.",
+    href: "/writings",
+    cta: "Read A Few Signals",
+  },
+  {
+    eyebrow: "Music",
+    title: "Music",
+    text: "Synths, tenderness, playlists, Music League notes, and songs for fluorescent weather.",
+    href: "/music",
+    cta: "Step Into The Listening Room",
+  },
+  {
+    eyebrow: "Cats",
+    title: "Cats",
+    text: "The softer household orbit: Beverly, Lucinda, Thomas, Jones, Missy, Cass, and the necessary cat evidence.",
+    href: "/cats/beverly-and-lucinda",
+    cta: "Visit The Cat Rooms",
+  },
+];
+
 function AboutCardLink({
   href,
   title,
@@ -68,7 +116,8 @@ export default function AboutPage() {
             I&apos;m Jason Pollard, a software developer, cat dad, music
             enthusiast, arcade wanderer, and lifelong collector of strange
             ideas. I build tools and experiments that are practical enough to
-            use and personal enough to remember.
+            use and personal enough to remember, which is also the shortest
+            explanation of what this site is trying to prove.
           </p>
           <p>
             I live in North Carolina&apos;s Triad region and spend a lot of time
@@ -82,6 +131,33 @@ export default function AboutPage() {
             forgotten arcade cabinets, weird dreams, cat rituals, and sudden
             self-understanding.
           </p>
+          <p>
+            If you are here professionally, the useful version is simple: I am
+            both the person and the builder. If you want proof of active work,
+            go to the Build Log and Projects. If you want the next step, go to
+            Work With Me. If you want the warmer context first, keep following
+            the side rooms.
+          </p>
+
+          <h3>If you want the practical trail first:</h3>
+          <p>
+            <Link href="/build-log">Build Log</Link> is the proof-of-active-work
+            path. <Link href="/work-with-me">Work With Me</Link> is the
+            practical next step if you think I might be able to help. This
+            page is the human context that connects those two.
+          </p>
+          <div className="section-link-grid about-card-grid">
+            {aboutTrustCards.map((card) => (
+              <AboutCardLink
+                cta={card.cta}
+                eyebrow={card.eyebrow}
+                href={card.href}
+                key={card.title}
+                text={card.text}
+                title={card.title}
+              />
+            ))}
+          </div>
 
           <h3>If you&apos;re the type of person who enjoys:</h3>
           <ul className="about-list">
@@ -110,6 +186,20 @@ export default function AboutPage() {
             the right conversations. If something here feels familiar, reach
             out. <Link href="/work-with-me">I occasionally take on small side projects too.</Link>
           </p>
+
+          <h3>If you want the warmer rooms first:</h3>
+          <div className="section-link-grid about-card-grid">
+            {aboutWarmCards.map((card) => (
+              <AboutCardLink
+                cta={card.cta}
+                eyebrow={card.eyebrow}
+                href={card.href}
+                key={card.title}
+                text={card.text}
+                title={card.title}
+              />
+            ))}
+          </div>
 
           <div className="section-link-grid about-card-grid">
             {aboutCards.map((card) => (

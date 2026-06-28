@@ -286,8 +286,25 @@ test("combined packet includes journey summary when audit reruns later", () => {
 
     const todoDoc = readFileSync(resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.md"), "utf8");
     assert.match(todoDoc, /# PERSONA-TESTS-RESULTS-TODO\.md/);
+    assert.match(todoDoc, /Website work starts here\./);
+    assert.match(todoDoc, /Start with the highest-confidence active website items\./);
+    assert.match(todoDoc, /Pick 1–3 website TODOs, implement them, then re-run `npm run test:users:fast`\./);
+    assert.match(todoDoc, /## Recommended Work Order/);
+    assert.match(todoDoc, /## First Implementation Batch/);
+    assert.match(todoDoc, /## Retest Workflow/);
+    assert.match(todoDoc, /## Retest Target/);
+    assert.match(todoDoc, /## Trust Cluster/);
     assert.match(todoDoc, /## Homepage/);
     assert.match(todoDoc, /## Overall UX/);
+    assert.match(todoDoc, /Acceptance criteria:/);
+    assert.match(todoDoc, /Professional visitors do not have to rely on Search to connect personality, proof, and next step\./);
+
+    const journeyReport = readFileSync(resolve(personasRoot, "overall-journeys", "report.md"), "utf8");
+    assert.match(journeyReport, /Goal satisfied: `1\/1`/);
+    assert.match(journeyReport, /Journey outcomes:/);
+    assert.match(journeyReport, /success: `1`/);
+    assert.match(journeyReport, /partial: `0`/);
+    assert.match(journeyReport, /failed: `0`/);
 
     const auditSummary = JSON.parse(
       readFileSync(resolve(personasRoot, "overall-audit", "summary.json"), "utf8"),

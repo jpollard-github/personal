@@ -44,16 +44,17 @@ export function HomeHero() {
         <p className="eyebrow">Jason Pollard / living portfolio</p>
         <h1>Useful tools with a strange little heartbeat.</h1>
         <p className="hero-copy">
-          I&apos;m a software developer building thoughtful products,
-          self-reflection systems, writing spaces, games, and small signals from
-          the neon forest.
+          ArcadeGhosts is my personal site for software projects, writing,
+          music, cats, and strange little experiments. I&apos;m a software
+          developer building thoughtful products and leaving the warmer,
+          stranger context attached.
         </p>
         <div className="hero-actions" aria-label="Primary links">
           <a className="button primary" href="#start-here">
             Start Here
           </a>
-          <a className="button secondary" href="#projects">
-            See Projects
+          <a className="button secondary" href="/build-log">
+            See Build Log
           </a>
           <HomeSurpriseMe />
         </div>

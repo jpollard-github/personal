@@ -5,10 +5,16 @@ import { startHereCards } from "./data";
 export function HomeStartHere() {
   return (
     <section className="content-section start-here-section" id="start-here">
-      <SectionHeading eyebrow="Start Here" title="Three good doors into ArcadeGhosts.">
-        If we just met, choose the part of the site that sounds most like your
-        kind of conversation and start there.
+      <SectionHeading eyebrow="New Here?" title="Start with one good door into ArcadeGhosts.">
+        ArcadeGhosts is my personal site for software projects, writing,
+        music, cats, and strange little experiments. If we just met, choose
+        the path that sounds most like your kind of conversation and start
+        there.
       </SectionHeading>
+      <p className="start-here-kicker">
+        Choose a lane: personal context, proof of active work, practical next
+        step, or the warmer strange stuff.
+      </p>
       <div className="start-here-grid" aria-label="Recommended first paths">
         {startHereCards.map((card) => (
           <TrackedLink
@@ -29,7 +35,10 @@ export function HomeStartHere() {
             </div>
             <h3>{card.title}</h3>
             <p>{card.text}</p>
-            <small>{card.audience}</small>
+            <small>
+              <span className="start-here-audience-label">Best for:</span>{" "}
+              {card.audience}
+            </small>
             <span>{card.cta}</span>
           </TrackedLink>
         ))}

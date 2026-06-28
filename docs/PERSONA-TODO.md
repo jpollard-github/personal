@@ -2,314 +2,181 @@
 
 Reference: 2026-06-28 8:10 PM EDT
 
-This roadmap reflects the current state of the persona system after the Persona v2 refresh, archetype imports, scenario matrix work, and Journey Mode v1 implementation.
+This file is the persona-testing framework roadmap.
+
+Do not use this as the primary website work queue.
+
+Use `docs/PERSONA-TESTS-RESULTS-TODO.md` for day-to-day ArcadeGhosts website work.
+
+Use `docs/CONTENT-TODO.md` for long-term publishing and content growth.
+
+Use `docs/README.md` when you need the broader documentation map.
+
+The framework is now considered stable v1.
 
 ## Current State
 
-- Persona testing now has two explicit modes:
-  - full-surface audit
-  - deterministic journey simulation
-- Persona profiles are organized under `tests/persona-testing/personas/`.
-- Archetypes now include `Hunter`, `Reader`, `Scanner`, `Wanderer`, and `Builder`.
-- Journey Mode now uses:
-  - persona
-  - archetype
-  - scenario
-  - context
-  - confidence threshold
-- Durable generated outputs now live under `persona-results/personas/` so Playwright cleanup does not wipe the long-running reports.
+Framework:
+Stable v1
 
-## Architecture Direction
+Website:
+Active development
 
-The current architecture is still the right one:
+Primary effort:
+Content and website improvements
 
-```text
-Persona
-  ↓
-Archetype
-  ↓
-Scenario
-  ↓
-Context
-  ↓
-Deterministic Navigation
-  ↓
-Observation
-  ↓
-AI Reflection
-  ↓
-Aggregated Findings
-```
+Future framework work:
+Only when website use or analytics reveal a genuine limitation.
 
-Important rule:
+## How To Use This File
 
-- deterministic code decides where the simulated visitor goes
-- AI, if added later, interprets what happened
+- Treat this file as future framework guidance, not the active website backlog.
+- Keep website improvement work ahead of framework expansion.
+- Resume framework work only when real website use exposes a limitation.
+- Read `docs/PERSONA-DESIGN-PRINCIPLES.md` for the stable intent of the system.
 
-## Done
+## Current Direction
 
-### Persona v2 Foundation
+The next development cycles should primarily improve ArcadeGhosts itself.
 
-- [x] Move personas to a dedicated `tests/persona-testing/personas/` folder
-- [x] Standardize around Persona v2-style profile sections
-- [x] Rewrite the existing persona set to be more behavioral and less hobby-only
-- [x] Add `confidenceThreshold` to persona behavior modeling
-- [x] Update `Ideal Partner` with clearer first-visit, trust, and hesitation behavior
-- [x] Replace `Potential Client` with the stronger v2 version
-- [x] Add `Skeptic`
+Current priority order:
 
-### Audit / Journey Split
+1. Improve ArcadeGhosts website.
+2. Compare persona recommendations against human judgment.
+3. Eventually compare persona recommendations against Vercel Analytics.
+4. Only then evolve the framework further.
 
-- [x] Preserve full-surface audit mode
-- [x] Add `runPersonaJourney(...)`
-- [x] Keep audit mode and journey mode separate in code and reports
-- [x] Keep admin pages in audit mode
-- [x] Skip admin pages by default in journey mode
+Framework work should only resume when:
 
-### Scenario / Journey Model
+- website improvements expose limitations
+- analytics contradict planner assumptions
+- real users reveal missing behaviors
 
-- [x] Add a reusable scenario matrix document
-- [x] Keep scenarios global and reusable instead of persona-specific one-offs
-- [x] Add explicit scenario goals
-- [x] Split page budgets into `targetPages` and `maxPages`
-- [x] Add scenario success conditions
-- [x] Add explicit exit states
-- [x] Surface goal, success, and exit information in journey reports and aggregates
-- [x] Add a representative 8-10 journey suite
-- [x] Add expected-route checks
+## Measuring Understanding Instead of Routes
 
-### Archetypes / Behavior
+The current framework is strongest at measuring:
 
-- [x] Add reusable archetype docs
-- [x] Add `Wanderer` and `Builder` as first-class archetypes
-- [x] Add `Romantic` as a first-class archetype
-- [x] Make `confidenceThreshold` materially affect journey behavior
-- [x] Add stronger archetype-aware route planning than the original heuristic-only version
+- routes visited
+- expected routes
+- route counts
+- journey paths
 
-### Reporting / Output
+That evidence is useful, but it is not the end goal.
 
-- [x] Add overall audit aggregate output
-- [x] Add overall journey aggregate output
-- [x] Add combined audit + journey handoff output
-- [x] Include both audit and journey summaries directly in the combined bundle
-- [x] Move durable persona outputs out of Playwright-managed `test-results/`
-- [x] Add `test:users` to run both persona audits and journeys
-- [x] Add richer aggregate summaries for ChatGPT review packets
-- [x] Surface scenario, context, and archetype influence directly in reports
-- [x] Enrich journey aggregates with route, exit, trust, and expected-route patterns
-- [x] Add explicit journey outcomes beyond boolean success
-- [x] Add route-catalog validation to journey outputs and aggregate summaries
+The longer-term goal is to evaluate:
 
-## Next Priority
+- orientation
+- trust
+- professional confidence
+- curiosity
+- emotional connection
+- willingness to continue exploring
+- identity clarity
 
-The next best step is to make the reports more useful as design critique, not just route logs.
+Routes are a means, not the goal.
 
-- [x] Make journey reports explain why a persona skipped specific routes like `/music`
-- [x] Make journey reports explain why a persona bounced or nearly bounced after a page like `/about`
-- [x] Make journey reports call out which trust signals changed the journey
-- [x] Make journey reports identify which page actually satisfied the scenario goal
-- [x] Make aggregate reports compare outcomes, not just destinations
-- [x] Add richer “why” fields without giving AI control over navigation
+The framework should not encourage repeatedly forcing one route, including `/about`, if trust is already communicated, navigation is already clear, and multiple good paths exist.
 
-## Next Implementation Batch
+## Website Iteration Workflow
 
-These are the best code-focused next steps after the richer-report work starts.
+1. Select 1–3 website improvements.
+2. Implement them.
+3. Run persona tests.
+4. Review reports.
+5. Update `docs/PERSONA-TESTS-RESULTS-TODO.md`.
+6. Perform human review.
+7. Later compare against Vercel Analytics.
+8. Repeat.
 
-- [x] Make scenario and context override route choice more visibly
-- [x] Make context more than a label in the output
-- [x] Strengthen archetype modifiers further where behavior still feels too similar
-- [x] Add first-class reasoning for route skips, not just skipped-route lists
-- [x] Capture trust-signal hits during journeys as structured data instead of only notes
-- [x] Capture scenario-goal satisfaction as structured evidence instead of only boolean success
+## Future Framework Ideas
 
-## Near-Term Follow-Ups
+These are future ideas, not active work.
 
-- [ ] Add a small memory layer for returning visits so repeat journeys avoid replaying the same rooms by default
-- [ ] Rename / clarify aggregate folder language if needed:
-  - `overall-audit`
-  - `overall-journeys`
-  - `overall-personas-and-journeys`
-- [ ] Expand representative journey coverage only when a scenario, audience, or browsing style is clearly underrepresented
+### Human Experience Summary
 
-## Stabilization Before More Features
+Future reports should summarize the website in human terms such as:
 
-- [x] Validate that Journey Mode can produce `success`, `partial`, and `failed` outcomes
-- [x] Make expected-route misses affect outcomes instead of remaining warning-only
-- [x] Add a simple route catalog sanity layer for public and admin surfaces
-- [x] Detect stale route references when pages are added, removed, or renamed
-- [ ] Keep full Semantic Room Catalog as a future phase
-- [ ] Keep Page Metadata v3 as a later successor phase
+- Orientation
+- Trust
+- Professional Confidence
+- Curiosity
+- Emotional Connection
 
-After this stabilization pass, pause persona-engine development and use the system to evaluate real ArcadeGhosts site changes before adding more framework features.
+### Route Exposed Vs Route Visited
 
-## Next Phase: Route Realism And Report Validation
+Future reports may need to distinguish:
 
-- [x] Reduce overuse of Search where it makes journeys feel too similar
-- [ ] Validate expected-route warnings across the representative journeys against real website intent, not just planner heuristics
-- [x] Ensure aggregate reports surface actionable route-pattern problems instead of only counts
-- [ ] Keep memory as a later deterministic phase after route realism stabilizes
-- [ ] Keep AI reflection as a later interpretation phase, not a navigation phase
-- [ ] Add a future `Semantic Room Catalog` phase where pages expose semantic tags instead of personas referencing specific routes directly
+- a route the planner actually visited
+- a route the page strongly exposed as the next step
 
-## Product Feedback Loop
+This matters when human review says a path is clear but deterministic route metrics stay flat.
 
-The framework is now entering a stabilization phase.
+### Validation Against Other Signals
 
-The main goal from here is to turn persona output into better ArcadeGhosts decisions, not to keep expanding the framework for its own sake.
+Future framework work should compare persona findings against:
 
-```text
-Website
-  ↓
-Persona Tests
-  ↓
-Journey Reports
-  ↓
-PERSONA-TESTS-RESULTS-TODO.md
-  ↓
-Website Improvements
-  ↓
-Re-run Persona Tests
-  ↓
-Measure Improvement
-```
+- human review
+- Vercel Analytics
+- search usage
+- returning visitors
+- contact behavior
+- guestbook activity if still relevant
 
-- [x] Treat `docs/PERSONA-TESTS-RESULTS-TODO.md` as the canonical handoff from persona testing into site work
-- [x] Merge repeated audit and journey findings into deterministic product recommendations instead of repeating similar bullets
-- [x] Add recommendation confidence so recurring findings are easier to prioritize
-- [x] Keep the fast workflow unchanged for day-to-day iteration
-- [ ] Revisit framework expansion only when a real site question cannot be answered with the current audit + journey system
-- [ ] Prefer future framework work that improves report quality, route realism, or website decision-making over adding new abstractions
+No single metric should dominate.
 
-## Future Architecture: Semantic Planning
+### Memory
 
-This is an architectural direction, not the next implementation step.
+- Add a small memory layer for returning visits so repeat journeys avoid replaying the same rooms by default.
 
-The current planner works because persona, archetype, scenario, and context combine into believable deterministic journeys. The weak point is that personas still tend to reference concrete rooms such as `About`, `Cats`, `Music`, or `Build Log`. As the site grows, that coupling will become harder to maintain.
+### AI Interpretation
 
-The long-term direction should be:
+AI remains deferred.
 
-```text
-Persona
-  ↓
-Desired Concepts
-  ↓
-Planner
-  ↓
-Semantic Room Catalog
-  ↓
-Current Website
-```
+If AI arrives later, its job should be to:
 
-The planner should gradually become responsible for understanding the website semantically, while personas remain descriptions of people and intent rather than lists of URLs.
+- summarize deterministic findings
+- identify recurring recommendations
+- compare historical runs
+- explain tradeoffs
+
+AI should interpret reports, not replace deterministic evaluation.
 
 ### Semantic Room Catalog
 
-- [ ] Define semantic tags for every public page
-- [ ] Separate page identity from page URL
-- [ ] Allow the planner to choose pages by semantic intent instead of direct route references
-- [ ] Allow new sections to participate automatically without persona edits
-- [ ] Reduce maintenance when pages are added, renamed, or removed
-- [ ] Treat the Semantic Room Catalog as the planner's primary language before any page-local metadata work
+- Define semantic tags for public pages.
+- Separate page identity from page URL.
+- Let the planner choose pages by semantic intent instead of direct route references.
 
-Possible concept tags to start from:
+Do not work on this during the current website-improvement phase.
 
-- `trust`
-- `warmth`
-- `technical`
-- `projects`
-- `emotional`
-- `curiosity`
-- `reflective`
-- `writing`
-- `media`
-- `humor`
-- `business`
-- `identity`
-- `nostalgia`
-- `updates`
-- `discovery`
+### Page Metadata v3
 
-Illustrative examples:
+- Keep Page Metadata v3 as a later successor phase after real website cycles reveal a clear need.
 
-- `About` → `identity`, `trust`, `personal`
-- `Work With Me` → `consulting`, `business`, `trust`
-- `Build Log` → `technical`, `trust`, `projects`
-- `Tiny Thoughts` → `reflection`, `writing`, `personality`
-- `Music` → `personal`, `emotional`, `media`
-- cat pages → `warmth`, `personal`, `humor`
+## Historical Completed Framework Work
 
-### Future Persona Evolution
+Stable v1 already includes:
 
-- [ ] Evolve persona preferences from named rooms toward preferred concepts
-- [ ] Let personas express ideas like `warmth`, `personality`, `reflective`, or `technical trust` instead of concrete routes
-- [ ] Make the planner responsible for mapping those concepts onto the current site structure
-- [ ] Ensure new pages can be discovered automatically when their tags match persona intent
-- [ ] Ensure removed pages stop participating without requiring persona rewrites
+- Persona v2 foundation
+- Audit Mode and Journey Mode split
+- scenario, archetype, and context-aware deterministic journeys
+- explicit journey outcomes beyond boolean success
+- overall audit, overall journeys, and combined handoff reports
+- recommendation confidence and aggregate report summaries
+- route-catalog validation
+- richer route-skip, trust-signal, and outcome reporting
 
-### Planner Responsibility
+## Pause Framework Growth
 
-- [ ] Move long-term planner responsibility toward semantic tag matching
-- [ ] Add page suitability scoring based on semantic fit
-- [ ] Keep confidence, scenario, and archetype weighting in the planner layer
-- [ ] Preserve the rule that personas describe people while the planner understands the site
-- [ ] Keep personas reusable even as route structure changes
+Do not significantly expand Journey Mode or Audit Mode during the current phase.
 
-## Future Architecture: Page Metadata (v3)
+Do not add:
 
-This is a later successor phase after Journey Mode and the Semantic Room Catalog are stable. Do not implement it yet.
+- new personas
+- new archetypes
+- new scenarios
+- AI features
+- Semantic Room Catalog
+- Page Metadata v3
 
-- [ ] Investigate page-local persona metadata as a successor to a centralized semantic catalog
-- [ ] Explore exporting structured metadata alongside each public page or route
-- [ ] Let the planner discover public pages automatically from site-owned metadata
-- [ ] Keep metadata close to the page that owns it to reduce duplicated definitions
-- [ ] Use this phase to lower long-term maintenance and support eventual extraction into a reusable persona-testing framework
-
-Possible future metadata fields:
-
-- `tags`
-- `audiences`
-- `trustSignals`
-- `emotionalWeight`
-- `technicalWeight`
-- `novelty`
-- `updateFrequency`
-- `prerequisites`
-- `relatedConcepts`
-- `primaryIntent`
-- `personalitySignals`
-
-Conceptual example:
-
-```ts
-export const personaMetadata = {
-  audience: ["personal", "technical"],
-  tags: ["warmth", "writing", "trust"],
-  trustSignals: ["personal-story", "specificity"],
-  novelty: 0.3,
-  emotionalWeight: 0.8,
-};
-```
-
-Implementation guidance for both semantic phases:
-
-- [ ] Keep current priorities focused on journey realism, report quality, confidence-threshold tuning, aggregate reporting, and representative journey validation
-- [ ] Treat semantic planning as the next architectural evolution after the current deterministic planner stabilizes
-- [ ] Treat page metadata v3 as a possible successor once the semantic-planning layer has proven useful
-
-## AI Later, Not First
-
-- [ ] Add AI only as a second-pass reflection layer
-- [ ] Use AI to explain whether the deterministic journey felt emotionally coherent
-- [ ] Use AI to separate structural issues from persona-specific issues
-- [ ] Investigate Vercel AI / model cost for persona interpretation after the deterministic reports become richer
-
-## Product Direction
-
-If this becomes its own product, the most portable showcase personas are still probably:
-
-- Hiring Manager
-- Potential Client
-- Builder
-- Skeptic
-
-`Ideal Partner` remains valuable for ArcadeGhosts, but it is less universally portable as a demo persona.
+Until real website work reveals a need, the framework should stay stable and quiet in the background.
