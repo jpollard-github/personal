@@ -17,6 +17,22 @@ Helpful companions:
 - `docs/EDITORIAL-GUIDE.md` for publishing philosophy
 - `docs/low-friction-content-flow.md` for the current lightweight publishing flow
 
+## Jump Links
+
+- [How These Work Together](#how-these-work-together)
+- [How To Use This File](#how-to-use-this-file)
+- [Current Focus](#current-focus)
+- [Writings / Essays](#writings--essays)
+- [Tiny Thoughts](#tiny-thoughts)
+- [Build Log](#build-log)
+- [Books I Love](#books-i-love)
+- [Music Commentary](#music-commentary)
+- [Twin Peaks](#twin-peaks)
+- [Cats](#cats)
+- [Projects](#projects)
+- [Photos / Visual Storytelling](#photos--visual-storytelling)
+- [Future Rooms](#future-rooms)
+
 ## How These Work Together
 
 - `CONTENT-TODO.md` is the backlog and publishing pipeline.
@@ -42,6 +58,7 @@ Reminder:
 2. Publish one or two essays.
 3. Grow Tiny Thoughts.
 4. Improve existing rooms before creating many new ones.
+5. Review near-publish content against `docs/EDITORIAL-GUIDE.md` before shipping.
 
 Use this as the day-to-day publishing guide.
 
@@ -51,7 +68,11 @@ Keep the active drafting load intentionally small:
 - no more than 1 active Build Log post near publishable
 - a small handful of Tiny Thoughts is enough
 
-## Essays
+Manual review step:
+
+- Before publishing, review draft content against `docs/EDITORIAL-GUIDE.md` for voice, specificity, warmth, and whether it feels alive rather than generic.
+
+## Writings / Essays
 
 Priority:
 
@@ -64,6 +85,7 @@ Status:
 Notes:
 
 - Essays are one of the clearest ways to make the site feel alive and worth returning to.
+- This refers to the longer-form writing side of the site, like the pieces in `/writings`.
 
 ### Inbox
 
@@ -152,6 +174,7 @@ Notes:
 ### Future Ideas
 
 - Use Build Log to show active making, not just shipping.
+- Explore a future Git-assisted Build Log draft flow that turns recent commits into editable draft entries, while keeping the public summary editorial and human-written.
 
 ## Books I Love
 

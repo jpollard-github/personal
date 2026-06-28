@@ -15,6 +15,15 @@ export default async function ContentInboxAdminPage() {
     path.join(process.cwd(), "docs", "low-friction-content-flow.md"),
     "utf8",
   ).catch(() => "");
+  const editorialGuideMarkdown = await readFile(
+    path.join(process.cwd(), "docs", "EDITORIAL-GUIDE.md"),
+    "utf8",
+  ).catch(() => "");
 
-  return <AdminContentInbox instructionsMarkdown={instructionsMarkdown} />;
+  return (
+    <AdminContentInbox
+      instructionsMarkdown={instructionsMarkdown}
+      editorialGuideMarkdown={editorialGuideMarkdown}
+    />
+  );
 }

@@ -12,19 +12,19 @@ const staticEntries: SearchEntry[] = [
     type: "page",
     title: "Build Log",
     description:
-      "A public work log of recent site improvements, fixes, experiments, and structural changes.",
+      "A public work log of recent site improvements, fixes, experiments, and structural changes behind the scenes.",
     href: "/build-log",
     eyebrow: "Behind the curtain",
     cta: "Open build log",
     priority: 94,
     searchText:
-      "build log work log changelog recent changes shipped fixes improvements tests analytics editorial workflow performance",
+      "build log work log changelog behind the scenes recent changes shipped fixes improvements tests analytics editorial workflow performance",
   },
   {
     id: "page-updates",
     type: "page",
     title: "Updates",
-    description: "A running stream of recent writings and tiny thoughts.",
+    description: "A running stream of recent writings and tiny thoughts for people looking for fresh things to read.",
     href: "/updates",
     eyebrow: "Fresh signals",
     cta: "Open updates",

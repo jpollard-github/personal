@@ -6,14 +6,14 @@ import { getSiteUpdates } from "../lib/updates";
 export const metadata: Metadata = {
   title: "Updates",
   description:
-    "Recent writings and tiny thoughts from ArcadeGhosts collected in one running stream.",
+    "Recent writings and tiny thoughts from ArcadeGhosts collected in one running stream for people looking for fresh things to read.",
   alternates: {
     canonical: "/updates",
   },
   openGraph: {
     title: "Updates",
     description:
-      "Recent writings and tiny thoughts from ArcadeGhosts collected in one running stream.",
+      "Recent writings and tiny thoughts from ArcadeGhosts collected in one running stream for people looking for fresh things to read.",
     url: "/updates",
   },
 };
@@ -31,10 +31,15 @@ export default async function UpdatesPage() {
         </Link>
         <div className="updates-header">
           <p className="eyebrow">Updates</p>
-          <h1>What changed in the booth.</h1>
+          <h1>New things to read and revisit.</h1>
           <p>
-            A single stream for new essays and fresh counter signals, so return
-            visits have somewhere obvious to begin.
+            A single stream for newly published writing and fresh counter
+            signals, so return visits have somewhere obvious to begin.
+          </p>
+          <p>
+            This page is for published content. If you want behind-the-scenes
+            site work, structural changes, or recent tuning passes, head to the{" "}
+            <Link href="/build-log">Build Log</Link>.
           </p>
           <div className="feed-links" aria-label="Update subscriptions">
             <a className="feed-link" href="/writings/rss.xml">

@@ -30,7 +30,7 @@ const buildLogContextCards = [
 export const metadata: Metadata = {
   title: "Build Log",
   description:
-    "A running work log of recent ArcadeGhosts changes: shipped improvements, structural changes, editorial workflow updates, and performance passes.",
+    "A running work log of recent ArcadeGhosts changes: shipped improvements, structural changes, editorial workflow updates, and performance passes behind the scenes.",
   alternates: {
     canonical: "/build-log",
   },
@@ -53,11 +53,16 @@ export default function BuildLogPage() {
         </Link>
         <div className="updates-header">
           <p className="eyebrow">Build Log</p>
-          <h1>What changed behind the curtain.</h1>
+          <h1>Behind-the-scenes work on the site itself.</h1>
           <p>
             A public work log for the site itself: shipped improvements, lighter
             assets, new editorial tools, stronger tests, and the occasional
             structural rearrangement of the neon forest.
+          </p>
+          <p>
+            This page is for site work and maintenance. If you want newly
+            published writing and fresh signals to read, start with{" "}
+            <Link href="/updates">Updates</Link>.
           </p>
           <p>
             If you are using this page as proof, the trust path is simple:

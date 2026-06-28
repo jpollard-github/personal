@@ -11,7 +11,7 @@ export function HomeIntroBand() {
           trackingEvent="Intro Band Link Clicked"
           trackingProperties={{ destination: "/build-log" }}
         >
-          Build log
+          Work log
         </TrackedLink>
         .{" "}
         <TrackedLink
@@ -19,7 +19,7 @@ export function HomeIntroBand() {
           trackingEvent="Intro Band Link Clicked"
           trackingProperties={{ destination: "/updates" }}
         >
-          Recent updates
+          New writing & signals
         </TrackedLink>
         .{" "}
         <TrackedLink

@@ -64,8 +64,10 @@ function fingerprint(item: ContentInboxItem) {
 
 export function AdminContentInbox({
   instructionsMarkdown = "",
+  editorialGuideMarkdown = "",
 }: {
   instructionsMarkdown?: string;
+  editorialGuideMarkdown?: string;
 }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [configured, setConfigured] = useState(true);
@@ -344,6 +346,20 @@ export function AdminContentInbox({
               </p>
               <pre className="content-inbox-instructions-body">
                 {instructionsMarkdown.trim() || "Instructions are temporarily unavailable."}
+              </pre>
+            </details>
+
+            <details className="content-inbox-instructions admin-entry">
+              <summary>
+                <span>Editorial Guide</span>
+                <strong>Voice, tone, and publishing philosophy</strong>
+              </summary>
+              <p className="content-inbox-instructions-note">
+                This panel is sourced from <code>docs/EDITORIAL-GUIDE.md</code>, so updating that
+                file updates the guidance shown here.
+              </p>
+              <pre className="content-inbox-instructions-body">
+                {editorialGuideMarkdown.trim() || "Editorial guide is temporarily unavailable."}
               </pre>
             </details>
 

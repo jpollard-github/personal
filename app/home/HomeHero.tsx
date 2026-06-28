@@ -54,7 +54,7 @@ export function HomeHero() {
             Start Here
           </a>
           <a className="button secondary" href="/build-log">
-            See Build Log
+            See Site Work Log
           </a>
           <HomeSurpriseMe />
         </div>

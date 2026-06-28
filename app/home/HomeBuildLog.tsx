@@ -8,9 +8,10 @@ export function HomeBuildLog() {
 
   return (
     <section className="content-section build-log-preview-section" id="build-log">
-      <SectionHeading eyebrow="Build Log" title="Recent changes worth noticing.">
+      <SectionHeading eyebrow="Build Log" title="Behind-the-scenes work worth noticing.">
         The site is still actively being tuned. If you want the short version
-        of what changed lately, start here and then wander outward.
+        of what changed behind the scenes lately, start here. If you want new
+        things to read instead, head to Updates.
       </SectionHeading>
       <div className="build-log-preview-list" aria-label="Recent build log entries">
         {entries.map((entry) => (
@@ -32,7 +33,7 @@ export function HomeBuildLog() {
         trackingEvent="Build Log Link Clicked"
         trackingProperties={{ source: "homepage-preview" }}
       >
-        Open the full build log
+        Open the full work log
       </TrackedLink>
     </section>
   );

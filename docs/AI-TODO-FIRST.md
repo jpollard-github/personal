@@ -66,6 +66,20 @@ The AI review should answer:
 - Which copy changes might help?
 - Which findings should be ignored for now?
 
+## Future Editorial Assistant
+
+Optional later AI use:
+
+- review Content Inbox items or near-publish drafts against `docs/EDITORIAL-GUIDE.md`
+- suggest whether a piece sounds specific, alive, and personal enough to publish
+- suggest likely destination such as Tiny Thought, Writing Draft, Project Draft, or Now update
+
+Important constraint:
+
+- this should remain advisory
+- human editorial judgment stays final
+- do not add this until the manual editorial workflow feels stable
+
 ## Vercel AI Role
 
 Use Vercel AI Gateway and AI SDK as the integration layer.

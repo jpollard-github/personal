@@ -13,6 +13,40 @@ export type BuildLogEntry = {
 
 export const buildLogEntries: BuildLogEntry[] = [
   {
+    id: "content-ops-clarity-pass",
+    date: "2026-06-28",
+    title: "Clarified content operations and separated reading from site work",
+    summary:
+      "Tightened the publishing workflow in the admin area and made the difference between Updates and Build Log much clearer for both visitors and future maintenance.",
+    category: "Workflow",
+    details: [
+      "Added the editorial guide directly into the Content Inbox admin page as a collapsed reference panel below the existing instructions.",
+      "Clarified the content docs so Content TODO owns the backlog, the Editorial Guide owns voice, and the low-friction flow owns the capture-to-draft workflow.",
+      "Updated homepage, Updates, Build Log, and search copy so 'new things to read' and 'behind-the-scenes site work' stop blurring together.",
+    ],
+    impact:
+      "Makes the site easier to publish from, easier to understand as a returning visitor, and less likely to confuse content freshness with technical or structural work.",
+    href: "/updates",
+    linkLabel: "See the fresh-reading stream",
+  },
+  {
+    id: "publishing-ops-clarity-pass",
+    date: "2026-06-28",
+    title: "Turned the repo into a calmer publishing and maintenance system",
+    summary:
+      "Pulled the site further away from framework obsession and toward a clearer day-to-day rhythm for content, website improvements, operations, and review.",
+    category: "Workflow",
+    details: [
+      "Added a docs hub, editorial guide, content backlog, admin vision, and repo architecture notes so the next work is easier to find and easier to prioritize.",
+      "Improved public trust and discovery paths across the homepage, About, Build Log, Search, Movies & TV, and the Twin Peaks corner.",
+      "Kept the persona framework stable while making the reports and TODOs more honest about what is a real website issue versus a planner artifact.",
+    ],
+    impact:
+      "Makes the repo easier to live inside, gives publishing a clearer home, and turns the surrounding tooling into support structure instead of the main event.",
+    href: "/#build-log",
+    linkLabel: "See the latest work in context",
+  },
+  {
     id: "persona-journey-mode-v1",
     date: "2026-06-28",
     title: "Turned persona testing into a real journey system",
