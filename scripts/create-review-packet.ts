@@ -45,6 +45,7 @@ type PacketOptions = {
   note?: string;
   summaryFile?: string;
   screenshotBaseUrl?: string;
+  includePersonaScreenshots: boolean;
   skipTests: boolean;
   skipScreenshots: boolean;
   mobile: boolean;
@@ -59,6 +60,10 @@ type PacketContext = {
   copiedPublicContent: string[];
   checkSummaries: string[];
   checkStatus: CheckStatus;
+};
+
+type ProgressHandle = {
+  stop: (detail?: string) => void;
 };
 
 const sourceEntries = [
@@ -123,7 +128,6 @@ const publicContentEntries = [
 
 const reportEntries = [
   "playwright-report",
-  "persona-results",
   "test-results",
 ];
 
@@ -155,10 +159,34 @@ async function main() {
   await ensureDir(path.join(packetDir, "reports"));
   await ensureDir(path.join(packetDir, "extra"));
 
-  await copyEntries(sourceEntries, "source", packetDir, context.copiedSources, context.missingOptionalPaths);
-  await copyEntries(docsEntries, "docs", packetDir, context.copiedDocs, context.missingOptionalPaths, "docs");
-  await copyEntries(testsEntries, "tests", packetDir, context.copiedTests, context.missingOptionalPaths, "tests");
-  await copyEntries(
+  logStep(`Creating review packet in ${packetDir}`);
+  const sourceCount = await copyEntries(
+    sourceEntries,
+    "source",
+    packetDir,
+    context.copiedSources,
+    context.missingOptionalPaths,
+  );
+  logStep(`Copied source files (${sourceCount} entries)`);
+  const docsCount = await copyEntries(
+    docsEntries,
+    "docs",
+    packetDir,
+    context.copiedDocs,
+    context.missingOptionalPaths,
+    "docs",
+  );
+  logStep(`Copied docs (${docsCount} entries)`);
+  const testsCount = await copyEntries(
+    testsEntries,
+    "tests",
+    packetDir,
+    context.copiedTests,
+    context.missingOptionalPaths,
+    "tests",
+  );
+  logStep(`Copied tests (${testsCount} entries)`);
+  const publicCount = await copyEntries(
     publicContentEntries,
     "public-content",
     packetDir,
@@ -166,9 +194,13 @@ async function main() {
     context.missingOptionalPaths,
     "public",
   );
-  await copyEntries(reportEntries, "reports", packetDir, [], context.missingOptionalPaths);
+  logStep(`Copied public content (${publicCount} entries)`);
+  const reportCount = await copyEntries(reportEntries, "reports", packetDir, [], context.missingOptionalPaths);
+  const personaReportCount = await copyPersonaReports(packetDir, context.missingOptionalPaths, options);
+  logStep(`Copied existing reports (${reportCount + personaReportCount} entries)`);
 
   if (options.summaryFile) {
+    logStep(`Including summary file: ${options.summaryFile}`);
     const summarySource = path.resolve(repoRoot, options.summaryFile);
     const summaryExists = await pathExists(summarySource);
     if (summaryExists) {
@@ -178,14 +210,20 @@ async function main() {
     }
   }
 
-  await copyIncludedPaths(options.includePaths, packetDir, context);
+  if (options.includePaths.length > 0) {
+    logStep(`Including extra paths: ${options.includePaths.join(", ")}`);
+  }
+  const extraCount = await copyIncludedPaths(options.includePaths, packetDir, context);
+  if (options.includePaths.length > 0) {
+    logStep(`Copied extra files (${extraCount} entries)`);
+  }
 
-  const checkResults = options.skipTests ? [] : await runChecks();
+  const checkResults = options.skipTests ? [] : await runChecksWithProgress();
   await writeChecksReport(path.join(packetDir, "reports", "checks.txt"), checkResults, context);
 
   const screenshotResult = options.skipScreenshots
     ? { generated: [], skippedReason: "Skipped via --skip-screenshots." }
-    : await generateScreenshots(packetDir, options);
+    : await generateScreenshotsWithProgress(packetDir, options);
 
   if (screenshotResult.generated.length > 0) {
     await ensureDir(path.join(packetDir, "screenshots"));
@@ -208,7 +246,9 @@ async function main() {
     checkResults,
   });
 
+  logStep("Refreshing latest-site-review");
   await refreshLatestCopy(packetDir, latestDir);
+  logStep("Creating zip archive");
   const createdZip = await zipPacketDirectory(packetDir, zipPath);
 
   console.log(`Packet folder: ${packetDir}`);
@@ -223,6 +263,7 @@ async function main() {
 function parseArgs(argv: string[]): PacketOptions {
   const options: PacketOptions = {
     includePaths: [],
+    includePersonaScreenshots: false,
     skipTests: false,
     skipScreenshots: false,
     mobile: false,
@@ -260,6 +301,11 @@ function parseArgs(argv: string[]): PacketOptions {
 
     if (arg === "--skip-tests") {
       options.skipTests = true;
+      continue;
+    }
+
+    if (arg === "--include-persona-screenshots") {
+      options.includePersonaScreenshots = true;
       continue;
     }
 
@@ -305,6 +351,7 @@ async function copyEntries(
   missingPaths: string[],
   trimSourcePrefix?: string,
 ) {
+  let copiedCount = 0;
   for (const entry of entries) {
     const sourcePath = path.join(repoRoot, entry);
     if (!(await pathExists(sourcePath))) {
@@ -323,7 +370,9 @@ async function copyEntries(
       await copyFileToPacket(sourcePath, targetPath);
     }
     copiedPaths.push(entry);
+    copiedCount += 1;
   }
+  return copiedCount;
 }
 
 async function copyFileToPacket(sourcePath: string, destinationPath: string) {
@@ -350,6 +399,24 @@ async function ensureUniquePath(targetPath: string) {
   return `${base}-${attempt}${extension}`;
 }
 
+function logStep(message: string) {
+  console.log(`[site:review-packet] ${message}`);
+}
+
+function startProgress(message: string): ProgressHandle {
+  process.stdout.write(`[site:review-packet] ${message}`);
+  const interval = setInterval(() => {
+    process.stdout.write(".");
+  }, 1000);
+
+  return {
+    stop(detail?: string) {
+      clearInterval(interval);
+      process.stdout.write(detail ? ` ${detail}\n` : " done\n");
+    },
+  };
+}
+
 async function runChecks() {
   const packageJsonPath = path.join(repoRoot, "package.json");
   const rawPackageJson = await fs.readFile(packageJsonPath, "utf8");
@@ -372,6 +439,18 @@ async function runChecks() {
     results.push(await runCommandCapture("npm", args));
   }
   return results;
+}
+
+async function runChecksWithProgress() {
+  const progress = startProgress("Running lint/tests");
+  try {
+    const results = await runChecks();
+    progress.stop("done");
+    return results;
+  } catch (error) {
+    progress.stop("failed");
+    throw error;
+  }
 }
 
 async function runCommandCapture(command: string, args: string[]): Promise<CommandResult> {
@@ -563,6 +642,18 @@ async function generateScreenshots(packetDir: string, options: PacketOptions): P
   };
 }
 
+async function generateScreenshotsWithProgress(packetDir: string, options: PacketOptions) {
+  const progress = startProgress("Generating screenshots");
+  try {
+    const result = await generateScreenshots(packetDir, options);
+    progress.stop(result.generated.length > 0 ? `${result.generated.length} captured` : "skipped");
+    return result;
+  } catch (error) {
+    progress.stop("failed");
+    throw error;
+  }
+}
+
 async function resolveBaseUrlForScreenshots(options: PacketOptions) {
   if (options.screenshotBaseUrl) {
     return {
@@ -682,6 +773,7 @@ function routeToSlug(route: string) {
 }
 
 async function copyIncludedPaths(optionsIncludePaths: string[], packetDir: string, context: PacketContext) {
+  let copiedCount = 0;
   for (const includePath of optionsIncludePaths) {
     const resolvedPath = path.resolve(repoRoot, includePath);
     if (!(await pathExists(resolvedPath))) {
@@ -702,7 +794,74 @@ async function copyIncludedPaths(optionsIncludePaths: string[], packetDir: strin
     }
 
     context.copiedExtraFiles.push(relativePath);
+    copiedCount += 1;
   }
+  return copiedCount;
+}
+
+async function copyPersonaReports(
+  packetDir: string,
+  missingPaths: string[],
+  options: PacketOptions,
+) {
+  const personaResultsRoot = path.join(repoRoot, "persona-results");
+  if (!(await pathExists(personaResultsRoot))) {
+    missingPaths.push("persona-results");
+    return 0;
+  }
+
+  const reportsRoot = path.join(packetDir, "reports", "persona-results");
+  await ensureDir(reportsRoot);
+
+  if (options.includePersonaScreenshots) {
+    await copyDirToPacket(personaResultsRoot, reportsRoot);
+    return 1;
+  }
+
+  let copiedCount = 0;
+  const personasRoot = path.join(personaResultsRoot, "personas");
+  if (await pathExists(personasRoot)) {
+    const personaNames = await fs.readdir(personasRoot);
+    for (const personaName of personaNames) {
+      const personaDir = path.join(personasRoot, personaName);
+      const stats = await fs.stat(personaDir);
+      if (!stats.isDirectory()) {
+        continue;
+      }
+
+      const entryNames = await fs.readdir(personaDir);
+      for (const entryName of entryNames) {
+        if (entryName !== "report.md" && entryName !== "summary.json") {
+          continue;
+        }
+
+        const sourcePath = path.join(personaDir, entryName);
+        const destinationPath = path.join(reportsRoot, "personas", personaName, entryName);
+        await copyFileToPacket(sourcePath, destinationPath);
+        copiedCount += 1;
+      }
+    }
+  }
+
+  const aggregateDirs = [
+    "overall-audit",
+    "overall-journeys",
+    "overall-persona",
+    "overall-personas-and-journeys",
+  ];
+
+  for (const dirName of aggregateDirs) {
+    const sourcePath = path.join(personaResultsRoot, "personas", dirName);
+    if (!(await pathExists(sourcePath))) {
+      continue;
+    }
+
+    const destinationPath = path.join(reportsRoot, "personas", dirName);
+    await copyDirToPacket(sourcePath, destinationPath);
+    copiedCount += 1;
+  }
+
+  return copiedCount;
 }
 
 async function writePacketInfo(input: {
@@ -726,6 +885,7 @@ async function writePacketInfo(input: {
     `- mobile: ${input.options.mobile ? "yes" : "no"}`,
     `- skip tests: ${input.options.skipTests ? "yes" : "no"}`,
     `- skip screenshots: ${input.options.skipScreenshots ? "yes" : "no"}`,
+    `- include persona screenshots: ${input.options.includePersonaScreenshots ? "yes" : "no"}`,
     `- screenshot base URL: ${input.options.screenshotBaseUrl ?? process.env.SITE_REVIEW_BASE_URL ?? "(none)"}`,
     `- include paths: ${input.options.includePaths.length > 0 ? input.options.includePaths.join(", ") : "(none)"}`,
     `- summary file: ${input.options.summaryFile ?? "(none)"}`,
