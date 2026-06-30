@@ -80,6 +80,13 @@ For each prospect, capture:
 
 The goal is not to find perfect prospects. The goal is to start learning which categories respond.
 
+Batch strategy:
+
+- start with 25 prospects
+- contact 2-3 per week
+- review replies and category fit
+- add another 25 only after learning from the first batch
+
 ## Current Focus
 
 1. Build the first 25 qualified prospects, not 100 rushed ones.
@@ -206,6 +213,44 @@ Outcomes:
 - Won
 - Lost
 - Follow up later
+
+## Prospect Pipeline - Future Iteration
+
+The current Google Sheet tracker is the right starting point.
+
+After 50-100 prospects, Jason may want a richer lightweight pipeline, but not before the current sheet starts feeling too limited.
+
+Potential future fields:
+
+- Company
+- Website
+- Industry
+- Employees estimate
+- Contact Name
+- Contact Role
+- LinkedIn
+- Contact Page
+- Public Email
+- Estimated Fit: A / B / C
+- Warm Intro Available?
+- Pain Signals
+- Why They’re Interesting
+- Date Added
+- First Outreach
+- Follow-up #1
+- Follow-up #2
+- Response
+- Outcome
+- Source
+- Notes
+- Capability Sheet Sent?
+- Discovery Call?
+- Proposal?
+- Won?
+- Lost?
+- Reason Lost
+
+Do not add all of these immediately unless the current sheet starts feeling too limited.
 
 ## How To Find Prospects
 
@@ -775,6 +820,22 @@ Later:
 - add AI-assisted prospect qualification later, but not before the manual process is proven
 
 Do not build a full CRM yet.
+
+## Future Prospect Research Automation
+
+Ideas to consider only after manual outreach has started:
+
+- research companies from a CSV
+- summarize company websites
+- infer likely workflow pain points
+- suggest best contact role
+- draft personalized first emails
+- draft LinkedIn connection messages
+- recommend which Brand Kit asset to send
+- generate follow-up reminders
+- analyze which industries respond best
+
+Manual prospect selection comes first. Automation should support judgment, not replace it.
 
 ## What Not To Do
 

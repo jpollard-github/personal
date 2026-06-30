@@ -48,13 +48,13 @@ Suggested inputs:
 - `persona-results/personas/overall-journeys/report.md`
 - `persona-results/personas/overall-personas-and-journeys/combined-bundle.json`
 - `docs/PERSONA-TODO.md`
-- `docs/PERSONA-TESTS-RESULTS-TODO.md`
+- `docs/PERSONA-TESTS-RESULTS-TODO.backup.md`
 
 Suggested outputs:
 
 - `persona-results/personas/ai-review/report.md`
 - `persona-results/personas/ai-review/summary.json`
-- a draft or update section for `docs/PERSONA-TESTS-RESULTS-TODO.md`
+- a draft or update section for `docs/PERSONA-TESTS-RESULTS-TODO.backup.md`
 
 The AI review should answer:
 
@@ -268,7 +268,7 @@ Later candidates:
 
 - Admin button: "Run AI Persona Review"
 - Admin UI showing ranked findings
-- AI-assisted update to `PERSONA-TESTS-RESULTS-TODO.md`
+- AI-assisted update to `PERSONA-TESTS-RESULTS-TODO.backup.md`
 - AI review comparing before and after persona runs
 - AI copy suggestions for page hooks and summaries
 - AI related-link suggestions before publishing
@@ -282,4 +282,4 @@ Later candidates:
 - [x] Keep `docs/AI-TODO.md` as the broader backlog
 - [x] Add a note in `docs/AI-TODO.md` pointing to this first implementation plan
 - [ ] Do not implement AI until deterministic persona stabilization is complete
-- [x] Revisit this once `PERSONA-TESTS-RESULTS-TODO.md` is being generated reliably
+- [x] Revisit this once `PERSONA-TESTS-RESULTS-TODO.backup.md` is being generated reliably

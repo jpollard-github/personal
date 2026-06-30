@@ -34,7 +34,7 @@ export function getCombinedPersonaJourneyOutputDir() {
 }
 
 export function getPersonaTestsResultsTodoPath() {
-  return resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.md");
+  return resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.backup.md");
 }
 
 export function shouldCapturePersonaScreenshots() {
@@ -1668,7 +1668,7 @@ function writePersonaTestsResultsTodoDoc(args: {
     })
     .join("\n\n");
 
-  const doc = `# PERSONA-TESTS-RESULTS-TODO.md
+  const doc = `# PERSONA-TESTS-RESULTS-TODO.backup.md
 
 Generated: ${new Date().toISOString()}
 
@@ -1752,7 +1752,7 @@ Status note:
 2. Implement them.
 3. Run \`npm run test:users:fast\`.
 4. Compare new results against prior results.
-5. Update \`docs/PERSONA-TESTS-RESULTS-TODO.md\`.
+5. Update \`docs/PERSONA-TESTS-RESULTS-TODO.backup.md\`.
 6. Only then consider framework changes.
 
 ## Retest Target
@@ -1767,7 +1767,7 @@ Expected improvements:
 - fewer \`/about\` expected-route misses
 - stronger Potential Client / Hiring Manager trust journeys
 - clearer professional path without relying entirely on Search
-- improved confidence in \`docs/PERSONA-TESTS-RESULTS-TODO.md\` priorities
+- improved confidence in \`docs/PERSONA-TESTS-RESULTS-TODO.backup.md\` priorities
 
 Current read after this pass:
 

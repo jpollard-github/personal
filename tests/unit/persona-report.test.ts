@@ -19,17 +19,17 @@ const aggregateFolderNames = [
   "overall-journeys",
   "overall-personas-and-journeys",
 ] as const;
+const personaTodoPath = resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.backup.md");
 
 function cleanupAggregateOutputs() {
   for (const folderName of aggregateFolderNames) {
     rmSync(resolve(personasRoot, folderName), { recursive: true, force: true });
   }
-
-  rmSync(resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.md"), { force: true });
 }
 
 function withPreservedAggregateOutputs(run: () => void) {
   const backupRoot = mkdtempSync(resolve(tmpdir(), "persona-report-test-"));
+  const todoBackupPath = resolve(backupRoot, "PERSONA-TESTS-RESULTS-TODO.backup.md");
 
   try {
     for (const folderName of aggregateFolderNames) {
@@ -38,6 +38,10 @@ function withPreservedAggregateOutputs(run: () => void) {
       if (existsSync(source)) {
         cpSync(source, resolve(backupRoot, folderName), { recursive: true });
       }
+    }
+
+    if (existsSync(personaTodoPath)) {
+      cpSync(personaTodoPath, todoBackupPath);
     }
 
     run();
@@ -50,6 +54,11 @@ function withPreservedAggregateOutputs(run: () => void) {
       if (existsSync(backup)) {
         cpSync(backup, resolve(personasRoot, folderName), { recursive: true });
       }
+    }
+
+    if (existsSync(todoBackupPath)) {
+      rmSync(personaTodoPath, { force: true });
+      cpSync(todoBackupPath, personaTodoPath);
     }
 
     rmSync(backupRoot, { recursive: true, force: true });
@@ -282,10 +291,10 @@ test("combined packet includes journey summary when audit reruns later", () => {
     assert.equal(combined.audit?.personasReviewed, 1);
     assert.equal(combined.journeys?.journeysReviewed, 1);
     assert.ok(existsSync(resolve(personasRoot, "overall-audit", "summary.json")));
-    assert.ok(existsSync(resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.md")));
+    assert.ok(existsSync(personaTodoPath));
 
-    const todoDoc = readFileSync(resolve(process.cwd(), "docs", "PERSONA-TESTS-RESULTS-TODO.md"), "utf8");
-    assert.match(todoDoc, /# PERSONA-TESTS-RESULTS-TODO\.md/);
+    const todoDoc = readFileSync(personaTodoPath, "utf8");
+    assert.match(todoDoc, /# PERSONA-TESTS-RESULTS-TODO\.backup\.md/);
     assert.match(todoDoc, /Website work starts here\./);
     assert.match(todoDoc, /Start with the highest-confidence active website items\./);
     assert.match(todoDoc, /Pick 1–3 website TODOs, implement them, then re-run `npm run test:users:fast`\./);

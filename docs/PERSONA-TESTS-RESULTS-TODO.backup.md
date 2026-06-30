@@ -1,261 +1,202 @@
 # PERSONA-TESTS-RESULTS-TODO.backup.md
 
-Backup copy of `docs/PERSONA-TESTS-RESULTS-TODO.md`.
-
-Created because the main file has been repeatedly removed from the working tree and you wanted a second in-repo copy for safety.
-
-If the main file ever disappears again, restore from this backup or from Git history.
-
----
-
-# PERSONA-TESTS-RESULTS-TODO.md
-
-Generated: 2026-06-28T16:20:16.703Z
+Generated: 2026-06-30T01:29:44.787Z
 
 Website work starts here.
 
 Framework work lives in `docs/PERSONA-TODO.md`.
 
-Use `docs/README.md` if you need the broader documentation map.
+Start with the highest-confidence active website items.
 
-The primary purpose of this document is improving the website for real visitors.
+Pick 1–3 website TODOs, implement them, then re-run `npm run test:users:fast`.
 
-Deterministic journey metrics are evidence, not absolute truth.
+Address high-confidence website TODOs before expanding the persona engine.
 
-If repeated human review and future analytics indicate the site has improved while specific route metrics remain flat, website quality should take precedence over optimizing individual planner routes.
+This is the canonical handoff from persona testing into ArcadeGhosts website work.
 
-When navigation improvements stabilize, shift primary development effort toward:
-
-- new content
-- better writing
-- richer Build Log entries
-- creative rooms
-- ongoing publishing
-
-Navigation should become incremental rather than continuous.
-
-Use `docs/CONTENT-TODO.md` for the long-term publishing backlog.
-
-## Current Read
-
-- The framework is stable enough for ongoing website work.
-- The first homepage/trust batches landed.
-- Movies & TV reframing landed.
-- Search and Twin Peaks improvements landed.
-- Human review suggests several of these changes are useful even where deterministic metrics stayed flat.
-- Do not spend more time forcing `/about` metrics unless human review shows a real discoverability problem.
-
-## Current State
-
-Framework:
-Stable v1
-
-Website:
-Active development
-
-Primary effort:
-Content and website improvements
-
-Future framework work:
-Only when website use or analytics reveal a genuine limitation.
-
-## Current Website Priorities
-
-- New content
-- Build Log updates
-- Homepage polish
-- Search refinement
-- Creative-room cross-linking
-- Better writing
+The goal is not to preserve every raw audit note. The goal is to turn repeated evidence into a practical product backlog that can be implemented, re-tested, and measured over time.
 
 ## Recommended Work Order
 
-1. New content
-2. Build Log updates
-3. Homepage polish
-4. Search refinement
-5. Creative-room cross-linking
-6. Retest after each small batch
+1. Search support without over-reliance
+2. Twin Peaks cross-linking
+3. Arcade / games visibility if still relevant
+4. Retest after each small batch
+5. Lower-confidence items only after retesting
 
-Why this order:
+## Current Status
 
-Navigation has improved enough that richer content will now provide greater value than additional navigation optimization.
+- First website batch: completed
+- Second trust-routing pass: completed
+- Movies & TV reframing: completed
+- Human review says the trust links are clearly exposed enough for real visitors.
+- The deterministic trust-route metrics may still reflect planner expectations, route-budget behavior, and the difference between route visited versus route exposed.
+- Pause additional `/about` route forcing unless future evidence shows a real discoverability problem.
 
-## Validation Sources
+## Current Focus
 
-Suggested priority:
+Keep the next pass focused on:
 
-1. Human review
-2. Real visitor behavior (Vercel Analytics)
-3. Persona simulation
-4. Individual route metrics
+- Search support without over-reliance
+- Twin Peaks cross-linking
+- Arcade / games visibility if still relevant
+- retest after each small batch
 
-If these disagree, investigate the disagreement rather than optimizing a single metric.
+## First Implementation Batch
 
-## Recommendation Lifecycle
+Recommended first batch:
 
-Use these states when reviewing or updating recommendations:
+- Homepage Start Here block
+- About trust-hub links
+- Trust Cluster links among About, Work With Me, and Build Log
 
-- `Active`: currently worth implementing
-- `Implemented`: shipped in the UI
-- `Awaiting Retest`: shipped, but not yet re-evaluated
-- `Validated`: shipped and supported by later evidence
-- `Deferred`: intentionally not in the current batch
-- `Planner Artifact`: likely driven more by route heuristics than real visitor friction
+This batch is intentionally small so results can be measured cleanly on the next persona rerun.
 
-This keeps repeated recommendations from cluttering the active queue forever.
+Status note:
 
-## Orientation
+- [x] Homepage Start Here / calmer first screen landed in the UI
+- [x] About trust-hub links landed in the UI
+- [x] Trust-cluster links among About, Work With Me, and Build Log landed in the UI
+- [x] First website batch completed
+- [ ] Deterministic trust-route metrics have not improved yet
 
-Goal:
+## Second Trust-Routing Pass
 
-Help first-time visitors quickly understand what ArcadeGhosts is and where to start.
+- [x] Work With Me → About was strengthened
+- [x] Build Log → About was strengthened
+- [x] Homepage proof path now points toward `/build-log`
+- [x] Human review says this path is clear
+- [ ] Deterministic trust-route metrics have not improved yet
 
-Current status:
+## Completed But No Longer Active
 
-- `Implemented`: Homepage Start Here / calmer first screen
-- `Implemented`: Homepage proof path improvements
-- `Awaiting Retest`: homepage near-bounce pressure is still concentrated on `/`
+- Homepage Start Here / calmer first screen
+- Trust cluster initial implementation
+- Work With Me → About
+- Build Log → About
+- Movies & TV reframing
 
-Current TODOs:
+## Retest Workflow
 
-- Review the first screen occasionally for density creep.
-- Keep the opening summary plain-language and short.
-- Keep the strongest personal, professional, and creative paths visible before denser room clusters.
+1. Pick 1–3 website TODOs.
+2. Implement them.
+3. Run `npm run test:users:fast`.
+4. Compare new results against prior results.
+5. Update `docs/PERSONA-TESTS-RESULTS-TODO.backup.md`.
+6. Only then consider framework changes.
 
-## Trust
+## Retest Target
 
-Goal:
+After the first implementation batch, run:
 
-Make Jason easy to understand as a person, not just a set of pages.
+`npm run test:users:fast`
 
-Current status:
+Expected improvements:
 
-- `Implemented`: About as trust hub
-- `Implemented`: About ↔ Work With Me ↔ Build Log trust cluster
-- `Implemented`: Work With Me → About
-- `Implemented`: Build Log → About
-- `Planner Artifact or Awaiting Retest`: `/about` misses remain flat even though human review says the path is clear
+- lower homepage near-bounce pressure
+- fewer `/about` expected-route misses
+- stronger Potential Client / Hiring Manager trust journeys
+- clearer professional path without relying entirely on Search
+- improved confidence in `docs/PERSONA-TESTS-RESULTS-TODO.backup.md` priorities
 
-Current TODOs:
+Current read after this pass:
 
-- Do not force `/about` harder unless fresh human review shows actual confusion.
-- Keep About warm, reachable, and clearly linked to proof and next-step pages.
-- Let multiple good trust paths exist.
+- The major homepage, trust-cluster, and Movies & TV UI work is implemented.
+- Some deterministic recommendations may still reference already-completed work.
+- When that happens, interpret them as "implemented but not yet reflected in deterministic metrics" unless fresh human review shows continued friction.
 
-## Professional Confidence
+## Homepage
 
-Goal:
+- [ ] No recurring action item is strong enough here yet.
 
-Help potential clients, hiring managers, and skeptical professional visitors connect personality, proof, and next step.
+## About
 
-Current status:
+- [x] High Priority · Low Confidence · Evidence count: `2`
+  Affected visitors: `Potential Client`; scenarios: `Looking For A Reason To Trust`
+  Suggested improvement: Make the About page easier to reach from the homepage, Work With Me, and Build Log; position it as the human trust hub; and add clear paths onward to writing, cats, music, projects, and Work With Me.
+  Expected benefit: Improves credibility for trust-seeking visitors and makes professional journeys feel more complete before they decide whether to continue.
+  Acceptance criteria:
+  - [ ] About is easy to reach from homepage.
+  - [ ] About links to Writings, Cats, Music, Projects, Build Log, and Work With Me.
+  - [ ] About explains Jason as both person and builder.
+  - [ ] Professional visitors can move from About to proof or next-step pages.
+  - [ ] Personal visitors can move from About to warm or creative pages.
+  Current note:
+  - Human review says this path is clear. Treat this as implemented but not yet reflected in deterministic metrics, and pause unless future evidence shows continued friction.
 
-- `Implemented`: trust-cluster links
-- `Implemented`: Build Log as proof path
-- `Awaiting Retest`: Potential Client and Hiring Manager still resolve as `partial`
+## Projects
 
-Current TODOs:
+- [ ] No recurring action item is strong enough here yet.
 
-- Keep Work With Me, About, and Build Log coherent as a cluster.
-- Refine practical proof and next-step language when website work naturally touches those pages.
-- Treat flat trust-route metrics as mixed evidence, not automatic failure.
+## Build Log
 
-## Discovery
+- [ ] No recurring action item is strong enough here yet.
 
-Goal:
+## Music
 
-Help visitors naturally find useful or intriguing rooms without relying on Search for everything.
+- [ ] No recurring action item is strong enough here yet.
 
-Current TODOs:
+## Writings
 
-- Keep homepage paths distinct and scannable.
-- Use cross-links to connect related rooms with intention.
-- Add new content that gives the site more natural discovery value.
+- [ ] No recurring action item is strong enough here yet.
+
+## Tiny Thoughts
+
+- [ ] No recurring action item is strong enough here yet.
+
+## Cats
+
+- [ ] No recurring action item is strong enough here yet.
+
+## Twin Peaks
+
+- [ ] No recurring action item is strong enough here yet.
 
 ## Search
 
-Goal:
+- [ ] No recurring action item is strong enough here yet.
 
-Keep Search useful for hunters and returning visitors without making it the only efficient way to navigate.
+## Navigation
 
-Current status:
+- [ ] No recurring action item is strong enough here yet.
 
-- `Implemented`: Search helper framing and quick links
+## Cross-linking
 
-Current TODOs:
+- [x] High Priority · Low Confidence · Evidence count: `2`
+  Affected visitors: `Potential Client`; scenarios: `Looking For A Reason To Trust`
+  Suggested improvement: Treat About, Work With Me, and Build Log as one trust cluster with visible cross-links, and make each page explain why the others matter so proof, personality, and next steps reinforce each other.
+  Expected benefit: Makes client and hiring-manager journeys feel more coherent and lowers the odds of a technically impressive but emotionally incomplete visit.
+  Current note:
+  - Implemented but not yet reflected in deterministic metrics. Human review says this trust cluster is clear, so pause unless future evidence shows continued friction.
 
-- Watch whether Search still substitutes for weak navigation.
-- Refine suggested searches or helper language if later evidence says it needs another pass.
-- Keep professional paths reachable without Search.
-- Keep returning-visitor paths reachable without Search.
+## Overall UX
 
-## Creative Rooms
+- [ ] No recurring action item is strong enough here yet.
 
-Goal:
+## Trust Cluster
 
-Make the strange, personal, and niche parts of ArcadeGhosts feel connected rather than isolated.
+The trust cluster is:
 
-Current status:
+- About
+- Work With Me
+- Build Log
+- Projects / Updates when relevant
 
-- `Implemented`: Movies & TV reframing
-- `Implemented`: first Twin Peaks cross-linking pass
-- `Deferred or niche by design`: arcade/game routes may stay intentionally less central
+Working definition:
 
-Current TODOs:
+- Professional visitors should not have to rely on Search to connect proof, personality, and next steps.
 
-- Keep Twin Peaks Self, Between Two Lodges, Movies & TV, and related weird rooms cross-linked with taste.
-- Review whether `/arcade` should stay niche or get one clearer path from a related room.
-- Prefer a few meaningful cross-links over heavy-handed route forcing.
+TODOs:
 
-## Returning Visitors
+- [ ] Add visible cross-links between About, Work With Me, Build Log, and relevant Projects / Updates surfaces.
+- [ ] Make each trust-cluster page explain why the other pages matter.
+- [ ] Make it easy to move from personality to proof to next step without losing context.
+- [ ] Professional visitors should not have to rely on Search to connect personality, proof, and next step.
 
-Goal:
+Acceptance criteria:
 
-Give people reasons to come back and easy ways to find what is new.
-
-Current TODOs:
-
-- Add new writing and essays.
-- Keep Build Log active and visible.
-- Keep updates, Tiny Thoughts, and related freshness paths easy to reach.
-- Later compare returning-visitor behavior against persona assumptions.
-
-## Future Retests
-
-Working rhythm:
-
-1. Pick one navigation improvement OR one content improvement.
-2. Implement them.
-3. Run `npm run test:users:fast`.
-4. Review recommendations.
-5. Update TODOs.
-6. Perform human review.
-7. Later compare against Vercel Analytics.
-8. Repeat.
-
-When reviewing results:
-
-- Prefer real website quality over route obedience.
-- Treat repeated flat metrics as a possible planner artifact when human review says the experience is clear.
-- Only reopen old recommendations if new evidence shows real friction.
-- Avoid implementing many unrelated changes before retesting.
-
-## Current Completed Work
-
-- Homepage Start Here / calmer first screen
-- About as trust hub
-- About ↔ Work With Me ↔ Build Log trust cluster
-- Work With Me → About
-- Build Log → About
-- Homepage proof path improvements
-- Movies & TV reframing
-- Search support first pass
-- Twin Peaks cross-linking first pass
-
-## Recommended Next Website Batch
-
-- Publish new writing or a new essay
-- Add a richer Build Log entry
-- Polish homepage density only where it starts to creep back in
-- Add or improve one tasteful creative-room cross-link
+- [ ] About, Work With Me, and Build Log cross-link visibly.
+- [ ] Work With Me points to proof of active building.
+- [ ] Build Log points to human context / About.
+- [ ] About points to Work With Me without becoming salesy.
+- [ ] Professional visitors do not have to rely on Search to connect personality, proof, and next step.

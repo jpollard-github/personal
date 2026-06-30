@@ -19,6 +19,14 @@ Track small, useful improvements to the ChatGPT/repo packet tooling without turn
 
 4. Print the final archive path in one short copy-paste-friendly line for easier handoff to ChatGPT or other review tools.
 
+5. Improve the site review packet tooling with:
+   - deeper mobile screenshot comparison
+   - route discovery from the App Router
+   - Lighthouse/accessibility reports
+   - richer persona-test summary inclusion
+   - deployed-site review mode
+   - optional visual diffing between packets
+
 ## Notes
 
 - Keep this tooling small and maintenance-light.

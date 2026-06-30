@@ -8,13 +8,13 @@ The current phase of ArcadeGhosts is publishing, outreach, and learning from rea
 
 1. `docs/CONTENT-TODO.md` — publish and improve ArcadeGhosts content
 2. `docs/LEAD-GENERATION-TODO.md` — business growth and first-conversation experiments
-3. `docs/PERSONA-TESTS-RESULTS-TODO.md` — website and product improvements from real use and persona testing
+3. `docs/PERSONA-TESTS-RESULTS-TODO.backup.md` — website and product improvements from real use and persona testing
 4. Brand Kit repo TODO — separate repo, used to support client-facing collateral
 5. `docs/AI-TODO-FIRST.md` — deferred until deterministic, content, and outreach workflows are stable
 6. `docs/VERCEL-PRO-OPERATIONS-TODO.md` — weekly analytics, spend, and operations rhythm
 7. `docs/PERSONA-TODO.md` — framework roadmap, dormant unless real use exposes a limitation
 
-Daily work should usually start with `CONTENT-TODO.md`, then check `PERSONA-TESTS-RESULTS-TODO.md`.
+Daily work should usually start with `CONTENT-TODO.md`, then check `PERSONA-TESTS-RESULTS-TODO.backup.md`.
 
 `LEAD-GENERATION-TODO.md` is the primary document for business growth, separate from content publishing.
 
@@ -44,7 +44,7 @@ If the current goal is getting a first client, start with:
 If the current goal is growing the site, start with:
 
 1. `docs/CONTENT-TODO.md`
-2. `docs/PERSONA-TESTS-RESULTS-TODO.md`
+2. `docs/PERSONA-TESTS-RESULTS-TODO.backup.md`
 
 ## Project Phases
 
@@ -65,7 +65,7 @@ Analytics-driven improvement
 ### Every Session
 
 - `docs/CONTENT-TODO.md`
-- `docs/PERSONA-TESTS-RESULTS-TODO.md` if content, navigation, or UX changed
+- `docs/PERSONA-TESTS-RESULTS-TODO.backup.md` if content, navigation, or UX changed
 
 ### Weekly
 
@@ -85,8 +85,7 @@ The framework should become quieter over time while publishing becomes the prima
 
 ## Next Manual Actions
 
-- Create the Google Sheet lead tracker.
-- Add the first 10-25 prospects.
+- Build the first 10-25 prospects in the lead tracker.
 - Reorder corrected business cards.
 - Proof the Brand Kit email signature when ready.
 - Publish one Build Log entry or Tiny Thought.
@@ -94,7 +93,7 @@ The framework should become quieter over time while publishing becomes the prima
 
 ## Website Work
 
-### `PERSONA-TESTS-RESULTS-TODO.md`
+### `PERSONA-TESTS-RESULTS-TODO.backup.md`
 
 Purpose:
 
@@ -296,7 +295,7 @@ When not to use it:
 
 Active working documents:
 
-- `PERSONA-TESTS-RESULTS-TODO.md`
+- `PERSONA-TESTS-RESULTS-TODO.backup.md`
 - `CONTENT-TODO.md`
 - `LEAD-GENERATION-TODO.md`
 
@@ -326,7 +325,7 @@ Current recommendation:
 
 1. Publish or draft one Build Log entry.
 2. Publish or draft one Tiny Thought.
-3. Pick one item from `PERSONA-TESTS-RESULTS-TODO.md` only after content work.
+3. Pick one item from `PERSONA-TESTS-RESULTS-TODO.backup.md` only after content work.
 4. Do not reopen persona framework work unless a real limitation appears.
 5. Do not start AI work yet.
 

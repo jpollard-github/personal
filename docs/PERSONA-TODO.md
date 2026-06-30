@@ -6,7 +6,7 @@ This file is the persona-testing framework roadmap.
 
 Do not use this as the primary website work queue.
 
-Use `docs/PERSONA-TESTS-RESULTS-TODO.md` for day-to-day ArcadeGhosts website work.
+Use `docs/PERSONA-TESTS-RESULTS-TODO.backup.md` for day-to-day ArcadeGhosts website work.
 
 Use `docs/CONTENT-TODO.md` for long-term publishing and content growth.
 
@@ -83,7 +83,7 @@ The framework should not encourage repeatedly forcing one route, including `/abo
 2. Implement them.
 3. Run persona tests.
 4. Review reports.
-5. Update `docs/PERSONA-TESTS-RESULTS-TODO.md`.
+5. Update `docs/PERSONA-TESTS-RESULTS-TODO.backup.md`.
 6. Perform human review.
 7. Later compare against Vercel Analytics.
 8. Repeat.

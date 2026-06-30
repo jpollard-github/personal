@@ -11,6 +11,7 @@
     "start": "next start",
     "go": "npm run lint && npm run build && npm run start",
     "lint": "eslint .",
+    "site:review-packet": "node --import tsx scripts/create-review-packet.ts",
     "zip:chatgpt": "node --import tsx tools/zip-chatgpt-repo.ts",
     "zip:chatgpt:repo": "node --import tsx tools/zip-chatgpt-repo.ts",
     "test": "npm run test:unit && npm run test:e2e",
