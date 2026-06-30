@@ -248,6 +248,31 @@ npm run site:review-packet -- --screenshot-base-url https://arcadeghosts.org --m
 Use `--skip-tests` for production screenshot packets. Do not skip tests after implementation changes unless the packet is intentionally visual-only.
 Persona test screenshots are excluded from the packet by default; use `--include-persona-screenshots` only when you explicitly want the bulky per-persona image archive.
 
+Production screenshot packet:
+
+```bash
+npm run site:review-packet -- --screenshot-base-url https://arcadeghosts.org --mobile --viewport-only --skip-tests --include-script --focus mobile-home
+```
+
+Local dev screenshot packet:
+
+```bash
+npm run site:review-packet -- --mobile --viewport-only --include-script --focus mobile-home
+```
+
+Explicit local URL mode:
+
+```bash
+SITE_REVIEW_BASE_URL=http://127.0.0.1:3000 npm run site:review-packet -- --mobile --viewport-only --include-script --focus mobile-home
+```
+
+Guidance:
+
+- Use production packets to review live deployed behavior.
+- Use local packets during active development to avoid pushing every tiny visual change.
+- Use `--skip-tests` for quick production screenshot packets.
+- Do not skip tests after implementation changes unless the packet is intentionally visual-only.
+
 ```bash
 npm run go
 ```
