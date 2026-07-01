@@ -1248,6 +1248,22 @@ p {
   font-size: clamp(1rem, 1.45vw, 1.16rem);
 }
 
+.about-copy p,
+.search-header p,
+.search-summary,
+.search-result-card p,
+.search-empty p,
+.writing-index-header > p,
+.writing-index-card p,
+.update-card p,
+.tiny-thought-card p,
+.tiny-thought-inspired,
+.writing-body p,
+.writing-body blockquote {
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
 .about-copy h3 {
   margin-top: 2rem;
   color: var(--ink);
@@ -3573,6 +3589,42 @@ p {
     font-size: 0.66rem;
   }
 
+  .back-link,
+  .update-link,
+  .search-result-link,
+  .list-panel-more,
+  .arcade-card-copy a,
+  .media-card-copy > a,
+  .tiny-thought-attachments a,
+  .tiny-thought-admin-attachments a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(248, 239, 227, 0.14);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .update-link,
+  .search-result-link,
+  .list-panel-more,
+  .arcade-card-copy a,
+  .media-card-copy > a {
+    width: fit-content;
+  }
+
+  .feed-link,
+  .search-quick-link-chip {
+    min-height: 2.8rem;
+  }
+
+  .search-shell {
+    position: static;
+    top: auto;
+  }
+
   .hero-terminal {
     width: 100%;
   }
@@ -3700,9 +3752,9 @@ p {
 
   .nav-links a {
     flex: 0 0 auto;
-    min-height: 2.42rem;
-    padding: 0.48rem 0.58rem;
-    font-size: 0.7rem;
+    min-height: 2.68rem;
+    padding: 0.5rem 0.62rem;
+    font-size: 0.72rem;
     white-space: nowrap;
     scroll-snap-align: start;
   }
@@ -3739,14 +3791,14 @@ p {
 
   h1 {
     margin-bottom: 0.95rem;
-    font-size: clamp(2.65rem, 13vw, 3.85rem);
-    line-height: 0.92;
+    font-size: clamp(2.5rem, 12vw, 3.65rem);
+    line-height: 0.94;
   }
 
   .hero-copy {
     max-width: 32rem;
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.98rem;
+    line-height: 1.57;
   }
 
   .work-hero {
@@ -3756,19 +3808,19 @@ p {
 
   .work-hero-copy h1 {
     max-width: none;
-    font-size: clamp(2.25rem, 11vw, 3.15rem);
-    line-height: 0.95;
+    font-size: clamp(2.1rem, 10.4vw, 3rem);
+    line-height: 0.97;
   }
 
   .work-lead {
     max-width: none;
-    font-size: 1rem;
-    line-height: 1.58;
+    font-size: 0.99rem;
+    line-height: 1.54;
   }
 
   .work-hero-support {
-    font-size: 0.96rem;
-    line-height: 1.58;
+    font-size: 0.94rem;
+    line-height: 1.54;
   }
 
   .work-hero-highlights {
@@ -3857,8 +3909,8 @@ p {
   .spotlight-card h3,
   .now-card h3,
   .build-log-preview-item h3 {
-    font-size: clamp(1.35rem, 7vw, 2rem);
-    line-height: 1.06;
+    font-size: clamp(1.28rem, 6.3vw, 1.82rem);
+    line-height: 1.08;
   }
 
   .start-here-card p,
@@ -3907,6 +3959,15 @@ p {
   .project-link {
     width: 100%;
     justify-content: center;
+  }
+
+  .feed-link,
+  .list-panel-more,
+  .project-link,
+  .update-link,
+  .search-quick-link-chip {
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
   }
 
   .fun-games-section .signal-booth-section {
@@ -4090,15 +4151,15 @@ p {
 
   .about-page .about-copy h1,
   .writing-index-header h1 {
-    font-size: clamp(2.3rem, 11vw, 3.3rem);
-    line-height: 0.96;
+    font-size: clamp(2.16rem, 10.3vw, 3.06rem);
+    line-height: 0.98;
   }
 
   .about-page .about-copy > p,
   .writing-index-header > p {
     max-width: none;
-    font-size: 1rem;
-    line-height: 1.68;
+    font-size: 0.98rem;
+    line-height: 1.62;
   }
 
   .about-page .about-copy > p + p,
@@ -4146,6 +4207,10 @@ p {
     max-width: none;
   }
 
+  .writing-index-header .feed-links {
+    width: 100%;
+  }
+
   .writing-index-grid {
     margin-top: 1.35rem;
   }
@@ -4156,12 +4221,267 @@ p {
   }
 
   .writing-index-card h2 {
-    font-size: clamp(1.5rem, 7vw, 2rem);
-    line-height: 1.06;
+    font-size: clamp(1.4rem, 6.2vw, 1.82rem);
+    line-height: 1.1;
   }
 
   .writing-index-card p {
-    font-size: 0.96rem;
+    font-size: 0.94rem;
+    line-height: 1.54;
+  }
+
+  .tiny-thought-meta {
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.9rem 0.9rem 0.75rem;
+  }
+
+  .tiny-thought-card p,
+  .tiny-thought-inspired {
+    padding: 0 0.9rem 0.9rem;
+    font-size: 0.94rem;
     line-height: 1.58;
+  }
+
+  .tiny-thought-attachments,
+  .tiny-thought-image-strip {
+    padding: 0 0.9rem 0.9rem;
+  }
+
+  .tiny-thought-attachments a {
+    font-size: 0.74rem;
+    line-height: 1.25;
+  }
+
+  body::before {
+    opacity: 0.18;
+    background-size: 56px 56px;
+  }
+
+  .search-shell {
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(10px);
+  }
+
+  .section-link-card,
+  .project-card,
+  .search-result-card,
+  .search-empty,
+  .writing-index-card,
+  .update-card,
+  .related-signal-card,
+  .tiny-thought-card {
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+  }
+
+  .updates-page {
+    padding-top: 5.55rem;
+    padding-bottom: 2.8rem;
+  }
+
+  .updates-header {
+    max-width: none;
+  }
+
+  .updates-header p,
+  .updates-header p:last-of-type {
+    font-size: 0.97rem;
+    line-height: 1.58;
+  }
+
+  .updates-stream {
+    gap: 0.8rem;
+    margin-top: 1.35rem;
+  }
+
+  .update-card {
+    padding: 1rem;
+  }
+
+  .update-card h2 {
+    font-size: clamp(1.36rem, 6.2vw, 1.78rem);
+    line-height: 1.12;
+  }
+
+  .update-card p {
+    font-size: 0.94rem;
+    line-height: 1.54;
+  }
+
+  .search-header {
+    margin-bottom: 1.2rem;
+  }
+
+  .search-header h1,
+  .updates-header h1 {
+    font-size: clamp(2.26rem, 10.8vw, 3.15rem);
+    line-height: 0.97;
+  }
+
+  .search-header p,
+  .search-summary {
+    font-size: 0.97rem;
+    line-height: 1.58;
+  }
+
+  .search-quick-link-card h2,
+  .search-result-card h2 {
+    font-size: clamp(1.3rem, 5.8vw, 1.68rem);
+    line-height: 1.12;
+  }
+
+  .lodge-page .back-link {
+    margin-bottom: 1.15rem;
+    font-size: 0.74rem;
+  }
+
+  .lodge-hero {
+    min-height: 68vh;
+    padding-top: 5.75rem;
+    padding-bottom: 2.4rem;
+  }
+
+  .lodge-hero-copy h1 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(3.2rem, 18vw, 5rem);
+    line-height: 0.9;
+  }
+
+  .lodge-hero-copy p:last-child {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.58;
+  }
+
+  .lodge-intro {
+    padding-top: 0.35rem;
+    padding-bottom: 1.4rem;
+  }
+
+  .lodge-intro h2 {
+    font-size: clamp(2rem, 11vw, 3rem);
+    line-height: 0.95;
+  }
+
+  .lodge-problem-panel,
+  .lodge-case-file,
+  .lodge-step-panel,
+  .lodge-summary,
+  .lodge-export {
+    padding: 0.95rem;
+  }
+
+  .lodge-problem-panel {
+    gap: 1rem;
+  }
+
+  .lodge-problem-button {
+    min-height: auto;
+    padding: 0.8rem;
+  }
+
+  .lodge-choice-card {
+    min-height: auto;
+  }
+
+  .lodge-summary li {
+    padding: 0.7rem;
+  }
+
+  .collection-page {
+    padding-top: 5.35rem;
+  }
+
+  .collection-section {
+    padding-top: 1.45rem;
+  }
+
+  .arcade-section::before {
+    top: 5rem;
+    right: -6rem;
+    width: 21rem;
+    height: 21rem;
+    opacity: 0.24;
+  }
+
+  .arcade-grid,
+  .media-grid {
+    gap: 0.75rem;
+    margin-top: 1.35rem;
+  }
+
+  .media-intro-panel,
+  .related-signal-card {
+    padding: 1rem;
+  }
+
+  .media-intro-panel {
+    margin-top: 1rem;
+  }
+
+  .media-intro-panel p {
+    margin-bottom: 0.7rem;
+  }
+
+  .media-intro-lead {
+    font-size: 0.95rem;
+    line-height: 1.54;
+  }
+
+  .related-signals {
+    margin-top: 2.5rem;
+    padding-top: 1.55rem;
+  }
+
+  .related-signals h2 {
+    margin-bottom: 0.85rem;
+    font-size: clamp(1.55rem, 8vw, 2.1rem);
+    line-height: 1.06;
+  }
+
+  .related-signal-card {
+    min-height: auto;
+    gap: 0.7rem;
+  }
+
+  .related-signal-card h3 {
+    font-size: clamp(1.15rem, 6.5vw, 1.45rem);
+    line-height: 1.1;
+  }
+
+  .related-signal-card p,
+  .related-signal-card small {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .cats-section .section-heading > p:last-child {
+    max-width: none;
+  }
+
+  .cat-gallery {
+    gap: 0.7rem;
+    margin-top: 1.35rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .arcade-grid,
+  .media-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .arcade-card-copy,
+  .media-card-copy {
+    min-height: 0;
+    padding: 0.8rem;
+  }
+
+  .arcade-card-copy h3,
+  .media-card-copy h3 {
+    min-height: 0;
+    margin-bottom: 0.55rem;
+    font-size: 1rem;
+    line-height: 1.15;
   }
 }

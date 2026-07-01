@@ -755,8 +755,8 @@
 
   .music-console h3 {
     margin-bottom: 0.8rem;
-    font-size: clamp(2rem, 10vw, 2.95rem);
-    line-height: 0.98;
+    font-size: clamp(1.86rem, 8.9vw, 2.6rem);
+    line-height: 1;
   }
 
   .music-console p,
@@ -767,8 +767,8 @@
   .music-mood-card p,
   .music-fixation-card p,
   .peak-month-list p {
-    font-size: 0.96rem;
-    line-height: 1.58;
+    font-size: 0.94rem;
+    line-height: 1.54;
   }
 
   .music-stat-grid {
@@ -807,8 +807,8 @@
   .music-insight-heading h2,
   .music-league h3 {
     margin-bottom: 0.7rem;
-    font-size: clamp(1.7rem, 8vw, 2.45rem);
-    line-height: 1.04;
+    font-size: clamp(1.58rem, 7.2vw, 2.2rem);
+    line-height: 1.06;
   }
 
   .time-machine-toolbar {

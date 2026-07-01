@@ -314,10 +314,11 @@ Protect the site’s playful, weird, and personal pages on mobile while reducing
 
 ### Checklist
 
-- [ ] `[P0]` Preserve personality without turning the pages into mobile clutter.
-- [ ] `[P1]` Check image, gallery, and card density on narrow screens.
-- [ ] `[P1]` Review playful fixed or floating elements for intrusion.
-- [ ] `[P2]` Tighten route-specific oddities that weaken readability.
+- [x] `[P0]` Preserve personality without turning the pages into mobile clutter across the main personality routes.
+- [x] `[P1]` Check image, gallery, and card density on narrow screens for `/arcade`, `/cats/beverly-and-lucinda`, and `/movies-tv`.
+- [x] `[P1]` Review playful fixed or floating elements for intrusion during personality-page mobile review.
+- [x] `[P2]` Tighten route-specific oddities that weaken readability on the first reviewed routes.
+- [x] `[P1]` Re-review `twin-peaks-self`, `tiny-thoughts`, `updates`, and `/cats/thomas-jones-missy-cass` on mobile and fold the survivable fixes back into shared CSS.
 
 ### Review Criteria
 
@@ -330,19 +331,38 @@ Protect the site’s playful, weird, and personal pages on mobile while reducing
 - `screenshots/mobile-cats-beverly-and-lucinda.jpg`
 - `screenshots/mobile-arcade.jpg`
 - `screenshots/mobile-movies-tv.jpg`
+- Local verification screenshots captured during this pass at `375px`, `390px`, and `430px` against `http://127.0.0.1:3000/arcade`, `http://127.0.0.1:3000/cats/beverly-and-lucinda`, and `http://127.0.0.1:3000/movies-tv`
+- Local verification screenshots captured during the follow-up pass at `390px` against `http://127.0.0.1:3000/twin-peaks-self`, `http://127.0.0.1:3000/tiny-thoughts`, `http://127.0.0.1:3000/updates`, and `http://127.0.0.1:3000/cats/thomas-jones-missy-cass`
+- `tests/e2e/mobile-safety.spec.ts`
 
 ### Known Issues
 
 - These pages are likely to expose route-specific quirks that shared mobile fixes will not solve.
+- `/arcade` and `/movies-tv` needed single-column treatment on smaller phones to stop poster and cabinet art from feeling thumbnail-dense.
+- The floating ghost/logo no longer dominates these routes, but it still appears in screenshots and should keep being judged against real-device comfort.
+- `twin-peaks-self` still has intentionally dramatic hero scale on mobile; it is cleaner now, but it should keep being judged against real-device comfort rather than being “optimized” into blandness.
+- `tiny-thoughts` density will keep depending partly on whatever lead image or attachment mix a thought carries, so future content changes still need human screenshot review even when overflow tests pass.
 
 ### Future Ideas
 
 - Create route-local mobile exceptions where personality depends on layout.
 - Explore lighter decorative treatments on smaller screens.
+- Revisit whether `430px` devices should ever regain two-column media on selected routes, but only if it improves browsing more than it increases clutter.
+
+### Exit Criteria
+
+- The reviewed personality pages still feel playful and specific on `375px`, `390px`, and `430px` widths.
+- Media and gallery sections feel intentionally browseable instead of miniature desktop grids.
+- Floating decorative chrome stays atmospheric without repeatedly stealing attention from content.
+- Remaining personality-route follow-up is explicit enough that Phase 6 does not begin prematurely.
+
+Next recommended work:
+
+- Move to Phase 6 and focus on accessibility, tap targets, overflow, and cross-route interaction comfort now that the main personality routes have had their mobile readability pass.
 
 Status:
 
-Not Started
+Ready For Review
 
 ## Phase 6 — Accessibility, Performance, Tap Targets, Horizontal Overflow
 
@@ -352,11 +372,11 @@ Catch the usability issues that visual review can miss: uncomfortable tap target
 
 ### Checklist
 
-- [ ] `[P0]` Check for accidental overflow, clipping, and hidden text.
-- [ ] `[P0]` Check all primary taps and pills for usable touch targets.
-- [ ] `[P1]` Check text sizing and line length on small screens.
-- [ ] `[P1]` Watch for large decorative modules that may create mobile-only performance issues.
-- [ ] `[P2]` Note routes that need dedicated accessibility follow-up later.
+- [x] `[P0]` Check for accidental overflow, clipping, and hidden text across the actively reviewed public routes.
+- [x] `[P0]` Check all primary taps and pills for usable touch targets.
+- [x] `[P1]` Check text sizing and line length on small screens across the denser editorial and directory routes.
+- [x] `[P1]` Watch for large decorative modules that may create mobile-only performance issues and trim the heaviest small-screen treatment where it does not earn its weight.
+- [x] `[P2]` Note routes that need dedicated accessibility follow-up later.
 
 ### Review Criteria
 
@@ -370,20 +390,30 @@ Catch the usability issues that visual review can miss: uncomfortable tap target
 - `reports/screenshot-summary.json`
 - `reports/route-status.json`
 - browser/device spot checks
+- `tests/e2e/mobile-safety.spec.ts`
+- Local verification screenshots at `390px` against `http://127.0.0.1:3000/search` and `http://127.0.0.1:3000/`
+- Local verification screenshots at `375px`, `390px`, and `430px` against `http://127.0.0.1:3000/about`, `http://127.0.0.1:3000/writings`, `http://127.0.0.1:3000/updates`, `http://127.0.0.1:3000/tiny-thoughts`, and `http://127.0.0.1:3000/search`
+- Local verification screenshots at `390px` against `http://127.0.0.1:3000/music` and desktop spot-check capture against `http://127.0.0.1:3000/`
 
 ### Known Issues
 
 - Screenshot review alone will not catch every tap-target or scrolling issue.
 - Taller pages may need direct device checks to confirm comfort.
+- The floating ghost/logo still appears in lower-left screenshots, so it can make visual evidence noisier even when it is not blocking interaction.
+- The route-level text-comfort and decorative-weight pass is now safer, but future content edits can still reintroduce density on editorial pages and Tiny Thoughts cards.
 
 ### Future Ideas
 
 - Add accessibility and performance-specific tooling to the review packet later.
 - Include route-level notes for reduced-motion and keyboard sanity checks.
 
+Next recommended work:
+
+- Move to Phase 7 and generate a fresh comparison packet now that the safety, text-comfort, and decorative-weight checks have all had a dedicated pass.
+
 Status:
 
-Not Started
+Ready For Review
 
 ## Phase 7 — Regression Review And Screenshot Comparison
 
@@ -393,11 +423,11 @@ Make each mobile change easy to verify and easy to trust. This phase is about di
 
 ### Checklist
 
-- [ ] `[P0]` Generate a fresh local mobile packet after each meaningful batch.
-- [ ] `[P0]` Compare viewport screenshots first, then full-page screenshots.
-- [ ] `[P1]` Record what changed in `reports/codex-report.md`.
-- [ ] `[P1]` Confirm desktop still looks intentional after mobile changes.
-- [ ] `[P2]` Keep packet notes clear enough that the next session can resume quickly.
+- [x] `[P0]` Generate a fresh local mobile packet after each meaningful batch.
+- [x] `[P0]` Compare viewport screenshots first, then full-page screenshots.
+- [x] `[P1]` Record what changed in `reports/codex-report.md`.
+- [x] `[P1]` Confirm desktop still looks intentional after mobile changes.
+- [x] `[P2]` Keep packet notes clear enough that the next session can resume quickly.
 
 ### Review Criteria
 
@@ -410,18 +440,26 @@ Make each mobile change easy to verify and easy to trust. This phase is about di
 - `reports/codex-report.md`
 - latest mobile review packet screenshots
 - desktop viewport screenshots for comparison
+- `review-packets/2026-06-30/site-review-0837`
+- `review-packets/latest-site-review`
+- `review-packets/arcadeghosts-site-review-2026-06-30-0837.zip`
 
 ### Known Issues
 
 - This discipline is easy to skip when visual fixes seem small.
+- The generated packet covers the current focus routes well, but future route-specific passes should keep narrowing the route set when changes are isolated so comparison stays easy to scan.
 
 ### Future Ideas
 
 - Add side-by-side diff helpers later if packets become numerous.
 
+Next recommended work:
+
+- Move to Phase 8 and use the new packet as the baseline for typography polish rather than reopening broad mobile safety work first.
+
 Status:
 
-In Progress
+Complete
 
 ## Phase 8 — Typography Polish
 
@@ -431,12 +469,15 @@ Polish the site’s mobile typography so it feels more deliberate and consistent
 
 ### Checklist
 
-- [ ] `[P1]` Normalize heading scale across key routes.
-- [ ] `[P1]` Review paragraph width and long-line discomfort.
-- [ ] `[P1]` Tighten spacing rhythm around headings, copy, and calls to action.
-- [ ] `[P1]` Review line-height for both hero copy and longer editorial sections.
-- [ ] `[P2]` Refine CTA hierarchy where type weight or size competes awkwardly.
-- [ ] `[P2]` Review icon sizing relative to adjacent text and pills.
+- [x] `[P1]` Normalize heading scale across key routes.
+- [x] `[P1]` Review paragraph width and long-line discomfort.
+- [x] `[P1]` Tighten spacing rhythm around headings, copy, and calls to action.
+- [x] `[P1]` Review line-height for both hero copy and longer editorial sections.
+- [x] `[P2]` Refine CTA hierarchy where type weight or size competes awkwardly.
+- [x] `[P2]` Review icon sizing relative to adjacent text and pills.
+- [x] `[P1]` Calm the most aggressive small-screen hero headings on `/search`, `/updates`, `/work-with-me`, and `/music` without making them interchangeable.
+- [x] `[P1]` Tighten intro-copy rhythm on `/about`, `/writings`, `/tiny-thoughts`, and `/cats/beverly-and-lucinda` where long paragraphs still feel a little airy.
+- [x] `[P2]` Recheck uppercase CTA and pill typography on `/writings`, `/updates`, `/search`, and `/work-with-me` so emphasis comes from hierarchy, not just bulk.
 
 ### Review Criteria
 
@@ -450,18 +491,28 @@ Polish the site’s mobile typography so it feels more deliberate and consistent
 - `screenshots/viewport/mobile-about.jpg`
 - `screenshots/viewport/mobile-writings.jpg`
 - `screenshots/mobile-work-with-me.jpg`
+- `review-packets/2026-06-30/site-review-0837`
+- `review-packets/2026-06-30/site-review-0852`
+- `review-packets/latest-site-review`
+- Local post-change verification screenshots at `375px`, `390px`, and `430px` for `/search`, `/updates`, and `/tiny-thoughts`
 
 ### Known Issues
 
 - Type problems are likely to overlap with Phase 2 and Phase 3 fixes.
+- Home and Work With Me still use intentionally large first-screen type, so the goal here is proportion, not restraint for its own sake.
+- The packet script's default route set still omits `/search` and `/updates`, so focused typography passes should keep supplementing packet output with route-local captures when those pages change.
 
 ### Future Ideas
 
 - Introduce route-local typography tweaks where tone demands it.
 
+Next recommended work:
+
+- Move to Phase 9 for navigation polish, but keep the Phase 8 packet and the Search/Updates/Tiny Thoughts spot-checks as the typography baseline.
+
 Status:
 
-Not Started
+Ready For Review
 
 ## Phase 9 — Navigation Polish
 
