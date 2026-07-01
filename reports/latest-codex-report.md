@@ -2,40 +2,37 @@
 
 ## Completed
 
-- Completed the first Phase 8 typography pass with conservative CSS-only refinements instead of broad layout changes.
-- Reduced the loudest mobile heading scales on shared `h1` routes and route-local hero sections so `/search`, `/updates`, `/work-with-me`, `/music`, `/about`, and `/writings` feel more consistent without flattening their tone.
-- Tightened paragraph rhythm on the heavier editorial and intro-copy routes by slightly reducing small-screen font sizes and line-height for hero/support copy, writing index intros, update intros, Tiny Thoughts copy, and media intro copy.
-- Rebalanced CTA and pill typography on mobile by softening the uppercase chip/button text sizing and letter-spacing for feeds, project links, quick links, and update links.
-- Generated a fresh Phase 8 mobile review packet, refreshed `review-packets/latest-site-review`, and wrote a new dated zip archive under `review-packets/`.
-- Directly spot-checked the routes outside the packet script's default capture set after the typography changes, including `/search`, `/updates`, and `/tiny-thoughts` at `375px`, `390px`, and `430px`.
-- Updated `docs/MOBILE-TODO.md` so Phase 7 is complete and Phase 8 is now ready for review.
+- Completed a conservative Phase 10 shared-component pass focused on mobile card, pill, and panel consistency instead of route-by-route redesign.
+- Unified the smaller action links across writings, updates, arcade, movies, and tiny thoughts so they now read as one clearer pill family rather than alternating between plain text links and button-like chips.
+- Tightened the smaller card surfaces by nudging radii and internal spacing closer together across writing cards, update cards, tiny-thought cards, arcade cards, and media cards.
+- Kept the route-specific color treatments and weirdness intact while making the shared interaction pieces feel more intentionally related.
+- Gave writing blockquotes a surface treatment that better matches the calmer card system and added a light inline-code style for future-proofing, while noting that the current public writing renderer does not yet emit larger code blocks.
+- Updated `docs/MOBILE-TODO.md` so Phase 10 is now ready for review and the focused packet evidence is recorded.
 
 ## Deferred
 
-- The floating ghost/logo still appears in screenshots and remains something to judge against real-device comfort instead of packet aesthetics alone.
-- Phase 9 navigation polish should re-evaluate the top nav and fixed chrome weight now that the surrounding type has been calmed a little.
-- Phase 10 component consistency should revisit whether route-local card title scales still need a final pass once navigation changes settle.
-- `tests/e2e/mobile-safety.spec.ts` still has earlier Phase 6 safety coverage changes in the worktree, but this Phase 8 typography pass did not edit that file again.
+- `/arcade`, `/movies-tv`, and the cat pages still show sparse placeholder states when content is missing or intentionally minimal; that is more about content/data shape than component inconsistency.
+- The homepage nav pills intentionally remain a lighter-weight special case instead of being forced into the exact same pill system as the rest of the site.
+- If future writing or build-log content introduces real code blocks, Phase 10’s light inline-code treatment should grow into a dedicated component rather than being stretched too far.
 
 ## Unexpected Discoveries
 
-- Small changes to type scale and line-height mattered more than any one dramatic redesign move.
-- Search and Updates benefited the most from slightly calmer hero sizing and denser intro rhythm.
-- The default packet route set is still a little too homepage-centric for focused typography work, so route-local screenshot follow-ups remain useful when `/search` or `/updates` change.
+- The biggest consistency win came from the small action links, not from changing the larger hero buttons.
+- The site’s surfaces were already more coherent than the roadmap implied; the real issue was that some cards ended with tiny naked text links while others ended with proper chips.
+- Quote treatment needed only a small alignment nudge, while a broad code-block pass would have been premature because the current public renderer does not output them.
+
+## What Changed
+
+- Smaller CTA links now use a more consistent pill treatment across routes.
+- Small-card radii and padding are closer together, especially on writing, updates, tiny thoughts, arcade, and movies surfaces.
+- Writing blockquotes now better match the shared card language, and inline code has a defined style instead of falling back to generic browser defaults.
 
 ## Files Modified
 
 - `app/globals.css`
-- `app/music/music.css`
 - `docs/MOBILE-TODO.md`
 - `reports/codex-report.md`
 - `reports/latest-codex-report.md`
-
-## Packet Outputs
-
-- `review-packets/latest-site-review`
-- the latest timestamped packet under `review-packets/2026-06-30/`
-- the latest dated zip archive under `review-packets/`
 
 ## Routes Affected
 
@@ -44,12 +41,19 @@
 - `/work-with-me`
 - `/music`
 - `/writings`
-- `/search`
-- `/updates`
-- `/tiny-thoughts`
 - `/arcade`
 - `/cats/beverly-and-lucinda`
 - `/movies-tv`
+- `/tiny-thoughts`
+- `/search`
+- `/updates`
+
+## Screenshots Reviewed
+
+- Phase 9 baseline packet from `review-packets/2026-06-30/site-review-2130`
+- Focused Phase 10 verification packet from `review-packets/2026-06-30/site-review-2140`
+- Mobile component-heavy routes reviewed at `375px`, including writings, tiny thoughts, arcade, movies & TV, about, work with me, and music
+- Focused route verification for `/search` and `/updates` in the packet route set because the standard packet route list still omits them
 
 ## Tests Run
 
@@ -57,31 +61,18 @@
 - `npm run test:unit`
 - `npm run site:review-packet -- --mobile --summary-file reports/latest-codex-report.md`
 
-## Screenshots Reviewed
+## Packet Outputs
 
-- Phase 7 baseline packet reviewed from `review-packets/2026-06-30/site-review-0837`, including the `375px`, `390px`, and `430px` viewport sets across the focus routes.
-- Phase 8 packet baseline reviewed from `review-packets/2026-06-30/site-review-0852`, including:
-  - `screenshots/mobile-home.jpg`
-  - `screenshots/mobile-work-with-me.jpg`
-  - `screenshots/mobile-about.jpg`
-  - `screenshots/mobile-music.jpg`
-  - `screenshots/mobile-writings.jpg`
-- Final refreshed packet generated during this pass with `45` captured screenshots and the finalized Phase 8 report text bundled into the packet.
-- Local post-change verification screenshots:
-  - `/private/tmp/search-375-phase8-after.png`
-  - `/private/tmp/search-390-phase8-after.png`
-  - `/private/tmp/search-430-phase8-after.png`
-  - `/private/tmp/updates-375-phase8-after.png`
-  - `/private/tmp/updates-390-phase8-after.png`
-  - `/private/tmp/updates-430-phase8-after.png`
-  - `/private/tmp/tiny-thoughts-375-phase8-after.png`
-  - `/private/tmp/tiny-thoughts-390-phase8-after.png`
-  - `/private/tmp/tiny-thoughts-430-phase8-after.png`
-- Packet screenshot source: local packet dev server at `http://127.0.0.1:50956`
-- Local spot-check screenshot source: `http://127.0.0.1:3000`
+- `review-packets/latest-site-review`
+- the latest timestamped packet under `review-packets/2026-06-30/`
+- the latest dated zip archive under `review-packets/`
+
+## Phase Status
+
+Phase 10 is ready for review.
 
 ## Recommended Next Phase
 
-Phase 9 — Navigation Polish
+Phase 11 — Final Mobile QA
 
-Use the calmer Phase 8 type baseline to judge whether the mobile nav and fixed chrome still feel heavier than the page content around them.
+Use the calmer typography, navigation, and component baselines for device/browser validation rather than continuing to refine individual visual systems in isolation.

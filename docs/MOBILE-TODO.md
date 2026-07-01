@@ -522,11 +522,14 @@ Refine mobile navigation until it feels lighter, clearer, and more touch-friendl
 
 ### Checklist
 
-- [ ] `[P1]` Review active state clarity.
-- [ ] `[P1]` Tighten scrolling behavior and momentum feel.
-- [ ] `[P1]` Recheck overflow and clipped-edge perception.
-- [ ] `[P1]` Confirm touch friendliness on smaller devices.
-- [ ] `[P2]` Reduce visual weight where the nav competes too much with page content.
+- [x] `[P1]` Review active state clarity.
+- [x] `[P1]` Tighten scrolling behavior and momentum feel.
+- [x] `[P1]` Recheck overflow and clipped-edge perception.
+- [x] `[P1]` Confirm touch friendliness on smaller devices.
+- [x] `[P2]` Reduce visual weight where the nav competes too much with page content.
+- [x] `[P1]` Fix the clipped `Writing`/right-edge nav perception on the `375px` homepage viewport by trimming the mobile nav to a deliberate phone-sized doorway set.
+- [x] `[P1]` Rebalance the fixed logo plus nav stack so the first viewport feels lighter on `/`, while keeping the Phase 8 type baseline intact.
+- [x] `[P2]` Recheck `/search` and `/updates` with focused mobile packet coverage because the standard packet route set still omits them.
 
 ### Review Criteria
 
@@ -536,20 +539,30 @@ Refine mobile navigation until it feels lighter, clearer, and more touch-friendl
 
 ### Evidence
 
+- `review-packets/2026-06-30/site-review-2110`
+- `review-packets/2026-06-30/site-review-2125`
+- `review-packets/latest-site-review`
 - `screenshots/viewport/mobile-home.jpg`
-- direct device spot checks on the homepage and other top-level pages
+- Focused mobile packet verification across `/`, `/about`, `/work-with-me`, `/music`, `/writings`, `/arcade`, `/cats/beverly-and-lucinda`, `/movies-tv`, `/tiny-thoughts`, `/search`, and `/updates`
 
 ### Known Issues
 
-- The current nav strip is working better but is still a compromise pattern.
+- The home nav strip is much calmer on phones now, but it is still a compromise pattern rather than a purpose-built mobile menu.
+- The fixed logo is lighter and less competitive with the hero, but it still needs real-device judgment if future hero or background treatments get louder again.
+- Active state clarity was reviewed, but the homepage still does not use a section-aware current-state system; that remains acceptable for now because the mobile nav has been simplified into a small doorway strip instead of a broad site index.
 
 ### Future Ideas
 
 - Move to a different mobile nav model if later phases show the strip is still too heavy.
+- If Phase 10 finds repeated chip/button inconsistencies, revisit whether the home nav pill styling should join a more explicit shared component family.
+
+Next recommended work:
+
+- Move to Phase 10 and audit component consistency now that the mobile type and nav baselines are both calmer.
 
 Status:
 
-Not Started
+Ready For Review
 
 ## Phase 10 — Component Consistency
 
@@ -559,13 +572,16 @@ Review reusable UI building blocks across mobile routes so the site feels cohesi
 
 ### Checklist
 
-- [ ] `[P1]` Review cards.
-- [ ] `[P1]` Review buttons.
-- [ ] `[P1]` Review pills and badges.
-- [ ] `[P1]` Review panels and surface treatments.
-- [ ] `[P1]` Review quote blocks and code blocks.
-- [ ] `[P1]` Review media sections and image layouts.
-- [ ] `[P2]` Note which inconsistencies are intentional and should stay.
+- [x] `[P1]` Review cards.
+- [x] `[P1]` Review buttons.
+- [x] `[P1]` Review pills and badges.
+- [x] `[P1]` Review panels and surface treatments.
+- [x] `[P1]` Review quote blocks and code blocks.
+- [x] `[P1]` Review media sections and image layouts.
+- [x] `[P2]` Note which inconsistencies are intentional and should stay.
+- [x] `[P1]` Bring the smaller action links on writings, updates, arcade, movies, and tiny thoughts closer to the same pill family instead of switching between plain text and button-like chips.
+- [x] `[P1]` Tighten the smaller card surfaces so writing cards, update cards, tiny-thought cards, and media cards feel related without losing their route-specific color treatment.
+- [x] `[P2]` Confirm that quote treatment still feels intentional and note that the current public writing renderer does not yet output large code blocks that would justify a broader syntax-surface pass.
 
 ### Review Criteria
 
@@ -578,18 +594,30 @@ Review reusable UI building blocks across mobile routes so the site feels cohesi
 - source component review
 - cross-route viewport screenshots
 - packet `source/` and `screenshots/`
+- `review-packets/2026-06-30/site-review-2130`
+- `review-packets/2026-06-30/site-review-2140`
+- `review-packets/latest-site-review`
+- Focused mobile packet verification across `/`, `/about`, `/work-with-me`, `/music`, `/writings`, `/arcade`, `/cats/beverly-and-lucinda`, `/movies-tv`, `/tiny-thoughts`, `/search`, and `/updates`
 
 ### Known Issues
 
 - Some inconsistencies may be route-specific choices rather than bugs.
+- `/arcade`, `/movies-tv`, and the cat pages still expose sparse placeholder states when imagery is missing or intentionally minimal; that is more a content/data-shape issue than a shared component bug.
+- The site now has a clearer shared pill family, but homepage nav pills intentionally remain their own lighter-weight variant for usability reasons.
+- Public writing pages currently render paragraphs and blockquotes, plus inline emphasis, but not richer code-block markup, so a bigger code-surface system would be premature.
 
 ### Future Ideas
 
 - Create a lightweight component audit doc if this phase grows too large.
+- If future writing or build-log content introduces real code blocks, give them a dedicated component treatment instead of stretching the current inline-code styling too far.
+
+Next recommended work:
+
+- Move to Phase 11 and do real device/browser QA now that the type, nav, and component baselines are all calmer.
 
 Status:
 
-Not Started
+Ready For Review
 
 ## Phase 11 — Final Mobile QA
 
@@ -599,17 +627,18 @@ Perform a final mobile sanity pass across representative devices and browsers so
 
 ### Checklist
 
-- [ ] `[P0]` Check iPhone SE.
-- [ ] `[P0]` Check iPhone 13.
-- [ ] `[P0]` Check iPhone 15 Pro Max.
-- [ ] `[P0]` Check Android Pixel.
-- [ ] `[P0]` Check Safari.
-- [ ] `[P0]` Check Chrome.
-- [ ] `[P0]` Confirm no overflow.
-- [ ] `[P0]` Confirm no clipped text.
-- [ ] `[P0]` Confirm no hidden controls.
-- [ ] `[P0]` Confirm no unreadable sections.
-- [ ] `[P1]` Confirm no accidental desktop spacing survives on mobile.
+- [ ] `[P0]` Run the final device/browser matrix:
+  iPhone SE-class Safari, iPhone 13/14-class Safari, iPhone Pro Max Safari, Pixel Chrome, and Samsung Galaxy Chrome.
+- [ ] `[P0]` Review the final route set on real devices:
+  `/`, `/about`, `/work-with-me`, `/music`, `/writings`, `/search`, `/updates`, `/tiny-thoughts`, `/arcade`, `/cats/beverly-and-lucinda`, `/movies-tv`.
+- [ ] `[P0]` Confirm no overflow, clipped text, blocked controls, or unreadable sections on the tested devices.
+- [ ] `[P0]` Confirm sticky/fixed UI stays usable:
+  homepage nav, fixed logo, back links, and floating chrome must not compete with reading or taps.
+- [ ] `[P1]` Confirm long-scroll comfort on editorial and archive-heavy routes:
+  `/writings`, `/updates`, `/tiny-thoughts`, `/music`.
+- [ ] `[P1]` Capture reusable evidence from the device pass:
+  screenshots, short notes, and any exported session recordings for the routes that reveal real-device issues.
+- [ ] `[P1]` Confirm no accidental desktop spacing or awkward shared-component behavior survives on mobile after Phases 8-10.
 
 ### Review Criteria
 
@@ -619,17 +648,133 @@ Perform a final mobile sanity pass across representative devices and browsers so
 
 ### Evidence
 
+- `review-packets/latest-site-review`
 - packet screenshots
 - device/browser spot checks
 - final review notes
+- optional Sauce Labs session screenshots / recordings if a cloud-device pass is used
 
 ### Known Issues
 
 - Emulator confidence is not the same as real-device confidence.
+- Sauce Labs or a similar service is most valuable here if mobile traffic remains a major share of visits and Android/Safari confidence matters before calling mobile done.
 
 ### Future Ideas
 
 - Capture a final short QA checklist result inside a packet artifact.
+
+### Suggested Device Matrix
+
+- `iPhone SE` or smallest available iPhone Safari:
+  highest risk for cramped viewport, clipped controls, and fixed-chrome interference.
+- `iPhone 13` or similar standard-size iPhone Safari:
+  baseline modern iPhone behavior.
+- `iPhone 17 Pro Max` or nearest available large iPhone Safari:
+  confirms large-device spacing does not become awkward or floaty.
+- `Pixel 8/9` Chrome:
+  clean Android baseline.
+- `Samsung Galaxy S24/S25` Chrome:
+  catches Android/browser/vendor quirks that a Pixel-only pass can miss.
+
+### Suggested Route Priority
+
+1. `/`
+2. `/work-with-me`
+3. `/search`
+4. `/updates`
+5. `/writings`
+6. `/tiny-thoughts`
+7. `/music`
+8. `/about`
+9. `/arcade`
+10. `/movies-tv`
+11. `/cats/beverly-and-lucinda`
+
+### Sauce Labs One-Month Runbook
+
+Use this only if you want stronger real-device confidence than packet review plus one personal iPhone pass can provide.
+
+1. Buy the smallest Sauce Labs plan that includes Live Testing on real mobile devices.
+2. Start with Safari on the smallest available iPhone first, not the largest device.
+3. For each device, review the route priority list in order until you either finish or find a real issue worth stopping on.
+4. On every route, check only the same repeatable things:
+   overflow, clipped text, blocked taps, nav/header comfort, CTA tap comfort, long-scroll readability, image/card stability, and whether fixed chrome interferes with reading.
+5. For `/`, `/work-with-me`, `/search`, and `/updates`, always capture evidence even if the page looks good.
+6. If a route looks wrong, take a screenshot immediately, then capture one more screenshot after reproducing the issue once to prove it is not a fluke.
+7. If Sauce Labs provides session video export for the run you used, download the video only for sessions that show a real issue or a meaningful pass/fail boundary.
+8. Keep one short markdown note per device with:
+   device name, browser, routes checked, issues found, and whether you would trust that device/browser combo for deployment.
+
+### Sauce Labs Session Instructions
+
+For each device/browser session:
+
+1. Open the production site or the preview URL you want to validate.
+2. Check `/` first:
+   first viewport, nav comfort, logo weight, CTA tappability, first scroll.
+3. Check `/work-with-me`:
+   header readability, CTA order, long-scroll fatigue.
+4. Check `/search`:
+   search input, result cards, quick links, keyboard comfort if relevant.
+5. Check `/updates`:
+   feed header, card readability, tap targets, repeated-card fatigue.
+6. Check `/writings` and `/tiny-thoughts`:
+   long-copy rhythm, pills, card surfaces, and scroll comfort.
+7. Spot-check the remaining routes for card/image/layout stability.
+8. End the session once you have either:
+   a clean pass for that device, or reproducible evidence of a bug.
+
+### How To Get The Assets Back To Codex
+
+If you do the Sauce Labs pass, put the exported material in the repo so I can review it directly.
+
+Recommended folder:
+
+- `reports/manual-device-qa/phase-11-saucelabs/`
+
+Inside that folder, create one subfolder per device/browser, for example:
+
+- `reports/manual-device-qa/phase-11-saucelabs/iphone-se-safari/`
+- `reports/manual-device-qa/phase-11-saucelabs/iphone-13-safari/`
+- `reports/manual-device-qa/phase-11-saucelabs/iphone-17-pro-max-safari/`
+- `reports/manual-device-qa/phase-11-saucelabs/pixel-chrome/`
+- `reports/manual-device-qa/phase-11-saucelabs/galaxy-chrome/`
+
+In each device folder, include:
+
+- screenshots as `.png` or `.jpg`
+- exported session video if you have one
+- `notes.md` with:
+  device, browser, routes checked, pass/fail notes, and any issues worth fixing
+
+Suggested `notes.md` template:
+
+```md
+# Device QA Notes
+
+Device: iPhone 13
+Browser: Safari
+Date: 2026-07-01
+
+## Routes Checked
+- /
+- /work-with-me
+- /search
+- /updates
+- /writings
+
+## Passes
+- Homepage nav felt comfortable after Phase 9.
+- Search input and results stayed readable.
+
+## Issues
+- Example: Tiny Thoughts cards feel slightly dense after the fourth screenful.
+
+## Verdict
+- Trust for release: Yes / No / Mostly
+```
+
+Once those files are in the repo, tell me the folder path and I can review the screenshots/videos/notes and turn them into a concrete Phase 11 punch list.
 
 Status:
 

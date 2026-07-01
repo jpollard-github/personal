@@ -18,8 +18,13 @@ export function HomeHero() {
       <nav className="nav" aria-label="Main navigation">
         <div className="nav-links">
           {navItems.map((item) => (
-            <a key={item.href} href={item.href}>
-              {item.label}
+            <a
+              key={item.href}
+              href={item.href}
+              data-mobile-priority={item.mobilePriority}
+            >
+              <span className="nav-label-full">{item.label}</span>
+              <span className="nav-label-compact">{item.mobileLabel}</span>
             </a>
           ))}
         </div>

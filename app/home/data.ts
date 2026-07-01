@@ -7,18 +7,18 @@ import {
 import { businessLinks, businessPaths } from "../lib/business-config";
 
 export const navItems = [
-  { label: "Start Here", href: "#start-here" },
-  { label: "Now", href: "#now" },
-  { label: "Projects", href: "#projects" },
-  { label: "Writing", href: "#writing" },
-  { label: "Search", href: "/search" },
-  { label: "Fun & Games", href: "#fun-and-games" },
-  { label: "About", href: "#about" },
-  { label: "Work With Me", href: businessPaths.workWithMe },
-  { label: "Music", href: "/music" },
-  { label: "Cats", href: "#cats" },
-  { label: "Guestbook", href: "#guestbook" },
-];
+  { label: "Start Here", mobileLabel: "Start", href: "#start-here", mobilePriority: "primary" },
+  { label: "Now", mobileLabel: "Now", href: "#now", mobilePriority: "supporting" },
+  { label: "Projects", mobileLabel: "Build", href: "#projects", mobilePriority: "primary" },
+  { label: "Writing", mobileLabel: "Essays", href: "#writing", mobilePriority: "primary" },
+  { label: "Search", mobileLabel: "Search", href: "/search", mobilePriority: "supporting" },
+  { label: "Fun & Games", mobileLabel: "Fun", href: "#fun-and-games", mobilePriority: "secondary" },
+  { label: "About", mobileLabel: "About", href: "#about", mobilePriority: "primary" },
+  { label: "Work With Me", mobileLabel: "Work", href: businessPaths.workWithMe, mobilePriority: "primary" },
+  { label: "Music", mobileLabel: "Music", href: "/music", mobilePriority: "secondary" },
+  { label: "Cats", mobileLabel: "Cats", href: "#cats", mobilePriority: "secondary" },
+  { label: "Guestbook", mobileLabel: "Guestbook", href: "#guestbook", mobilePriority: "secondary" },
+] as const;
 
 export const githubRepoUrl = businessLinks.github;
 
