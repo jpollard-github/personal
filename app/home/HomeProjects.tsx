@@ -123,9 +123,10 @@ export function HomeProjects({ projects }: { projects: SiteProject[] }) {
                 href={project.href}
                 target="_blank"
                 rel="noreferrer"
-                trackingEvent="Project Link Clicked"
+                trackingEvent="project_link_click"
                 trackingProperties={{
-                  projectId: project.id,
+                  project_id: project.id,
+                  surface: "home_projects",
                   status: project.status,
                 }}
               >

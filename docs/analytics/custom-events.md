@@ -9,13 +9,15 @@ Keep Vercel Web Analytics events small, intentional, and tied to real decisions.
 - `start_here_clicked`
 - `search_performed`
 - `search_result_clicked`
-- `work_with_me_clicked`
+- `work_with_me_view`
 - `build_log_clicked`
-- `project_clicked`
+- `project_link_click`
 - `writing_clicked`
 - `tiny_thought_clicked`
 - `rss_clicked`
-- `guestbook_started`
+- `contact_cta_click`
+- `intake_form_click`
+- `guestbook_click`
 - `guestbook_submitted`
 
 ## Payload Rules
@@ -41,11 +43,11 @@ Keep Vercel Web Analytics events small, intentional, and tied to real decisions.
   Helps decide whether navigation is failing and whether search is doing too much compensating work.
 - `search_result_clicked`
   Helps decide whether search results are actually useful after the query happens.
-- `work_with_me_clicked`
-  Helps decide whether professional intent is forming and whether trust proof is sufficient.
+- `work_with_me_view`
+  Helps decide whether the professional funnel is attracting real visits before CTA optimization work.
 - `build_log_clicked`
   Helps decide whether proof-of-active-work is resonating and should be promoted further.
-- `project_clicked`
+- `project_link_click`
   Helps decide which projects deserve stronger placement or clearer summaries.
 - `writing_clicked`
   Helps decide which writing surfaces pull people deeper into the site.
@@ -53,7 +55,11 @@ Keep Vercel Web Analytics events small, intentional, and tied to real decisions.
   Helps decide whether short-form content deserves stronger framing or cross-links.
 - `rss_clicked`
   Helps decide whether returning-visitor and subscription features deserve more visibility.
-- `guestbook_started`
-  Helps decide whether the guestbook framing invites participation.
+- `contact_cta_click`
+  Helps decide whether contact paths are visible and trustworthy enough.
+- `intake_form_click`
+  Helps decide whether the inquiry path is resonating or getting buried.
+- `guestbook_click`
+  Helps decide whether the guestbook entry framing still invites participation.
 - `guestbook_submitted`
   Helps decide whether the guestbook is still earning its place on the site.

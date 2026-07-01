@@ -12,6 +12,7 @@ export function normalizeAnalyticsEventName(value: string) {
 
 export function normalizeAnalyticsProperties(
   value: Record<string, unknown> | undefined,
+  maxProperties = 2,
 ): AnalyticsProperties | undefined {
   if (!value) {
     return undefined;
@@ -43,5 +44,5 @@ export function normalizeAnalyticsProperties(
     })
     .filter((entry): entry is readonly [string, AnalyticsValue] => Boolean(entry));
 
-  return entries.length ? Object.fromEntries(entries.slice(0, 2)) : undefined;
+  return entries.length ? Object.fromEntries(entries.slice(0, maxProperties)) : undefined;
 }

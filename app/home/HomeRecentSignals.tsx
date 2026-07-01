@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TrackedLink } from "../TrackedLink";
 import { guestbookCategories } from "../lib/guestbook";
 import type { GuestbookEntry, GuestbookCategory } from "../lib/guestbook";
 
@@ -65,7 +66,16 @@ export function HomeRecentSignals({ entries }: { entries: GuestbookEntry[] }) {
               <strong>{entry.name}</strong>
             </div>
             <p>{summarizeMessage(entry.message)}</p>
-            <a href="#guestbook">Leave your own signal</a>
+            <TrackedLink
+              href="#guestbook"
+              trackingEvent="guestbook_click"
+              trackingProperties={{
+                surface: "recent_signals",
+                source: "home",
+              }}
+            >
+              Leave your own signal
+            </TrackedLink>
           </article>
         ))}
       </div>

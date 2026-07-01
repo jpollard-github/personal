@@ -65,6 +65,7 @@ Admin areas:
 - Vercel Blob for admin image uploads
 - Resend for guestbook notifications
 - Vercel Analytics
+- PostHog for lightweight product and QA analytics
 - Playwright for browser e2e coverage
 
 ## Repo Notes
@@ -157,6 +158,13 @@ Optional rate-limit salt:
 
 ```bash
 GUESTBOOK_RATE_LIMIT_SECRET=
+```
+
+Analytics:
+
+```bash
+NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=
+NEXT_PUBLIC_POSTHOG_HOST=
 ```
 
 ## Run Locally

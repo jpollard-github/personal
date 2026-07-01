@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AnalyticsPageEvent } from "../AnalyticsPageEvent";
 import { SectionHeading } from "../SectionHeading";
+import { TrackedLink } from "../TrackedLink";
 import { businessContact, businessLinks } from "../lib/business-config";
 
 const offerings = [
@@ -204,6 +206,10 @@ export const metadata: Metadata = {
 export default function WorkWithMePage() {
   return (
     <main className="work-page" id="top">
+      <AnalyticsPageEvent
+        eventName="work_with_me_view"
+        properties={{ entry_point: "direct", route: "/work-with-me" }}
+      />
       <section className="work-hero">
         <div className="work-hero-copy">
           <p className="eyebrow">Work With Me</p>
@@ -228,17 +234,30 @@ export default function WorkWithMePage() {
             details, <Link className="work-inline-link" href="/about">meet Jason here</Link>.
           </p>
           <div className="hero-actions" aria-label="Work with me links">
-            <a
+            <TrackedLink
               className="button primary"
               href={businessLinks.projectInquiry}
               target="_blank"
               rel="noreferrer"
+              trackingEvent="intake_form_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "hero",
+              }}
             >
               Start a Project Inquiry
-            </a>
-            <a className="button secondary" href={businessContact.emailHref}>
+            </TrackedLink>
+            <TrackedLink
+              className="button secondary"
+              href={businessContact.emailHref}
+              trackingEvent="contact_cta_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "hero",
+              }}
+            >
               Email Jason
-            </a>
+            </TrackedLink>
           </div>
           <p className="work-hero-note work-hero-availability">
             Best fit: small fixed-price projects with a real problem to solve,
@@ -282,22 +301,33 @@ export default function WorkWithMePage() {
             a larger build, start with a focused 90-minute session for $200.
           </p>
           <div className="hero-actions" aria-label="Discovery session links">
-            <a
+            <TrackedLink
               className="button primary"
               href={businessLinks.discoverySession}
               target="_blank"
               rel="noreferrer"
+              trackingEvent="contact_cta_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "discovery_intro",
+                type: "discovery_session",
+              }}
             >
               Book a Discovery Session
-            </a>
-            <a
+            </TrackedLink>
+            <TrackedLink
               className="button secondary"
               href={businessLinks.projectInquiry}
               target="_blank"
               rel="noreferrer"
+              trackingEvent="intake_form_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "discovery_intro",
+              }}
             >
               Start a Project Inquiry
-            </a>
+            </TrackedLink>
           </div>
           <p className="work-hero-note">
             Payment confirms your discovery session. After payment, I&apos;ll
@@ -380,14 +410,20 @@ export default function WorkWithMePage() {
             whether a larger project is worth doing.
           </p>
           <div className="hero-actions" aria-label="Discovery booking links">
-            <a
+            <TrackedLink
               className="button primary"
               href={businessLinks.discoverySession}
               target="_blank"
               rel="noreferrer"
+              trackingEvent="contact_cta_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "strategy_session",
+                type: "discovery_session",
+              }}
             >
               Book a Discovery Session
-            </a>
+            </TrackedLink>
           </div>
           <p className="work-hero-note">
             Payment confirms your discovery session. After payment, I&apos;ll
@@ -439,18 +475,24 @@ export default function WorkWithMePage() {
         </SectionHeading>
         <div className="section-link-grid">
           {examples.map((example) => (
-            <a
+            <TrackedLink
               className="section-link-card"
               href={example.href}
               key={example.title}
               target="_blank"
               rel="noreferrer"
+              trackingEvent="project_link_click"
+              trackingProperties={{
+                project_id: example.title,
+                surface: "work_with_me_examples",
+                type: example.eyebrow,
+              }}
             >
               <span className="card-eyebrow">{example.eyebrow}</span>
               <h3>{example.title}</h3>
               <p>{example.text}</p>
               <span>{example.cta}</span>
-            </a>
+            </TrackedLink>
           ))}
         </div>
       </section>
@@ -534,17 +576,30 @@ export default function WorkWithMePage() {
         </SectionHeading>
         <div className="work-contact-panel">
           <div className="hero-actions" aria-label="Contact options">
-            <a
+            <TrackedLink
               className="button primary"
               href={businessLinks.projectInquiry}
               target="_blank"
               rel="noreferrer"
+              trackingEvent="intake_form_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "contact_section",
+              }}
             >
               Start a Project Inquiry
-            </a>
-            <a className="button secondary" href={businessContact.emailHref}>
+            </TrackedLink>
+            <TrackedLink
+              className="button secondary"
+              href={businessContact.emailHref}
+              trackingEvent="contact_cta_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "contact_section",
+              }}
+            >
               Email Jason
-            </a>
+            </TrackedLink>
           </div>
           <div className="work-contact-meta" aria-label="Contact expectations">
             <p>
@@ -561,9 +616,17 @@ export default function WorkWithMePage() {
           </div>
           <p className="work-contact-email">
             Prefer email?{" "}
-            <a className="work-inline-link" href={businessContact.emailHref}>
+            <TrackedLink
+              className="work-inline-link"
+              href={businessContact.emailHref}
+              trackingEvent="contact_cta_click"
+              trackingProperties={{
+                route: "/work-with-me",
+                surface: "contact_inline",
+              }}
+            >
               {businessContact.emailAddress}
-            </a>
+            </TrackedLink>
           </p>
           <p className="work-contact-note">
             If it sounds like a fit, we can figure out scope, timeline, and
