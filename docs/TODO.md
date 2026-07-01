@@ -6,6 +6,14 @@ Status:
 - Use `docs/PERSONA-TESTS-RESULTS-TODO.backup.md` for the active website backlog.
 - Use `docs/CONTENT-TODO.md` for the active publishing backlog.
 
+## 1000 TODOs Triage
+
+- Keep `docs/MOBILE-TODO.md` focused only on mobile and device quality work.
+- Move business and client acquisition items into `BUSINESS-FUNNEL` or `LEAD-GENERATION-TODO`.
+- Move content and publishing ideas into `CONTENT-TODO`.
+- Move AI, automation, and tooling ideas into `AI-TODO`.
+- Do not try to clear every docs TODO before shipping.
+
 This checklist prioritizes changes that are most likely to improve first impressions, repeat visits, and overall enjoyment without diluting the site's personality.
 
 ## Priority 1

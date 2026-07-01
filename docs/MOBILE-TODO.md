@@ -637,7 +637,7 @@ Perform a final mobile sanity pass across representative devices and browsers so
 - [ ] `[P1]` Confirm long-scroll comfort on editorial and archive-heavy routes:
   `/writings`, `/updates`, `/tiny-thoughts`, `/music`.
 - [ ] `[P1]` Capture reusable evidence from the device pass:
-  screenshots, short notes, and any exported session recordings for the routes that reveal real-device issues.
+  screenshots, short notes, and any exported session recordings for the routes that reveal real-device issues, with final results recorded in `docs/MANUAL-QA.md`.
 - [ ] `[P1]` Confirm no accidental desktop spacing or awkward shared-component behavior survives on mobile after Phases 8-10.
 
 ### Review Criteria
@@ -650,8 +650,8 @@ Perform a final mobile sanity pass across representative devices and browsers so
 
 - `review-packets/latest-site-review`
 - packet screenshots
-- device/browser spot checks
-- final review notes
+- `docs/MANUAL-QA.md`
+- device/browser spot checks recorded in `docs/MANUAL-QA.md`
 - optional Sauce Labs session screenshots / recordings if a cloud-device pass is used
 
 ### Known Issues
@@ -661,7 +661,7 @@ Perform a final mobile sanity pass across representative devices and browsers so
 
 ### Future Ideas
 
-- Capture a final short QA checklist result inside a packet artifact.
+- Keep `docs/MANUAL-QA.md` as the final manual evidence location and copy a short summary into the next packet after the pass is complete.
 
 ### Suggested Device Matrix
 
@@ -788,13 +788,14 @@ After mobile work settles, verify that the shared layout system still protects d
 
 ### Checklist
 
-- [ ] `[P0]` Compare desktop screenshots before and after major mobile passes.
-- [ ] `[P0]` Verify the homepage hero still lands correctly.
-- [ ] `[P1]` Verify homepage spacing.
-- [ ] `[P1]` Verify Work With Me.
-- [ ] `[P1]` Verify About.
-- [ ] `[P1]` Verify Music.
-- [ ] `[P1]` Verify Writings.
+- [x] `[P0]` Compare desktop screenshots before and after major mobile passes using the current post-Phase-10 packet baseline.
+- [x] `[P0]` Verify the homepage hero still lands correctly.
+- [x] `[P1]` Verify homepage spacing.
+- [x] `[P1]` Verify Work With Me.
+- [x] `[P1]` Verify About.
+- [x] `[P1]` Verify Music.
+- [x] `[P1]` Verify Writings.
+- [ ] `[P1]` Revisit this desktop regression pass after Phase 11 real-device QA is completed so any final mobile fixes can be checked against desktop one more time.
 
 ### Review Criteria
 
@@ -808,15 +809,22 @@ After mobile work settles, verify that the shared layout system still protects d
 - `screenshots/viewport/desktop-work-with-me.jpg`
 - `screenshots/viewport/desktop-about.jpg`
 - desktop packet screenshots and visual comparison
+- `review-packets/2026-06-30/site-review-2144`
+- `review-packets/latest-site-review`
 
 ### Known Issues
 
 - Desktop regressions are easy to miss if mobile review becomes the only habit.
+- This pass is intentionally provisional because Phase 11 may still uncover real-device mobile fixes that touch shared layout rules.
 
 ### Future Ideas
 
 - Add a compact desktop regression checklist to packets once mobile work nears completion.
 
+Next recommended work:
+
+- Finish Phase 11 real-device QA, then rerun this desktop regression pass once from the final mobile-adjusted state.
+
 Status:
 
-Not Started
+Ready For Review
